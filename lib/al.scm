@@ -32,13 +32,6 @@
 ;; $Id$
 
 (define-module al
-  (use gauche.uvector)
-  (export-all))
-
-(select-module al)
-(dynamic-load "al")
-
-(define-module al
   (use gauche.collection)
   (use gauche.uvector)
   (use srfi-2)

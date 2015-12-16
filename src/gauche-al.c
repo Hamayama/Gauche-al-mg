@@ -127,7 +127,11 @@ int Scm_ALCStateInfoSize(ALCdevice *device, int token)
  * Module initialization function.
  * This is called when esound.so is dynamically loaded into gosh.
  */
-ScmObj Scm_Init_al()
+extern void Scm_Init_al_lib(ScmModule*);
+extern void Scm_Init_alc_lib(ScmModule*);
+extern void Scm_Init_alut_lib(ScmModule*);
+
+ScmObj Scm_Init_al(void)
 {
     ScmModule *mod;
 

@@ -124,7 +124,7 @@
   ")
   
 (define-cproc al-is-buffer? (buffer::<uint>)
-  (return <boolean> "alIsBuffer"))
+  (call <boolean> "alIsBuffer"))
 
 (define-cproc al-buffer-data (buffer::<uint> pcmData::<pcm-data>)
   "alBufferData(buffer, pcmData->format, pcmData->data, pcmData->size, pcmData->freq);
@@ -166,7 +166,7 @@
   ")
 
 (define-cproc al-is-source? (source::<uint>)
-  (return <boolean> "alIsSource"))
+  (call <boolean> "alIsSource"))
 
 (define-cproc al-source (source::<uint> pname::<fixnum> param)
   "switch (pname) {
@@ -398,13 +398,13 @@
 ;;
 
 (define-cproc al-enable (cap::<fixnum>)
-  (return <void> "alEnable"))
+  (call <void> "alEnable"))
 
 (define-cproc al-disable (cap::<fixnum>)
-  (return <void> "alDisable"))
+  (call <void> "alDisable"))
 
 (define-cproc al-is-enabled? (cap::<fixnum>)
-  (return <boolean> "alIsEnabled"))
+  (call <boolean> "alIsEnabled"))
 
 (define-cproc al-get-integer (state::<fixnum>)
   "int vsize = Scm_ALStateInfoSize(state);
@@ -464,20 +464,20 @@
   ")
 
 (define-cproc al-distance-model (value::<fixnum>)
-  (return <void> "alDistanceModel"))
+  (call <void> "alDistanceModel"))
 
 (define-cproc al-doppler-factor (value::<float>)
-  (return <void> "alDopplerFactor"))
+  (call <void> "alDopplerFactor"))
 
 (define-cproc al-doppler-velocity (value::<float>)
-  (return <void> "alDopplerVelocity"))
+  (call <void> "alDopplerVelocity"))
 
 ;;=============================================================
 ;; Error Related
 ;;
 
 (define-cproc al-get-error ()
-  (return <fixnum> "alGetError"))
+  (call <fixnum> "alGetError"))
 
 ;; Local variables:
 ;; mode: scheme

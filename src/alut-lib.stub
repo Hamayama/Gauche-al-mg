@@ -63,7 +63,7 @@
   ")
 
 (define-cproc alut-exit ()
-  (return <void> "alutExit"))
+  (call <void> "alutExit"))
 
 (define-cproc alut-load-wav-file (fname::<const-char*>)
   "ALenum format;

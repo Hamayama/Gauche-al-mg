@@ -65,13 +65,13 @@
   ")
 
 (define-cproc alc-make-context-current (alcHandle::<alc-context>)
-  (return <fixnum> "alcMakeContextCurrent"))
+  (call <fixnum> "alcMakeContextCurrent"))
 
 (define-cproc alc-process-context (alcHandle::<alc-context>)
-  (return <void> "alcProcessContext"))
+  (call <void> "alcProcessContext"))
 
 (define-cproc alc-suspend-context (alcHandle::<alc-context>)
-  (return <void> "alcSuspendContext"))
+  (call <void> "alcSuspendContext"))
 
 (define-cproc alc-destroy-context (param)
   "void *ctxt;
@@ -85,7 +85,7 @@
   ")
 
 (define-cproc alc-get-error (device::<alc-device>)
-  (return <fixnum> "alcGetError"))
+  (call <fixnum> "alcGetError"))
 
 (define-cproc alc-get-current-context ()
   "void *ctxt = alcGetCurrentContext();

@@ -1,73 +1,75 @@
+# General info
 SHELL       = @SHELL@
 prefix      = @prefix@
 exec_prefix = @exec_prefix@
 bindir      = @bindir@
 libdir      = @libdir@
+datadir     = @datadir@
+datarootdir = @datarootdir@
+srcdir      = @srcdir@
 VPATH       = $(srcdir)
 
 # These may be overridden by make invocators
-DESTDIR  =
-OPTFLAGS = @OPTFLAGS@
-CC       = @CC@
+DESTDIR        =
+GOSH           = "@GOSH@"
+GAUCHE_CONFIG  = "@GAUCHE_CONFIG@"
+GAUCHE_PACKAGE = "@GAUCHE_PACKAGE@"
+INSTALL        = "@GAUCHE_INSTALL@" -C
+
+CPPFLAGS = -O2 @AL_INCDIR@ @CPPFLAGS@
+LDFLAGS  = @AL_LIBDIR@ @LDFLAGS@ 
 LIBS     = @AL_LIBS@ @LIBS@ 
-CFLAGS   = @DEFS@ @CFLAGS@ @AL_INCDIR@
-LDFLAGS  = @LDFLAGS@ 
-INSTALL  = @INSTALL@
-INSTALL_TYPE = @INSTALL_TYPE@
 
-# Set by configure
-GOSH     = @GOSH@
-GAUCHE_CONFIG = @GAUCHE_CONFIG@
-OBJEXT   = @OBJEXT@
-DSOEXT   = @SOEXT@
+# Other parameters
+SOEXT  = @SOEXT@
+OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
+LOCAL_PATHS = "@LOCAL_PATHS@"
 
-MODULE   = al
+# Module-specific stuff
+PACKAGE   = Gauche-al
+MODULE    = al
 
-ARCHFILES = $(MODULE).$(DSOEXT)
+ARCHFILES = al.$(SOEXT)
 HEADERS   =
 
 TARGET    = $(ARCHFILES)
-OBJS      = $(MODULE)_head.$(OBJEXT) \
-            gauche-al.$(OBJEXT) \
-            al-lib.$(OBJEXT) \
-            alc-lib.$(OBJEXT) \
-            alut-lib.$(OBJEXT) \
-            $(MODULE)_tail.$(OBJEXT)
 GENERATED = al-lib.c alc-lib.c alut-lib.c \
             $(MODULE)_head.c $(MODULE)_tail.c
 CONFIG_GENERATED = Makefile
 
-HEADER_INSTALL_DIR  = $(DESTDIR)`$(GAUCHE_CONFIG) --$(INSTALL_TYPE)incdir`
-ARCH_INSTALL_DIR    = $(DESTDIR)`$(GAUCHE_CONFIG) --$(INSTALL_TYPE)archdir`
+GAUCHE_PKGINCDIR  = "$(DESTDIR)@GAUCHE_PKGINCDIR@"
+GAUCHE_PKGLIBDIR  = "$(DESTDIR)@GAUCHE_PKGLIBDIR@"
+GAUCHE_PKGARCHDIR = "$(DESTDIR)@GAUCHE_PKGARCHDIR@"
+
+al_SRCS = gauche-al.c al-lib.stub \
+          alc-lib.stub alut-lib.stub \
+          $(MODULE)_head.c $(MODULE)_tail.c
 
 all : $(TARGET)
 
-.SUFFIXES: .o .stub
-
-.c.o:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-
-.stub.c:
-	$(GOSH) genstub $<
-
-$(MODULE).$(DSOEXT) : $(OBJS)
-	$(CC) $(LDFLAGS) $(MODULE).$(DSOEXT) $(OBJS) @AL_LIBDIR@ $(LIBS) 
+al.$(SOEXT): $(al_SRCS)
+	$(GAUCHE_PACKAGE) compile  \
+	  --local=$(LOCAL_PATHS)   \
+	  --cppflags="$(CPPFLAGS)" \
+	  --ldflags="$(LDFLAGS)"   \
+	  --libs="$(LIBS)"         \
+	  --verbose al $(al_SRCS)
 
 $(MODULE)_head.c $(MODULE)_tail.c :
 	$(GAUCHE_CONFIG) --fixup-extension $(MODULE)
 
 install : all
-	if test ! -z "$(HEADERS)"; then \
-	  $(INSTALL) -d $(HEADER_INSTALL_DIR); \
-	  $(INSTALL) -m 444 $(HEADERS) $(HEADER_INSTALL_DIR); \
-	fi
-	if test ! -z "$(ARCHFILES)"; then \
-	  $(INSTALL) -d $(ARCH_INSTALL_DIR); \
-	  $(INSTALL) -m 555 $(ARCHFILES) $(ARCH_INSTALL_DIR); \
-	fi
+	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)
+	$(INSTALL) -m 555 -T $(GAUCHE_PKGARCHDIR) $(ARCHFILES)
+
+uninstall :
+	$(INSTALL) -U $(GAUCHE_PKGINCDIR) $(HEADERS)
+	$(INSTALL) -U $(GAUCHE_PKGARCHDIR) $(ARCHFILES)
 
 clean :
-	rm -rf core $(TARGET) $(OBJS) $(GENERATED) *~ test.log so_locations
+	$(GAUCHE_PACKAGE) compile --clean al $(al_SRCS)
+	rm -rf core $(TARGET) $(GENERATED) *~ test.log so_locations
 
 distclean : clean
 	rm -rf $(CONFIG_GENERATED)

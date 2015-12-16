@@ -42,6 +42,13 @@
 #include <AL/alut.h>
 #endif
 
+#if !defined(AL_SOURCE_ABSOLUTE)
+#define AL_SOURCE_ABSOLUTE 0x201
+#endif
+#if !defined(AL_DATA)
+#define AL_DATA 0x2005
+#endif
+
 #include <gauche.h>
 #include <gauche/extend.h>
 #include <gauche/class.h>
@@ -102,4 +109,3 @@ extern ScmObj Scm_MakeALCdevice(ALCdevice *data);
 extern int Scm_ALStateInfoSize(int state);
 extern int Scm_ALCStateInfoSize(ALCdevice *device, int state);
 
-extern void Scm_Init_allib(ScmModule *module);

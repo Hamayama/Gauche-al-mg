@@ -6,9 +6,9 @@ top_srcdir   = @top_srcdir@
 
 MANPAGES = 
 GENERATED = Makefile $(MANPAGES)
-GOSH = @GOSH@
-GAUCHE_CONFIG = @GAUCHE_CONFIG@
-INSTALL = @GAUCHE_INSTALL@
+GOSH = "@GOSH@"
+GAUCHE_CONFIG = "@GAUCHE_CONFIG@"
+INSTALL = "@GAUCHE_INSTALL@"
 MAKEINFO = @MAKEINFO@
 GZIP_PROGRAM = @GZIP_PROGRAM@
 
@@ -21,12 +21,12 @@ all: info html
 install: all
 	if test -f gauche-al-refe.info.gz -o -f gauche-al-refj.info.gz; then \
 	  for info in *.info*; do \
-	    $(INSTALL) -m 444 -T $(infodir) $$info; \
+	    $(INSTALL) -m 444 -T "$(infodir)" $$info; \
 	  done; \
 	fi
 
 uninstall:
-	(cd $(infodir); \
+	(cd "$(infodir)"; \
 	 if test -f gauche-al-refe.info -o -f gauche-al-refe.info.gz; \
 	   then rm -rf gauche-al-refe.*; \
 	 fi; \
@@ -47,10 +47,12 @@ pdf : gauche-al-refe.pdf
 info : gauche-al-refe.info.gz gauche-al-refj.info.gz
 
 gauche-al-refe.html : gauche-al-refe.texi
-	texi2html -number gauche-al-refe.texi
+#	texi2html -number gauche-al-refe.texi
+	makeinfo  --html --no-split gauche-al-refe.texi
 
 gauche-al-refe_toc.html : gauche-al-refe.texi
-	texi2html -split section -number gauche-al-refe.texi
+#	texi2html -split section -number gauche-al-refe.texi
+	makeinfo  --html --split=section gauche-al-refe.texi
 
 gauche-al-refe.dvi : gauche-al-refe.texi
 	texi2dvi gauche-al-refe.texi
@@ -66,10 +68,12 @@ gauche-al-refe.info.gz : gauche-al-refe.texi
 	fi
 
 gauche-al-refj.html : gauche-al-refj.texi
-	texi2html -number gauche-al-refj.texi
+#	texi2html -number gauche-al-refj.texi
+	makeinfo  --html --no-split gauche-al-refj.texi
 
 gauche-al-refj_toc.html : gauche-al-refj.texi
-	texi2html -split section -number gauche-al-refj.texi
+#	texi2html -split section -number gauche-al-refj.texi
+	makeinfo  --html --split=section gauche-al-refj.texi
 
 gauche-al-refj.dvi : gauche-al-refj.texi
 	texi2dvi gauche-al-refj.texi
