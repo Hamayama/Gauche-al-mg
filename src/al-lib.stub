@@ -1,0 +1,485 @@
+;;
+;; al-lib.stub
+;;
+;;   Copyright (c) 2005 KOGURO, Naoki
+;;   All rights reserved.
+;;
+;;   Redistribution and use in source and binary forms, with or without 
+;;   modification, are permitted provided that the following conditions 
+;;   are met:
+;;
+;;   1. Redistributions of source code must retain the above copyright 
+;;      notice, this list of conditions and the following disclaimer.
+;;   2. Redistributions in binary form must reproduce the above copyright 
+;;      notice, this list of conditions and the following disclaimer in the 
+;;      documentation and/or other materials provided with the distribution.
+;;   3. Neither the name of the authors nor the names of its contributors 
+;;      may be used to endorse or promote products derived from this 
+;;      software without specific prior written permission.
+;;
+;;   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+;;   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+;;   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+;;   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+;;   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+;;   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+;;   TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+;;   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+;;   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+;;   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+;;   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+;;
+;; $Id$
+
+"
+ #include \"gauche-al.h\"
+"
+
+(include "gauche-al.types")
+
+(define-enum AL_INVALID)
+(define-enum AL_NONE)
+(define-enum AL_FALSE)
+(define-enum AL_TRUE)
+(define-enum AL_SOURCE_TYPE)
+(define-enum AL_SOURCE_ABSOLUTE)
+(define-enum AL_SOURCE_RELATIVE)
+(define-enum AL_CONE_INNER_ANGLE)
+(define-enum AL_CONE_OUTER_ANGLE)
+(define-enum AL_PITCH)
+(define-enum AL_POSITION)
+(define-enum AL_DIRECTION)
+(define-enum AL_VELOCITY)
+(define-enum AL_LOOPING)
+(define-enum AL_BUFFER)
+(define-enum AL_GAIN)
+(define-enum AL_MIN_GAIN)
+(define-enum AL_MAX_GAIN)
+(define-enum AL_ORIENTATION)
+(define-enum AL_REFERENCE_DISTANCE)
+(define-enum AL_ROLLOFF_FACTOR)
+(define-enum AL_CONE_OUTER_GAIN)
+(define-enum AL_MAX_DISTANCE)
+(define-enum AL_SOURCE_STATE)
+(define-enum AL_INITIAL)
+(define-enum AL_PLAYING)
+(define-enum AL_PAUSED)
+(define-enum AL_STOPPED)
+(define-enum AL_BUFFERS_QUEUED)
+(define-enum AL_BUFFERS_PROCESSED)
+(define-enum AL_FORMAT_MONO8)
+(define-enum AL_FORMAT_MONO16)
+(define-enum AL_FORMAT_STEREO8)
+(define-enum AL_FORMAT_STEREO16)
+(define-enum AL_FREQUENCY)
+(define-enum AL_BITS)
+(define-enum AL_CHANNELS)
+(define-enum AL_SIZE)
+(define-enum AL_DATA)
+(define-enum AL_UNUSED)
+(define-enum AL_PENDING)
+(define-enum AL_PROCESSED)
+(define-enum AL_NO_ERROR)
+(define-enum AL_INVALID_NAME)
+(define-enum AL_INVALID_ENUM)
+(define-enum AL_INVALID_VALUE)
+(define-enum AL_INVALID_OPERATION)
+(define-enum AL_OUT_OF_MEMORY)
+(define-enum AL_VENDOR)
+(define-enum AL_VERSION)
+(define-enum AL_RENDERER)
+(define-enum AL_EXTENSIONS)
+(define-enum AL_DOPPLER_FACTOR)
+(define-enum AL_DOPPLER_VELOCITY)
+(define-enum AL_DISTANCE_MODEL)
+(define-enum AL_INVERSE_DISTANCE)
+(define-enum AL_INVERSE_DISTANCE_CLAMPED)
+
+;;=============================================================
+;; <pcm-data> stuff
+;;
+
+(define-cclass <pcm-data> :built-in
+  "ScmPCMData*" "Scm_PCMDataClass"
+  ()
+  ((format :type <fixnum>)
+   (freq :type <ulong>)
+   (size :type <ulong>)
+   (loop :type <boolean>)
+   (data :type <u8vector> :getter "return Scm_MakeU8VectorFromArray(obj->size, (unsigned char*)(obj->data));" :setter "memmove(obj->data, SCM_U8VECTOR_ELEMENTS(value), obj->size);")))
+
+;;=============================================================
+;; Buffer Related
+;;
+
+(define-cproc al-gen-buffers (n::<ulong>)
+  "ALuint *buffers = SCM_NEW_ARRAY(ALuint, n);
+  alGenBuffers(n, buffers);
+  SCM_RETURN(Scm_MakeU32VectorFromArrayShared(n, buffers));
+  ")
+
+(define-cproc al-delete-buffers (buffers::<u32vector>)
+  "alDeleteBuffers(SCM_U32VECTOR_SIZE(buffers), SCM_U32VECTOR_ELEMENTS(buffers));
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+  
+(define-cproc al-is-buffer? (buffer::<uint>)
+  (return <boolean> "alIsBuffer"))
+
+(define-cproc al-buffer-data (buffer::<uint> pcmData::<pcm-data>)
+  "alBufferData(buffer, pcmData->format, pcmData->data, pcmData->size, pcmData->freq);
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc al-get-buffer (buffer::<uint> pname::<fixnum>)
+  "switch (pname) {
+  case AL_FREQUENCY:
+  case AL_BITS:
+  case AL_CHANNELS:
+  case AL_SIZE:
+  case AL_DATA:
+      {
+          ALint value;
+          alGetBufferi(buffer, pname, &value);
+          SCM_RETURN(Scm_MakeInteger((long)value));
+      }
+      break;
+  default:
+      Scm_Error(\"bad pname: %d\", pname);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+;;=============================================================
+;; Source Related
+;;
+
+(define-cproc al-gen-sources (n::<ulong>)
+  "ALuint *sources = SCM_NEW_ARRAY(ALuint, n);
+  alGenSources(n, sources);
+  SCM_RETURN(Scm_MakeU32VectorFromArrayShared(n, sources));
+  ")
+
+(define-cproc al-delete-sources (sources::<u32vector>)
+  "alDeleteSources(SCM_U32VECTOR_SIZE(sources), SCM_U32VECTOR_ELEMENTS(sources));
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc al-is-source? (source::<uint>)
+  (return <boolean> "alIsSource"))
+
+(define-cproc al-source (source::<uint> pname::<fixnum> param)
+  "switch (pname) {
+  case AL_PITCH:
+  case AL_GAIN:
+  case AL_MAX_DISTANCE:
+  case AL_ROLLOFF_FACTOR:
+  case AL_REFERENCE_DISTANCE:
+  case AL_MIN_GAIN:
+  case AL_MAX_GAIN:
+  case AL_CONE_OUTER_GAIN:
+      if (SCM_REALP(param)) {
+          alSourcef(source, pname, (ALfloat)Scm_GetDouble(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be a real number.\", param);
+      }
+      break;
+  case AL_POSITION:
+  case AL_VELOCITY:
+  case AL_DIRECTION:
+      if (SCM_F32VECTORP(param) && SCM_F32VECTOR_SIZE(param) == 3) {
+          alSourcefv(source, pname, (ALfloat*)SCM_F32VECTOR_ELEMENTS(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be f32 vector of length 3.\", param);
+      }
+      break;
+  case AL_CONE_INNER_ANGLE:
+  case AL_CONE_OUTER_ANGLE:
+  case AL_BUFFER:
+  case AL_SOURCE_STATE:
+      if (SCM_INTEGERP(param)) {
+          alSourcei(source, pname, (ALint)Scm_GetInteger(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be a integer.\", param);
+      }
+      break;
+  case AL_SOURCE_RELATIVE:
+  case AL_LOOPING:
+      if (SCM_BOOLP(param)) {
+	  alSourcei(source, pname, (SCM_TRUEP(param)?AL_TRUE:AL_FALSE));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be a boolean.\", param);
+      }
+      break;
+  default:
+      Scm_Error(\"bad pname: %d\", pname);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc al-get-source (source::<uint> pname::<fixnum>)
+  "switch (pname) {
+  case AL_PITCH:
+  case AL_GAIN:
+  case AL_MIN_GAIN:
+  case AL_MAX_GAIN:
+  case AL_MAX_DISTANCE:
+  case AL_ROLLOFF_FACTOR:
+  case AL_CONE_OUTER_GAIN:
+  case AL_CONE_INNER_ANGLE:
+  case AL_CONE_OUTER_ANGLE:
+  case AL_REFERENCE_DISTANCE:
+      {
+          ALfloat value;
+          alGetSourcef(source, pname, &value);
+          SCM_RETURN(Scm_MakeFlonum((double)value));
+      }
+      break;
+  case AL_POSITION:
+  case AL_VELOCITY:
+  case AL_DIRECTION:
+      {
+          ScmF32Vector *v = SCM_F32VECTOR(Scm_MakeF32Vector(3, 0.0));
+          alGetSourcefv(source, pname, SCM_F32VECTOR_ELEMENTS(v));
+          SCM_RETURN(SCM_OBJ(v));
+      }
+      break;
+  case AL_BUFFER:
+  case AL_SOURCE_STATE:
+  case AL_BUFFERS_QUEUED:
+  case AL_BUFFERS_PROCESSED:
+      {
+          ALint value;
+          alGetSourcei(source, pname, &value);
+          SCM_RETURN(Scm_MakeInteger(value));
+      }
+      break;
+  case AL_SOURCE_RELATIVE:
+  case AL_LOOPING:
+      {
+          ALint value;
+          alGetSourcei(source, pname, &value);
+          SCM_RETURN(SCM_MAKE_BOOL(value));
+      }
+      break;
+  default:
+      Scm_Error(\"bad pname: %d\", pname);
+      SCM_RETURN(SCM_UNDEFINED);
+  }")
+
+(define-cproc al-source-play (param)
+  "if (SCM_UINTEGERP(param)) {
+      ALuint source = (ALuint)Scm_GetIntegerU(param);
+      alSourcePlay(source);
+  } else if (SCM_U32VECTORP(param)) {
+      ALsizei n = SCM_U32VECTOR_SIZE(param);
+      alSourcePlayv(n, (ALuint*)SCM_U32VECTOR_ELEMENTS(param));
+  } else {
+      Scm_Error(\"unsigned integer or u32 vector required, but got %S\", param);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+ 
+(define-cproc al-source-pause (param)
+  "if (SCM_UINTEGERP(param)) {
+      ALuint source = (ALuint)Scm_GetIntegerU(param);
+      alSourcePause(source);
+  } else if (SCM_U32VECTORP(param)) {
+      ALsizei n = SCM_U32VECTOR_SIZE(param);
+      alSourcePausev(n, (ALuint*)SCM_U32VECTOR_ELEMENTS(param));
+  } else {
+      Scm_Error(\"unsigned integer or u32 vector required, but got %S\", param);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+ 
+(define-cproc al-source-stop (param)
+  "if (SCM_UINTEGERP(param)) {
+      ALuint source = (ALuint)Scm_GetIntegerU(param);
+      alSourceStop(source);
+  } else if (SCM_U32VECTORP(param)) {
+      ALsizei n = SCM_U32VECTOR_SIZE(param);
+      alSourceStopv(n, (ALuint*)SCM_U32VECTOR_ELEMENTS(param));
+  } else {
+      Scm_Error(\"unsigned integer or u32 vector required, but got %S\", param);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+ 
+(define-cproc al-source-rewind (param)
+  "if (SCM_UINTEGERP(param)) {
+      ALuint source = (ALuint)Scm_GetIntegerU(param);
+      alSourceRewind(source);
+  } else if (SCM_U32VECTORP(param)) {
+      ALsizei n = SCM_U32VECTOR_SIZE(param);
+      alSourceRewindv(n, (ALuint*)SCM_U32VECTOR_ELEMENTS(param));
+  } else {
+      Scm_Error(\"unsigned integer or u32 vector required, but got %S\", param);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+ 
+(define-cproc al-source-queue-buffers (source::<uint> buffers::<u32vector>)
+  "alSourceQueueBuffers(source, SCM_U32VECTOR_SIZE(buffers), (ALuint*)SCM_U32VECTOR_ELEMENTS(buffers));
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc al-source-unqueue-buffers (source::<uint> buffers::<u32vector>)
+  "alSourceUnqueueBuffers(source, SCM_U32VECTOR_SIZE(buffers), (ALuint*)SCM_U32VECTOR_ELEMENTS(buffers));
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+;;=============================================================
+;; Listener Related
+;;
+
+(define-cproc al-listener (pname::<fixnum> param)
+  "switch (pname) {
+  case AL_POSITION:
+  case AL_VELOCITY:
+      if (SCM_F32VECTORP(param) && SCM_F32VECTOR_SIZE(param) == 3) { 
+          alListenerfv(pname, (ALfloat*)SCM_F32VECTOR_ELEMENTS(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be f32 vector of length 3.\", param);
+      }
+      break;
+  case AL_ORIENTATION:
+      if (SCM_F32VECTORP(param) && SCM_F32VECTOR_SIZE(param) == 6) {
+          alListenerfv(pname, (ALfloat*)SCM_F32VECTOR_ELEMENTS(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be f32 vector of length 6.\", param);
+      }
+      break;
+  case AL_GAIN:
+      if (SCM_REALP(param)) {
+          alListenerf(pname, (ALfloat)Scm_GetDouble(param));
+      } else {
+          Scm_Error(\"bad parameter: %S, must be real number.\", param);
+      }
+      break;
+  default:
+      Scm_Error(\"bad pname: %d\", pname);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc al-get-listener (pname::<fixnum>)
+  "switch (pname) {
+  case AL_POSITION:
+  case AL_VELOCITY:
+      {
+          ScmF32Vector *v = SCM_F32VECTOR(Scm_MakeF32Vector(3, 0.0));
+          alGetListenerfv(pname, (ALfloat*)SCM_F32VECTOR_ELEMENTS(v));
+          SCM_RETURN(SCM_OBJ(v));
+      }
+      break;
+  case AL_ORIENTATION:
+      {
+          ScmF32Vector *v = SCM_F32VECTOR(Scm_MakeF32Vector(6, 0.0));
+          alGetListenerfv(pname, (ALfloat*)SCM_F32VECTOR_ELEMENTS(v));
+          SCM_RETURN(SCM_OBJ(v));
+      }
+      break;
+  case AL_GAIN:
+      {
+          ALfloat value;
+          alGetListenerf(pname, &value);
+          SCM_RETURN(Scm_MakeFlonum(value));
+      }
+      break;
+  default:
+      Scm_Error(\"bad pname: %d\", pname);
+  }
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+      
+;;=============================================================
+;; State Related
+;;
+
+(define-cproc al-enable (cap::<fixnum>)
+  (return <void> "alEnable"))
+
+(define-cproc al-disable (cap::<fixnum>)
+  (return <void> "alDisable"))
+
+(define-cproc al-is-enabled? (cap::<fixnum>)
+  (return <boolean> "alIsEnabled"))
+
+(define-cproc al-get-integer (state::<fixnum>)
+  "int vsize = Scm_ALStateInfoSize(state);
+  if (vsize <= 0)
+    Scm_Error(\"you can't query state %x by alGetIntegerv\", state);
+  if (vsize == 1) {
+    ALint i;
+    alGetIntegerv((ALenum)state, &i);
+    SCM_RETURN(Scm_MakeInteger(i));
+  } else {
+    ScmS32Vector *v = SCM_S32VECTOR(Scm_MakeS32Vector(vsize, 0));
+    alGetIntegerv((ALenum)state, (ALint*)SCM_S32VECTOR_ELEMENTS(v));
+    SCM_RETURN(SCM_OBJ(v));
+  }")
+
+(define-cproc al-get-integer! (vec state::<fixnum>)
+  "int vsize;
+  if (!SCM_S32VECTORP(vec)) Scm_Error(\"s32vector required, but got %S\", vec);
+  vsize = Scm_ALStateInfoSize(state);
+  if (vsize != SCM_S32VECTOR_SIZE(vec))
+    Scm_Error(\"state %x needs a vector of size %d, but got %S\",
+               state, vsize, vec);
+  alGetIntegerv((ALenum)state, (ALint*)SCM_S32VECTOR_ELEMENTS(vec));
+  SCM_RETURN(SCM_OBJ(vec));")
+
+(define-cproc al-get-float (state::<fixnum>)
+  "int vsize = Scm_ALStateInfoSize(state);
+  if (vsize <= 0)
+    Scm_Error(\"you can't query state %x by alGetFloatv\", state);
+  if (vsize == 1) {
+    ALfloat v;
+    alGetFloatv((ALenum)state, &v);
+    SCM_RETURN(Scm_MakeFlonum((double)v));
+  } else {
+    ScmF32Vector *v = SCM_F32VECTOR(Scm_MakeF32Vector(vsize, 0));
+    alGetFloatv((ALenum)state, SCM_F32VECTOR_ELEMENTS(v));
+    SCM_RETURN(SCM_OBJ(v));
+  }")
+
+(define-cproc al-get-float! (vec state::<fixnum>)
+  "int vsize;
+  if (!SCM_F32VECTORP(vec)) Scm_Error(\"s32vector required, but got %S\", vec);
+  vsize = Scm_ALStateInfoSize(state);
+  if (vsize != SCM_F32VECTOR_SIZE(vec))
+    Scm_Error(\"state %x needs a vector of size %d, but got %S\",
+               state, vsize, vec);
+  alGetFloatv((ALenum)state, SCM_F32VECTOR_ELEMENTS(vec));
+  SCM_RETURN(SCM_OBJ(vec));")
+
+(define-cproc al-get-string (name::<fixnum>)
+  "const ALubyte *s = alGetString(name);
+  if (s) {
+      SCM_RETURN(SCM_MAKE_STR_COPYING((const char*)s));
+  } else {
+      SCM_RETURN(SCM_FALSE);
+  }
+  ")
+
+(define-cproc al-distance-model (value::<fixnum>)
+  (return <void> "alDistanceModel"))
+
+(define-cproc al-doppler-factor (value::<float>)
+  (return <void> "alDopplerFactor"))
+
+(define-cproc al-doppler-velocity (value::<float>)
+  (return <void> "alDopplerVelocity"))
+
+;;=============================================================
+;; Error Related
+;;
+
+(define-cproc al-get-error ()
+  (return <fixnum> "alGetError"))
+
+;; Local variables:
+;; mode: scheme
+;; end:
+

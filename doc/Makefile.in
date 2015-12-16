@@ -1,0 +1,95 @@
+SHELL       = @SHELL@
+srcdir      = @srcdir@
+VPATH       = $(srcdir)
+top_builddir = @top_builddir@
+top_srcdir   = @top_srcdir@
+
+MANPAGES = 
+GENERATED = Makefile $(MANPAGES)
+GOSH = @GOSH@
+GAUCHE_CONFIG = @GAUCHE_CONFIG@
+INSTALL = @GAUCHE_INSTALL@
+MAKEINFO = @MAKEINFO@
+GZIP_PROGRAM = @GZIP_PROGRAM@
+
+# Manual page destination.
+mandir  = $(DESTDIR)`$(GAUCHE_CONFIG) --mandir`
+infodir = $(DESTDIR)`$(GAUCHE_CONFIG) --infodir`
+
+all: info html
+
+install: all
+	if test -f gauche-al-refe.info.gz -o -f gauche-al-refj.info.gz; then \
+	  for info in *.info*; do \
+	    $(INSTALL) -m 444 -T $(infodir) $$info; \
+	  done; \
+	fi
+
+uninstall:
+	(cd $(infodir); \
+	 if test -f gauche-al-refe.info -o -f gauche-al-refe.info.gz; \
+	   then rm -rf gauche-al-refe.*; \
+	 fi; \
+	 if test -f gauche-al-refj.info -o -f gauche-al-refj.info.gz; \
+	   then rm -rf gauche-al-refj.*; \
+	 fi)
+
+texi : gauche-al-refe.texi gauche-al-refj.texi
+
+html : gauche-al-refe.html gauche-al-refj.html
+
+htmls : gauche-al-refe_toc.html gauche-al-refj_toc.html
+
+dvi : gauche-al-refe.dvi
+
+pdf : gauche-al-refe.pdf
+
+info : gauche-al-refe.info.gz gauche-al-refj.info.gz
+
+gauche-al-refe.html : gauche-al-refe.texi
+	texi2html -number gauche-al-refe.texi
+
+gauche-al-refe_toc.html : gauche-al-refe.texi
+	texi2html -split section -number gauche-al-refe.texi
+
+gauche-al-refe.dvi : gauche-al-refe.texi
+	texi2dvi gauche-al-refe.texi
+
+gauche-al-refe.pdf : gauche-al-refe.texi
+	texi2pdf gauche-al-refe.texi
+
+gauche-al-refe.info.gz : gauche-al-refe.texi
+	if test X$(MAKEINFO) != X -a X$(GZIP_PROGRAM) != X; then \
+	  $(MAKEINFO) --no-warn gauche-al-refe.texi; \
+	  rm -rf gauche-al-refe.info*.gz; \
+	  $(GZIP_PROGRAM) gauche-al-refe.info; \
+	fi
+
+gauche-al-refj.html : gauche-al-refj.texi
+	texi2html -number gauche-al-refj.texi
+
+gauche-al-refj_toc.html : gauche-al-refj.texi
+	texi2html -split section -number gauche-al-refj.texi
+
+gauche-al-refj.dvi : gauche-al-refj.texi
+	texi2dvi gauche-al-refj.texi
+
+gauche-al-refj.pdf : gauche-al-refj.texi
+	texi2pdf gauche-al-refj.texi
+
+gauche-al-refj.info.gz : gauche-al-refj.texi
+	if test X$(MAKEINFO) != X -a X$(GZIP_PROGRAM) != X; then \
+	  $(MAKEINFO) --no-warn gauche-al-refj.texi; \
+	  rm -rf gauche-al-refj.info*.gz; \
+	  $(GZIP_PROGRAM) gauche-al-refj.info ; \
+	fi
+
+clean:
+	rm -rf core *~ *.aux *.cl *.cls *.cp *.fn *.fns *.ky *.log *.md *.mds \
+	       *.pg *.toc *.tp *.tps *.vr *.vrs *.pdf *.dvi *.info* *.html
+
+distclean : clean
+	rm -rf $(GENERATED)
+
+maintainer-clean : clean
+	rm -f gauche-al-ref*.html gauche-al-refe.dvi Makefile $(GENERATED) 

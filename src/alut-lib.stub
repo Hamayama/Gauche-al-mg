@@ -1,0 +1,105 @@
+;;
+;; alut-lib.stub
+;;
+;;   Copyright (c) 2005 KOGURO, Naoki
+;;   All rights reserved.
+;;
+;;   Redistribution and use in source and binary forms, with or without 
+;;   modification, are permitted provided that the following conditions 
+;;   are met:
+;;
+;;   1. Redistributions of source code must retain the above copyright 
+;;      notice, this list of conditions and the following disclaimer.
+;;   2. Redistributions in binary form must reproduce the above copyright 
+;;      notice, this list of conditions and the following disclaimer in the 
+;;      documentation and/or other materials provided with the distribution.
+;;   3. Neither the name of the authors nor the names of its contributors 
+;;      may be used to endorse or promote products derived from this 
+;;      software without specific prior written permission.
+;;
+;;   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+;;   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+;;   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+;;   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+;;   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+;;   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+;;   TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+;;   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+;;   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+;;   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+;;   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+;;
+;; $Id$
+
+"
+ #include \"gauche-al.h\"
+"
+
+(include "gauche-al.types")
+
+;;=============================================================
+;; ALUT Functions
+;;
+
+(define-cproc alut-init (args)
+  "
+  int argc, i;
+  char **argv;
+  ScmObj ap;
+
+  argc = Scm_Length(args);
+  if (argc < 0) Scm_Error(\"list expected, but got %S\", args);
+  argv = SCM_NEW2(char **, argc * sizeof(char*));
+  i = 0;
+  SCM_FOR_EACH(ap, args) {
+    if (!SCM_STRINGP(SCM_CAR(ap))) {
+      Scm_Error(\"string expected, but got %S\", SCM_CAR(ap));
+    }
+    argv[i] = Scm_GetString(SCM_STRING(SCM_CAR(ap)));
+    i++;
+  }
+  alutInit(&argc, argv);
+  SCM_RETURN(Scm_MakeInteger(argc));
+  ")
+
+(define-cproc alut-exit ()
+  (return <void> "alutExit"))
+
+(define-cproc alut-load-wav-file (fname::<const-char*>)
+  "ALenum format;
+  void *data;
+  ALsizei size;
+  ALsizei freq;
+  ALboolean loop = AL_FALSE;
+#if MacOSX
+  alutLoadWAVFile((ALbyte*)fname, &format, &data, &size, &freq);
+#else
+  alutLoadWAVFile((ALbyte*)fname, &format, &data, &size, &freq, &loop);
+#endif
+  SCM_RETURN(Scm_MakePCMData(format, data, size, freq, loop));
+  ")
+
+(define-cproc alut-load-wav-memory (vec::<u8vector>)
+  "ALbyte *memory = (ALbyte*)SCM_U8VECTOR_ELEMENTS(vec);
+  ALenum format;
+  void *data;
+  ALsizei size;
+  ALsizei freq;
+  ALboolean loop;
+#if MacOSX
+  alutLoadWAVMemory(memory, &format, &data, &size, &freq);
+#else
+  alutLoadWAVMemory(memory, &format, &data, &size, &freq, &loop);
+#endif
+  SCM_RETURN(Scm_MakePCMData(format, data, size, freq, loop));
+  ")
+
+(define-cproc alut-unload-wav (pcmData::<pcm-data>)
+  "Scm_finalize_PCMData(SCM_OBJ(pcmData), NULL);
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+;; Local variables:
+;; mode: scheme
+;; end:
+

@@ -1,0 +1,486 @@
+\input texinfo  @c -*-texinfo-*-
+@comment %**start of header
+@setfilename gauche-al-refe.info
+@settitle Gauche-al : OpenAL binding for Gauche
+@dircategory The Algorithmic Language Scheme
+@direntry
+* Gauche-al Reference (en): (gauche-al-refe.info).	Gauche OpenAL binding
+@end direntry
+@comment %**end of header
+
+@c $Id$
+
+@c module and class index
+@defcodeindex md
+@defcodeindex cl
+
+@iftex
+@finalout
+@parskip 4pt plus 1pt
+@end iftex
+
+@titlepage
+@title Gauche-al : OpenAL binding for Gauche
+@author KOGURO, Naoki (naoki@@koguro.net)
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2005 KOGURO, Naoki(naoki@@koguro.net)
+
+@end titlepage
+
+@node Top, Introduction,  (dir),  (dir)
+
+@ifnottex
+This is a document for Gauche-al, OpenAL binding for Gauche.
+@end ifnottex
+
+@c ======================================================================
+@menu
+* Introduction::
+* Binding policy of Gauche-al::
+* AL API reference::
+* ALC API reference::
+* ALUT API reference::
+* Index::
+@end menu
+
+@node Introduction,  Binding policy of Gauche-al,  Top,  Top
+@chapter Introduction
+
+Gauche-al provides bindings to OpenAL API. It covers most functions in OpenAL 1.0.
+
+@c ======================================================================
+@node Binding policy of Gauche-al, AL API reference, Introduction, Top
+@chapter Binding policy of Gauche-al
+
+@menu
+* Data types::
+* Functions::
+* Unsupported features::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Data types, Functions, Binding policy of Gauche-al, Binding policy of Gauche-al
+@section Data types
+
+For OpenAL primitive data types, Gauche-al has mappings:
+@table @code
+@item ALboolean
+<boolean>
+@item ALbyte, ALubyte, ALshort, ALushort, ALint, ALuint, ALsizei, ALenum
+<integer>
+@item ALfloat, ALdouble
+<real>
+@end table
+
+For arrays, Gauche-al uses uniform vectors like below.
+@table @code
+@item ALbyte[]
+@code{<s8vector>}
+@item ALubyte[]
+@code{<u8vector>}
+@item ALshort[]
+@code{<s16vector>}
+@item ALushort[]
+@code{<u16vector>}
+@item ALint[]
+@code{<s32vector>}
+@item ALuint[]
+@code{<u32vector>}
+@item ALfloat[]
+@code{<f32vector>}
+@item ALdouble[]
+@code{<f64vector>}
+@end table
+
+And Gauche-al has @code{<pcm-data>} class for PCM data.
+
+@c ----------------------------------------------------------------------
+@node Functions, Unsupported features, Data types, Binding policy of Gauche-al
+@section Functions
+
+
+@c ----------------------------------------------------------------------
+@node Unsupported features, , Functions, Binding policy of Gauche-al
+@section Unsupported features
+
+Gauche-al does not support features below.
+@itemize @bullet
+@item
+OpenAL Extensions(alIsExtensionPresent, alGetProcAddress, etc.)
+@end itemize
+
+
+@c ======================================================================
+@node AL API reference, ALC API reference, Binding policy of Gauche-al,  Top
+@chapter AL API reference
+
+@menu
+* AL data types::
+* Buffer related functions::
+* Source related functions::
+* Listener related functions::
+* State related functions::
+* Others::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node AL data types,  Buffer related functions,  AL API reference,  AL API reference
+@section AL data types
+
+@deftp {Class} <pcm-data>
+This class represents PCM data. For making an instance, use @code{alut-load-wav} or @code{alut-load-wav-memory}.
+@end deftp
+
+@defivar <pcm-data> freq
+Frequency of PCM data.
+@end defivar
+
+@defivar <pcm-data> size
+Size in bytes of PCM data.
+@end defivar
+
+@defivar <pcm-data> data
+PCM data itself. The type is <u8vector>.
+@end defivar
+
+
+@c ----------------------------------------------------------------------
+@node Buffer related functions, Source related functions, AL data types, AL API reference
+@section Buffer related functions
+
+@defun al-gen-buffer
+This function generates a buffer.
+@end defun
+
+@defun al-gen-buffers n
+@end defun
+
+@defun al-delete-buffer buf
+@end defun
+
+@defun al-delete-buffers buffers
+@end defun
+
+@defun al-is-buffer? buffer
+@end defun
+
+@defun al-buffer-data buffer pcm-data
+@end defun
+
+@defun al-get-buffer buffer pname
+@table @code
+@item AL_FREQUENCY
+@item AL_BITS
+@item AL_CHANNELS
+@item AL_SIZE
+@item AL_DATA
+@end table
+@end defun
+
+@c ----------------------------------------------------------------------
+@node Source related functions, Listener related functions, Buffer related functions, AL API reference
+@section Source related functions
+
+@defun al-gen-source
+This function generates a source.
+@end defun
+
+@defun al-gen-sources n
+@end defun
+
+@defun al-delete-source source
+@end defun
+
+@defun al-delete-sources sources
+@end defun
+
+@defun al-is-source? source
+@end defun
+
+@defun al-source source pname value
+@table @code
+@item AL_PITCH
+@item AL_GAIN
+@item AL_MAX_DISTANCE
+@item AL_ROLLOFF_FACTOR
+@item AL_REFERENCE_DISTANCE
+@item AL_MIN_GAIN
+@item AL_MAX_GAIN
+@item AL_CONE_OUTER_GAIN
+@item AL_CONE_INNER_ANGLE
+@item AL_CONE_OUTER_ANGLE
+@item AL_POSITION
+@item AL_VELOCITY
+@item AL_DIRECTION
+@item AL_SOURCE_RELATIVE
+@item AL_LOOPING
+@item AL_BUFFER
+@end table 
+@end defun
+
+@defun al-get-source source pname
+@table @code
+@item AL_SOURCE_STATE
+The state of the source (@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND})
+@item AL_BUFFERS_QUEUED
+@item AL_BUFFERS_PROCESSED
+@end table
+@end defun
+
+@defun al-source-play source
+This function plays the source. If you specify @code{u32vector} to @var{source}, the function plays multiple sources simultaneously.
+@end defun
+
+@defun al-source-pause source
+This function pauses the source. If you specify @code{u32vector} to @var{source}, the function pauses multiple sources simultaneously.
+@end defun
+
+@defun al-source-stop source
+This function stops the source. If you specify @code{u32vector} to @var{source}, the function stops multiple sources simultaneously.
+@end defun
+
+@defun al-source-rewind source
+This function rewinds the source. If you specify @code{u32vector} to @var{source}, the function rewinds multiple sources simultaneously.
+@end defun
+
+@defun al-source-queue-buffers source buffers
+@end defun
+
+@defun al-source-unqueue-buffers source buffers
+@end defun
+
+@c ----------------------------------------------------------------------
+@node Listener related functions, State related functions, Source related functions, AL API reference
+@section Listener related functions
+
+@defun al-listener pname value
+@table @code
+@item AL_GAIN
+@item AL_POSITION
+@item AL_VELOCITY
+@item AL_ORIENTATION
+@end table 
+@end defun
+
+@defun al-get-listener pname
+@end defun
+
+@c ----------------------------------------------------------------------
+@node State related functions, Others, Listener related functions, AL API reference
+@section State related functions
+
+@defun al-get-integer pname
+@table @code
+@item AL_DISTANCE_MODEL
+The current distance model (@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}).
+@end table
+@end defun
+
+@defun al-get-integer! vector pname
+@table @code
+@item AL_DISTANCE_MODEL
+@end table
+@end defun
+
+@defun al-get-float pname
+@table @code
+@item AL_DOPPLER_FACTOR
+@item AL_DOPPLER_VELOCITY
+@end table
+@end defun
+
+@defun al-get-float! vector state
+@table @code
+@item AL_DOPPLER_FACTOR
+@item AL_DOPPLER_VELOCITY
+@end table
+@end defun
+
+@defun al-get-string pname
+@table @code
+@item AL_VENDOR
+@item AL_VERSION
+@item AL_RENDERER
+@item AL_EXTENSIONS
+@end table
+@end defun
+
+@defun al-distance-model value
+@end defun
+
+@defun al-doppler-factor value
+@end defun
+
+@defun al-doppler-velocity value
+@end defun
+
+@c ----------------------------------------------------------------------
+@node Others, , State related functions, AL API reference
+@section Others
+
+@defun al-get-error
+@table @code
+@item AL_NO_ERROR
+@item AL_INVALID_NAME
+@item AL_INVALID_ENUM
+@item AL_INVALID_VALUE
+@item AL_INVALID_OPERATION
+@item AL_OUT_OF_MEMORY
+@end table
+@end defun
+
+@c ======================================================================
+@node ALC API reference,  ALUT API reference,  AL API reference,  Top
+@chapter ALC API reference
+
+@menu
+* ALC data types::
+* ALC functions::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ALC data types, ALC functions, ALC API reference, ALC API reference
+@section ALC data types
+
+@deftp {Class} <alc-context>
+@end deftp
+
+@deftp {Class} <alc-device>
+@end deftp
+
+@c ----------------------------------------------------------------------
+@node ALC functions, , ALC data types, ALC API reference
+@section ALC functions
+
+@defun alc-create-context device attrlist
+This function makes a context. @var{attrlist} is a list (attribute, value, attribute, value, ...). You can specify below attributes.
+@table @code
+@item ALC_FREQUENCY
+@item ALC_REFRESH
+@item ALC_SYNC
+@end table
+@end defun
+
+@defun alc-make-context-current context
+@end defun
+
+@defun alc-process-context context
+@end defun
+
+@defun alc-suspend-context context
+@end defun
+
+@defun alc-destroy-context context
+@end defun
+
+@defun alc-get-error device
+@table @code
+@item ALC_NO_ERROR
+@item ALC_INVALID_DEVICE
+@item ALC_INVALID_CONTEXT
+@item ALC_INVALID_ENUM
+@item ALC_INVALID_VALUE
+@item ALC_OUT_OF_MEMORY
+@end table
+@end defun
+
+@defun alc-get-current-context
+@end defun
+
+@defun alc-open-device devicename
+@end defun
+
+@defun alc-close-device device
+@end defun
+
+@defun alc-get-string device pname
+@table @code
+@item ALC_DEFAULT_DEVICE_SPECIFIER
+@item ALC_DEVICE_SPECIFIER
+@item ALC_EXTENSIONS
+@end table
+@end defun
+
+@defun alc-get-integer device pname
+@table @code
+@item ALC_MAJOR_VERSION
+@item ALC_MINOR_VERSION
+@item ALC_ATTRIBUTES_SIZE
+@item ALC_ALL_ATTRIBUTES
+@end table
+@end defun
+
+@defun alc-get-integer! vector device pname
+@table @code
+@item ALC_MAJOR_VERSION
+@item ALC_MINOR_VERSION
+@item ALC_ATTRIBUTES_SIZE
+@item ALC_ALL_ATTRIBUTES
+@end table
+@end defun
+
+@c ======================================================================
+@node ALUT API reference,  Index,  ALC API reference,  Top
+@chapter ALUT API reference
+
+@menu
+* ALUT functions::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ALUT functions, , ALUT API reference, ALUT API reference
+@section ALUT functions
+
+@defun alut-init args
+This functions initializes OpenAL. @var{args} is a list of strings.
+@end defun
+
+@defun alut-exit
+@end defun
+
+@defun alut-load-wav-file filename
+This functions loads WAV file(@var{filename}) and returns <pcm-data> object.
+@end defun
+
+@defun alut-load-wav-memory wav-data
+This functions loads WAV data from memory and returns <pcm-data> object. A type of @var{wav-data} is <u8vector>.
+@end defun
+
+@defun alut-unload-wav pcm-data
+This functions unloads PCM data.
+@end defun
+
+@c ======================================================================
+@node Index,  , ALUT API reference,  Top
+@appendix Index
+
+@menu
+* Function Index::
+* Class Index::
+* Variable Index::
+@end menu
+
+@node Function Index, Class Index, Index, Index
+@appendixsec Function Index
+@printindex fn
+
+@node Class Index, Variable Index, Function Index, Index
+@appendixsec Class Index
+For readability, the surrounding @code{<} and @code{>} are stripped off.
+
+@printindex cl
+
+@node Variable Index,   , Class Index, Index
+@appendixsec Variable Index
+@printindex vr
+
+
+@contents
+@bye
+
+@c Local variables:
+@c outline-regexp: "@chap\\|@unnu\\|@\\(sub\\)*section"
+@c end:
+

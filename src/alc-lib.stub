@@ -1,0 +1,145 @@
+;;
+;; alc-lib.stub
+;;
+;;   Copyright (c) 2005 KOGURO, Naoki
+;;   All rights reserved.
+;;
+;;   Redistribution and use in source and binary forms, with or without 
+;;   modification, are permitted provided that the following conditions 
+;;   are met:
+;;
+;;   1. Redistributions of source code must retain the above copyright 
+;;      notice, this list of conditions and the following disclaimer.
+;;   2. Redistributions in binary form must reproduce the above copyright 
+;;      notice, this list of conditions and the following disclaimer in the 
+;;      documentation and/or other materials provided with the distribution.
+;;   3. Neither the name of the authors nor the names of its contributors 
+;;      may be used to endorse or promote products derived from this 
+;;      software without specific prior written permission.
+;;
+;;   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+;;   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+;;   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+;;   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+;;   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+;;   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+;;   TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+;;   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+;;   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+;;   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+;;   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+;;
+;; $Id$
+
+"
+ #include \"gauche-al.h\"
+"
+
+(include "gauche-al.types")
+
+;;=============================================================
+;; <alc-context> stuff
+;;
+
+(define-cclass <alc-context> :built-in
+  "ScmALCcontext*" "Scm_ALCcontextClass"
+  ()
+  ())
+
+;;=============================================================
+;; <alc-device> stuff
+;;
+
+(define-cclass <alc-device> :built-in
+  "ScmALCdevice*" "Scm_ALCdeviceClass"
+  ()
+  ())
+
+;;=============================================================
+;; ALC Functions
+;;
+
+(define-cproc alc-create-context (dev::<alc-device> attrlist::<s32vector>)
+  "ALCcontext *ctxt = alcCreateContext(dev, (ALint*)SCM_S32VECTOR_ELEMENTS(attrlist));
+  SCM_RETURN(Scm_MakeALCcontext(ctxt));
+  ")
+
+(define-cproc alc-make-context-current (alcHandle::<alc-context>)
+  (return <fixnum> "alcMakeContextCurrent"))
+
+(define-cproc alc-process-context (alcHandle::<alc-context>)
+  (return <void> "alcProcessContext"))
+
+(define-cproc alc-suspend-context (alcHandle::<alc-context>)
+  (return <void> "alcSuspendContext"))
+
+(define-cproc alc-destroy-context (param)
+  "void *ctxt;
+  if (!SCM_ALC_CONTEXT_P(param)) {
+      Scm_Error(\"<alc-context> required, but got %S\", param);
+  } 
+  ctxt = SCM_ALC_CONTEXT_DATA(param);
+  alcDestroyContext(ctxt);
+  SCM_ALC_CONTEXT_DATA(param) = NULL;
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc alc-get-error (device::<alc-device>)
+  (return <fixnum> "alcGetError"))
+
+(define-cproc alc-get-current-context ()
+  "void *ctxt = alcGetCurrentContext();
+  SCM_RETURN(Scm_MakeALCcontext(ctxt));
+  ")
+
+(define-cproc alc-open-device (tokstr::<const-char*>)
+  "ALCdevice *dev = alcOpenDevice((ALubyte*)tokstr);
+  SCM_RETURN(Scm_MakeALCdevice(dev));
+  ")
+
+(define-cproc alc-close-device (param) 
+  "if (!SCM_ALC_DEVICE_P(param)) {
+      Scm_Error(\"<alc-device> required, but got %S\", param);
+  }
+  alcCloseDevice(SCM_ALC_DEVICE_DATA(param));
+  SCM_ALC_DEVICE_DATA(param) = NULL;
+  SCM_RETURN(SCM_UNDEFINED);
+  ")
+
+(define-cproc alc-get-string (device::<alc-device> token::<fixnum>)
+  "const ALubyte *s = alcGetString(device, token);
+  if (s) {
+      SCM_RETURN(SCM_MAKE_STR_COPYING((const char*)s));
+  } else {
+      SCM_RETURN(SCM_FALSE);
+  }
+  ")
+
+(define-cproc alc-get-integer (device::<alc-device> token::<fixnum>)
+  "int vsize = Scm_ALCStateInfoSize(device, token);
+  if (vsize <= 0)
+    Scm_Error(\"you can't query state %x by alcGetIntegerv\", token);
+  if (vsize == 1) {
+    ALCint i;
+    alcGetIntegerv(device, (ALCenum)token, 1, &i);
+    SCM_RETURN(Scm_MakeInteger(i));
+  } else {
+    ScmS32Vector *v = SCM_S32VECTOR(Scm_MakeS32Vector(vsize, 0));
+    alcGetIntegerv(device, (ALCenum)token, vsize, (ALCint*)SCM_S32VECTOR_ELEMENTS(v));
+    SCM_RETURN(SCM_OBJ(v));
+  }")
+
+(define-cproc alc-get-integer! (vec device::<alc-device> token::<fixnum>)
+  "int vsize;
+  if (!SCM_S32VECTORP(vec)) Scm_Error(\"s32vector required, but got %S\", vec);
+  vsize = Scm_ALCStateInfoSize(device, token);
+  if (vsize != SCM_S32VECTOR_SIZE(vec))
+    Scm_Error(\"state %x needs a vector of size %d, but got %S\",
+               token, vsize, vec);
+  alcGetIntegerv(device, (ALCenum)token, vsize, (ALCint*)SCM_S32VECTOR_ELEMENTS(vec));
+  SCM_RETURN(SCM_OBJ(vec));")
+
+;; Local variables:
+;; mode: scheme
+;; end:
+

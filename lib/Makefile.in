@@ -1,0 +1,42 @@
+SHELL       = @SHELL@
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+libdir      = @libdir@
+VPATH       = $(srcdir)
+
+# These may be overridden by make invocators
+DESTDIR  =
+INSTALL  = @INSTALL@
+INSTALL_TYPE = @INSTALL_TYPE@
+
+# Set by configure
+GOSH     = @GOSH@
+GAUCHE_CONFIG = @GAUCHE_CONFIG@
+
+MODULE   = al
+
+SCMFILES  = al.scm
+
+CONFIG_GENERATED = Makefile
+
+SCM_INSTALL_DIR     = `$(GAUCHE_CONFIG) --$(INSTALL_TYPE)libdir`
+
+all : 
+
+check :
+
+install : all
+	for f in $(SCMFILES); do \
+	  $(INSTALL) -m 444 $$f $(SCM_INSTALL_DIR)/$$f; \
+	done
+
+clean :
+	rm -rf core *~ test.log 
+
+distclean : clean
+	rm -rf $(CONFIG_GENERATED)
+
+maintainer-clean : clean
+	rm -rf $(CONFIG_GENERATED) 
+

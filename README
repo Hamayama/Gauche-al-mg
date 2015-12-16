@@ -1,0 +1,14 @@
+This is Gauche-al, OpenAL binding for Gauche.
+
+Requirements
+------------
+- Gauche 0.8.5 or later
+- OpenAL 1.0 (http://www.openal.org/)
+If you use MacOSX 10.4, OpenAL is already installed.
+
+Install
+-------
+    % ./configure
+    % make
+    % make install
+

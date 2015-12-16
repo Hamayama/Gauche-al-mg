@@ -1,0 +1,64 @@
+;;
+;; gauche-al.types
+;;
+;;   Copyright (c) 2005 KOGURO, Naoki
+;;   All rights reserved.
+;;
+;;   Redistribution and use in source and binary forms, with or without 
+;;   modification, are permitted provided that the following conditions 
+;;   are met:
+;;
+;;   1. Redistributions of source code must retain the above copyright 
+;;      notice, this list of conditions and the following disclaimer.
+;;   2. Redistributions in binary form must reproduce the above copyright 
+;;      notice, this list of conditions and the following disclaimer in the 
+;;      documentation and/or other materials provided with the distribution.
+;;   3. Neither the name of the authors nor the names of its contributors 
+;;      may be used to endorse or promote products derived from this 
+;;      software without specific prior written permission.
+;;
+;;   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+;;   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+;;   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+;;   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+;;   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+;;   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+;;   TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+;;   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+;;   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+;;   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+;;   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+;;
+;; $Id$
+
+(define-type <const-char*> "const char *" #f 
+  "SCM_STRINGP" "CONST_CHAR_PTR")
+
+(define-type <uvector> "ScmUVector*" "uniform vector"
+  "SCM_UVECTORP" "SCM_UVECTOR")
+
+(define-type <u8vector> "ScmU8Vector*" "u8vector"
+  "SCM_U8VECTORP" "SCM_U8VECTOR")
+
+(define-type <s32vector> "ScmS32Vector*" "s32vector"
+  "SCM_S32VECTORP" "SCM_S32VECTOR")
+
+(define-type <u32vector> "ScmU32Vector*" "u32vector"
+  "SCM_U32VECTORP" "SCM_U32VECTOR")
+
+(define-type <f32vector> "ScmF32Vector*" "f32vector"
+  "SCM_F32VECTORP" "SCM_F32VECTOR")
+
+(define-type <pcm-data> "ScmPCMData*" #f
+  "SCM_PCM_DATA_P" "SCM_PCM_DATA")
+
+(define-type <alc-context> "ALCcontext*" #f
+  "SCM_ALC_CONTEXT_P" "SCM_ALC_CONTEXT_DATA")
+
+(define-type <alc-device> "ALCdevice*" #f
+  "SCM_ALC_DEVICE_P" "SCM_ALC_DEVICE_DATA")
+
+;; Local variables:
+;; mode: scheme
+;; end:
+

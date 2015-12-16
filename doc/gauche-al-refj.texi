@@ -1,0 +1,586 @@
+\input texinfo  @c -*-texinfo-*-
+@comment %**start of header
+@setfilename gauche-al-refj.info
+@settitle Gauche-al : OpenAL binding for Gauche
+@dircategory The Algorithmic Language Scheme
+@direntry
+* Gauche-al Reference (ja): (gauche-al-refj.info).	Gauche OpenAL binding
+@end direntry
+@comment %**end of header
+
+@c $Id$
+
+@c module and class index
+@defcodeindex md
+@defcodeindex cl
+
+@iftex
+@finalout
+@parskip 4pt plus 1pt
+@end iftex
+
+@titlepage
+@title Gauche-al : OpenAL binding for Gauche
+@author KOGURO, Naoki (naoki@@koguro.net)
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2005 KOGURO, Naoki(naoki@@koguro.net)
+
+@end titlepage
+
+@node Top, はじめに,  (dir),  (dir)
+
+@ifnottex
+本ドキュメントはGauche-al (Gacuhe用OpenALバインディング)のリファレンスマニュアルです。
+@end ifnottex
+
+@c ======================================================================
+@menu
+* はじめに::
+* Gauche-alのバインド方針::
+* AL APIリファレンス::
+* ALC APIリファレンス::
+* ALUT APIリファレンス::
+* 索引::
+@end menu
+
+@node はじめに,  Gauche-alのバインド方針,  Top,  Top
+@chapter はじめに
+
+Gauche-alとは3DオーディオAPIであるOpenAL API 1.0のGauche用拡張パッケージです。
+
+@c ======================================================================
+@node Gauche-alのバインド方針, AL APIリファレンス, はじめに, Top
+@chapter Gauche-alのバインド方針
+
+@menu
+* データ型について::
+* 関数について::
+* 未サポートの機能::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node データ型について, 関数について, Gauche-alのバインド方針, Gauche-alのバインド方針
+@section データ型について
+
+OpenALのプリミティブデータ型(ALboolean, ALintなど)は以下のようにGaucheのデータ型にマッピングしています。
+@table @code
+@item ALboolean
+<boolean>
+@item ALbyte, ALubyte, ALshort, ALushort, ALint, ALuint, ALsizei, ALenum
+<integer>
+@item ALfloat, ALdouble
+<real>
+@end table
+
+プリミティブデータ型の配列は以下のようにユニフォームベクタにマッピングしています。
+@table @code
+@item ALbyte[]
+@code{<s8vector>}
+@item ALubyte[]
+@code{<u8vector>}
+@item ALshort[]
+@code{<s16vector>}
+@item ALushort[]
+@code{<u16vector>}
+@item ALint[]
+@code{<s32vector>}
+@item ALuint[]
+@code{<u32vector>}
+@item ALfloat[]
+@code{<f32vector>}
+@item ALdouble[]
+@code{<f64vector>}
+@end table
+
+OpenALではPCMデータを扱うときにデータ本体、フォーマット、サイズ、周波数といった情報を別々扱っていますが、Gauche-alではこれらをまとめて@code{<pcm-data>}クラスで取り扱います。
+
+@c ----------------------------------------------------------------------
+@node 関数について, 未サポートの機能, データ型について, Gauche-alのバインド方針
+@section 関数について
+
+基本的にGaucheでの関数名はOpenALの関数名をすべて小文字にした上で単語間を"-"でつないでいます。さらに妥当性をテストする関数(<boolean>が返ってくるもの)については関数名の末尾に"?"を付加しています。
+@example
+alGenBuffer -> al-gen-buffer
+alIsBuffer -> al-is-buffer?
+@end example
+
+属性操作の関数について、OpenALではデータ型ごとに関数が分かれていますが、Gauche側の関数はそれらを1つにまとめています。ただし、OpenALの状態問い合わせの関数についてはGauche側の関数もデータ型ごとに分かれています。
+@example
+alSourcef, alSourcefv, alSourcei, ... -> al-source
+alGetInteger, alGetFloat -> al-get-integer, al-get-float
+@end example
+
+@c ----------------------------------------------------------------------
+@node 未サポートの機能, , 関数について, Gauche-alのバインド方針
+@section 未サポートの機能
+
+現状のGauche-alでは以下の機能はサポートしていません。
+@itemize @bullet
+@item
+OpenALの拡張機能(alIsExtensionPresentやalGetProcAddressといったもの)
+@end itemize
+
+
+@c ======================================================================
+@node AL APIリファレンス, ALC APIリファレンス,  Gauche-alのバインド方針,  Top
+@chapter AL APIリファレンス
+
+@menu
+* ALデータ型::
+* バッファに関連した関数::
+* ソースに関連した関数::
+* リスナに関連した関数::
+* OpenALの状態に関連した関数::
+* その他::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ALデータ型,  バッファに関連した関数,  AL APIリファレンス,  AL APIリファレンス
+@section ALデータ型
+
+@deftp {Class} <pcm-data>
+PCMデータを表現するクラスです。インスタンスの生成にはalut-load-wav-fileかalut-load-wav-memoryを使用します。
+@end deftp
+
+@defivar <pcm-data> freq
+PCMデータのサンプリング周波数を示します。
+@end defivar
+
+@defivar <pcm-data> size
+PCMデータのサイズ（バイト数）を示します。
+@end defivar
+
+@defivar <pcm-data> data
+PCMデータの内容を示します。データ内容は<u8vector>型で返されます。
+@end defivar
+
+
+@c ----------------------------------------------------------------------
+@node バッファに関連した関数, ソースに関連した関数, ALデータ型, AL APIリファレンス
+@section バッファに関連した関数
+
+@defun al-gen-buffer
+1個のバッファを生成します。
+@end defun
+
+@defun al-gen-buffers n
+@var{n}個のバッファを生成し、生成したバッファをu32vectorに格納して返します。バッファは32bitの整数値で表現されます。
+@end defun
+
+@defun al-delete-buffer buffer
+@var{buffer}で指定されたバッファを解放します。
+@end defun
+
+@defun al-delete-buffers buffers
+@var{buffers}で指定されたバッファをすべて解放します。@var{buffers}はu32vectorである必要があります。
+@end defun
+
+@defun al-is-buffer? buffer
+@var{buffer}で指定された整数値がバッファであるかどうかを判定します。バッファの場合は#tを返し、そうでないときは#fを返します。
+@end defun
+
+@defun al-buffer-data buffer pcm-data
+@var{buffer}で指定されたバッファに@var{pcm-data}で示されるPCMデータを設定します。
+@end defun
+
+@defun al-get-buffer buffer pname
+@var{buffer}で指定されたバッファの属性値を返します。属性@var{pname}は以下のものが指定可能です。
+@table @code
+@item AL_FREQUENCY
+バッファが持つPCMデータの周波数(Hz)を整数で返します。
+@item AL_BITS
+バッファが持つPCMデータのビット深度(bit depth)を整数値で返します。
+@item AL_CHANNELS
+バッファが持つPCMデータのチャンネル数を整数値で返します。
+@item AL_SIZE
+バッファが持つPCMデータのサイズ(バイト数)を整数値で返します。
+@item AL_DATA
+バッファが持つPCMデータが元々おかれていたアドレスを返します。
+@end table
+@end defun
+
+@c ----------------------------------------------------------------------
+@node ソースに関連した関数, リスナに関連した関数, バッファに関連した関数, AL APIリファレンス
+@section ソースに関連した関数
+
+@defun al-gen-source
+1個のソースを生成します。
+@end defun
+
+@defun al-gen-sources n
+@var{n}個のソースを生成し、生成したソースをu32vectorに格納して返します。ソースは32bitの整数値で表現されます。
+@end defun
+
+@defun al-delete-source source
+@var{source}で指定されたソースをを解放します。
+@end defun
+
+@defun al-delete-sources sources
+@var{sources}で指定されたソースをすべて解放します。@var{sources}はu32vectorである必要があります。
+@end defun
+
+@defun al-is-source? source
+@var{source}で指定された整数値がソースであるかどうかを判定します。ソースの場合は#tを返し、そうでないときは#fを返します。
+@end defun
+
+@defun al-source source pname value
+@var{source}で指定されたソースの属性値を設定します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item AL_PITCH
+@var{value}には0よりも大きい実数を指定してください。
+@item AL_GAIN
+@var{value}には0よりも大きい実数を指定してください。
+@item AL_MAX_DISTANCE
+@var{value}には0以上の実数を指定してください。
+@item AL_ROLLOFF_FACTOR
+@var{value}には0以上の実数を指定してください。
+@item AL_REFERENCE_DISTANCE
+@var{value}には0以上の実数を指定してください。
+@item AL_MIN_GAIN
+@var{value}には0以上1以下の実数を指定してください。
+@item AL_MAX_GAIN
+@var{value}には0以上1以下の実数を指定してください。
+@item AL_CONE_OUTER_GAIN
+@var{value}には0以上1以下の実数を指定してください。
+@item AL_CONE_INNER_ANGLE
+@var{value}には実数を指定してください。
+@item AL_CONE_OUTER_ANGLE
+@var{value}には実数を指定してください。
+@item AL_POSITION
+@var{value}には長さ3のs32vectorを指定してください。
+@item AL_VELOCITY
+@var{value}には長さ3のs32vectorを指定してください。
+@item AL_DIRECTION
+@var{value}には長さ3のs32vectorを指定してください。
+@item AL_SOURCE_RELATIVE
+@var{value}にはbooleanを指定してください。
+@item AL_LOOPING
+@var{value}にはbooleanを指定してください。
+@item AL_BUFFER
+@var{value}にはバッファを指す整数を指定してください。
+@end table 
+@end defun
+
+@defun al-get-source source pname
+@var{source}で指定されたソースの属性値を取得します。属性@var{pname}には@code{al-source}にある属性に加えて以下のものも指定可能です。
+@table @code
+@item AL_SOURCE_STATE
+ソースの現在の状態を取得します。状態は@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND}の4つをとります。
+@item AL_BUFFERS_QUEUED
+ソースにキューイングされているバッファの個数を整数値で返します。
+@item AL_BUFFERS_PROCESSED
+ソースにキューイングされているバッファの中で処理されたものの個数を整数値で返します。
+@end table
+@end defun
+
+@defun al-source-play source
+@var{source}で指定されたソースを再生します。@var{source}にu32vectorを指定することで、同時に複数のソースを再生することができます。
+@end defun
+
+@defun al-source-pause source
+@var{source}で指定されたソースの再生を一時中断します。@var{source}にu32vectorを指定することで、同時に複数のソースの中断を行うことができます。
+@end defun
+
+@defun al-source-stop source
+@var{source}で指定されたソースの再生を停止しソースの状態を@code{AL_STOPPED}に遷移させます。@var{source}にu32vectorを指定することで、同時に複数のソースの停止を行うことができます。
+@end defun
+
+@defun al-source-rewind source
+@var{source}で指定されたソースの再生を停止しソースの状態を@code{AL_INITIAL}に遷移させます。@var{source}にu32vectorを指定することで、同時に複数のソースの停止を行うことができます。
+@end defun
+
+@defun al-source-queue-buffers source buffers
+@var{source}で指定されたソースにバッファをキューイングします。@var{buffers}にはu32vectorを指定してください。
+@end defun
+
+@defun al-source-unqueue-buffers source buffers
+@var{source}で指定されたソースからキューイングされたバッファを削除します。@var{buffers}にはu32vectorを指定してください。
+@end defun
+
+@c ----------------------------------------------------------------------
+@node リスナに関連した関数, OpenALの状態に関連した関数, ソースに関連した関数, AL APIリファレンス
+@section リスナに関連した関数
+
+@defun al-listener pname value
+リスナの属性値を設定します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item AL_GAIN
+@var{value}には0よりも大きい実数を指定してください。
+@item AL_POSITION
+@var{value}には長さ3のs32vectorを指定してください。
+@item AL_VELOCITY
+@var{value}には長さ3のs32vectorを指定してください。
+@item AL_ORIENTATION
+@var{value}には長さ6のs32vectorを指定してください。
+@end table 
+@end defun
+
+@defun al-get-listener pname
+リスナの属性値を取得します。属性@var{pname}には@code{al-listener}にある属性が指定可能です。
+@end defun
+
+@c ----------------------------------------------------------------------
+@node OpenALの状態に関連した関数, その他, リスナに関連した関数, AL APIリファレンス
+@section OpenALの状態に関連した関数
+
+@defun al-get-integer pname
+OpenALの整数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item AL_DISTANCE_MODEL
+現在のdistance Modelを返します。返される値は@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}のいずれかです。
+@end table
+@end defun
+
+@defun al-get-integer! vector pname
+OpenALの整数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
+@table @code
+@item AL_DISTANCE_MODEL
+長さ1のs32vectorが必要です。
+@end table
+@end defun
+
+@defun al-get-float pname
+OpenALの単精度実数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item AL_DOPPLER_FACTOR
+現在のDoppler factorを返します。
+@item AL_DOPPLER_VELOCITY
+現在のDoppler velocityを返します。
+@end table
+@end defun
+
+@defun al-get-float! vector state
+OpenALの単精度実数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
+@table @code
+@item AL_DOPPLER_FACTOR
+長さ1のf32vectorが必要です。
+@item AL_DOPPLER_VELOCITY
+長さ1のf32vectorが必要です。
+@end table
+@end defun
+
+@defun al-get-string pname
+OpenALの文字列型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item AL_VENDOR
+@item AL_VERSION
+@item AL_RENDERER
+@item AL_EXTENSIONS
+@end table
+@end defun
+
+@defun al-distance-model value
+distance modelを設定します。@var{value}には@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}のいずれかを指定してください。
+@end defun
+
+@defun al-doppler-factor value
+Doppler factorを設定します。
+@end defun
+
+@defun al-doppler-velocity value
+Doppler velocityを設定します。
+@end defun
+
+@c ----------------------------------------------------------------------
+@node その他, , OpenALの状態に関連した関数, AL APIリファレンス
+@section その他
+
+@defun al-get-error
+@code{al-*}の関数実行時に発生したエラーを返し、エラーの状態を@code{AL_NO_ERROR}の状態にします。エラーには以下のものがあります。
+@table @code
+@item AL_NO_ERROR
+現在発生しているエラーがないことを示します。
+@item AL_INVALID_NAME
+引数として無効なバッファもしくはソースが指定されたことを示します。
+@item AL_INVALID_ENUM
+不正な属性が指定されたことを示します。
+@item AL_INVALID_VALUE
+不正な属性値が指定されたことを示します。
+@item AL_INVALID_OPERATION
+不正な操作が要求されたことを示します。
+@item AL_OUT_OF_MEMORY
+メモリの割り当てが行えなかったことを示します。
+@end table
+@end defun
+
+@c ======================================================================
+@node ALC APIリファレンス,  ALUT APIリファレンス,  AL APIリファレンス,  Top
+@chapter ALC APIリファレンス
+
+@menu
+* ALCデータ型::
+* ALC関数::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ALCデータ型, ALC関数, ALC APIリファレンス, ALC APIリファレンス
+@section ALCデータ型
+
+@deftp {Class} <alc-context>
+コンテキストを表現するクラスです。OpenALのALCdeviceに相当します。
+@end deftp
+
+@deftp {Class} <alc-device>
+デバイスを表現するクラスです。OpenALのALCdeviceに相当します。
+@end deftp
+
+@c ----------------------------------------------------------------------
+@node ALC関数, , ALCデータ型, ALC APIリファレンス
+@section ALC関数
+
+@defun alc-create-context device attrlist
+コンテキストを生成します。@var{attrlist}は属性と属性の値が交互に並んだリストであり、属性として以下のものが指定可能です。
+@table @code
+@item ALC_FREQUENCY
+@item ALC_REFRESH
+@item ALC_SYNC
+@end table
+@end defun
+
+@defun alc-make-context-current context
+@var{context}で指定されたコンテキストをカレントコンテキストに設定します。
+@end defun
+
+@defun alc-process-context context
+@var{context}で指定されたコンテキストの処理を開始します。
+@end defun
+
+@defun alc-suspend-context context
+@var{context}で指定されたコンテキストの処理を一時中断します。
+@end defun
+
+@defun alc-destroy-context context
+@var{context}で指定されたコンテキストを破棄します。
+@end defun
+
+@defun alc-get-error device
+@code{alc-*}の関数実行時に発生したエラーを返し、エラーの状態を@code{ALC_NO_ERROR}の状態にします。エラーには以下のものがあります。
+@table @code
+@item ALC_NO_ERROR
+現在発生しているエラーがないことを示します。
+@item ALC_INVALID_DEVICE
+無効なデバイスが指定されたことを示します。
+@item ALC_INVALID_CONTEXT
+引数として無効なコンテキストが指定されたことを示します。
+@item ALC_INVALID_ENUM
+不正な属性が指定されたことを示します。
+@item ALC_INVALID_VALUE
+不正な属性値が指定されたことを示します。
+@item ALC_OUT_OF_MEMORY
+メモリの割り当てが行えなかったことを示します。
+@end table
+@end defun
+
+@defun alc-get-current-context
+カレントコンテキストを返します。
+@end defun
+
+@defun alc-open-device devicename
+@var{devicename}で指定された名前のデバイスをオープンします。
+@end defun
+
+@defun alc-close-device device
+@var{device}で指定されたデバイスをクローズします。
+@end defun
+
+@defun alc-get-string device pname
+@var{device}で指定されたデバイスが持つ文字列型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item ALC_DEFAULT_DEVICE_SPECIFIER
+@item ALC_DEVICE_SPECIFIER
+@item ALC_EXTENSIONS
+@end table
+@end defun
+
+@defun alc-get-integer device pname
+@var{device}で指定されたデバイスが持つ整数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
+@table @code
+@item ALC_MAJOR_VERSION
+@item ALC_MINOR_VERSION
+@item ALC_ATTRIBUTES_SIZE
+@item ALC_ALL_ATTRIBUTES
+@end table
+@end defun
+
+@defun alc-get-integer! vector device pname
+@var{device}で指定されたデバイスが持つ整数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
+@table @code
+@item ALC_MAJOR_VERSION
+長さ1のs32vectorが必要です。
+@item ALC_MINOR_VERSION
+長さ1のs32vectorが必要です。
+@item ALC_ATTRIBUTES_SIZE
+長さ1のs32vectorが必要です。
+@item ALC_ALL_ATTRIBUTES
+長さが@code{ALC_ATTRIBUTES_SIZE}のs32vectorが必要です。
+@end table
+@end defun
+
+@c ======================================================================
+@node ALUT APIリファレンス,  索引,  ALC APIリファレンス,  Top
+@chapter ALUT APIリファレンス
+
+@menu
+* ALUT関数::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ALUT関数, , ALUT APIリファレンス, ALUT APIリファレンス
+@section ALUT関数
+
+@defun alut-init args
+OpenALを初期化します。@var{args}には文字列のリストを指定してください。
+@end defun
+
+@defun alut-exit
+OpenALを終了します。
+@end defun
+
+@defun alut-load-wav-file filename
+@var{filename}で指定されたWAVファイルを読み込み、PCMデータを作成します。
+@end defun
+
+@defun alut-load-wav-memory wav-data
+メモリ上に展開されているWAVファイルからPCMデータを作成します。@var{wav-data}はu8vectorを使用してください。
+@end defun
+
+@defun alut-unload-wav pcm-data
+PCMデータを解放します。
+@end defun
+
+@c ======================================================================
+@node 索引,   ,  ALUT APIリファレンス,  Top
+@appendix 索引
+@c NODE 索引
+
+@menu
+* 手続き索引::
+* クラス索引::
+* 変数索引::
+@end menu
+
+@node 手続き索引, クラス索引, 索引, 索引
+@appendixsec 手続き索引
+@printindex fn
+
+@node クラス索引, 変数索引, 手続き索引, 索引
+@appendixsec クラス索引
+
+For readability, the surrounding @code{<} and @code{>} are stripped off.
+
+@printindex cl
+
+@node 変数索引,   , クラス索引, 索引
+@appendixsec 変数索引
+@printindex vr
+
+
+@contents
+@bye
+
+@c Local variables:
+@c outline-regexp: "@chap\\|@unnu\\|@\\(sub\\)*section"
+@c end:
+

@@ -1,0 +1,49 @@
+SHELL       = @SHELL@
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+libdir      = @libdir@
+VPATH       = $(srcdir)
+
+# These may be overridden by make invocators
+DESTDIR  =
+INSTALL_TYPE = @INSTALL_TYPE@
+
+# Set by configure
+GOSH     = @GOSH@
+GAUCHE_CONFIG = @GAUCHE_CONFIG@
+
+MODULE   = magick
+
+CONFIG_GENERATED = Makefile config.cache config.log config.status \
+                   configure.lineno autom4te*.cache
+
+all :
+	cd src; $(MAKE) all
+
+check : all
+	#@rm -f test.log
+	#$(GOSH) -I./lib -I./src test.scm > test.log
+
+install : all
+	cd src; $(MAKE) install
+	cd lib; $(MAKE) install
+
+clean :
+	cd src; $(MAKE) clean
+	cd lib; $(MAKE) clean
+	cd doc; $(MAKE) clean
+	rm -rf core *~ test.log so_locations
+
+distclean : clean
+	cd src; $(MAKE) distclean
+	cd lib; $(MAKE) distclean
+	cd doc; $(MAKE) distclean
+	rm -rf $(CONFIG_GENERATED)
+
+maintainer-clean : clean
+	cd src; $(MAKE) maintainer-clean
+	cd lib; $(MAKE) maintainer-clean
+	cd doc; $(MAKE) maintainer-clean
+	rm -rf $(CONFIG_GENERATED) configure
+

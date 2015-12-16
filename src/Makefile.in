@@ -1,0 +1,77 @@
+SHELL       = @SHELL@
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+libdir      = @libdir@
+VPATH       = $(srcdir)
+
+# These may be overridden by make invocators
+DESTDIR  =
+OPTFLAGS = @OPTFLAGS@
+CC       = @CC@
+LIBS     = @AL_LIBS@ @LIBS@ 
+CFLAGS   = @DEFS@ @CFLAGS@ @AL_INCDIR@
+LDFLAGS  = @LDFLAGS@ 
+INSTALL  = @INSTALL@
+INSTALL_TYPE = @INSTALL_TYPE@
+
+# Set by configure
+GOSH     = @GOSH@
+GAUCHE_CONFIG = @GAUCHE_CONFIG@
+OBJEXT   = @OBJEXT@
+DSOEXT   = @SOEXT@
+
+MODULE   = al
+
+ARCHFILES = $(MODULE).$(DSOEXT)
+HEADERS   =
+
+TARGET    = $(ARCHFILES)
+OBJS      = $(MODULE)_head.$(OBJEXT) \
+            gauche-al.$(OBJEXT) \
+            al-lib.$(OBJEXT) \
+            alc-lib.$(OBJEXT) \
+            alut-lib.$(OBJEXT) \
+            $(MODULE)_tail.$(OBJEXT)
+GENERATED = al-lib.c alc-lib.c alut-lib.c \
+            $(MODULE)_head.c $(MODULE)_tail.c
+CONFIG_GENERATED = Makefile
+
+HEADER_INSTALL_DIR  = $(DESTDIR)`$(GAUCHE_CONFIG) --$(INSTALL_TYPE)incdir`
+ARCH_INSTALL_DIR    = $(DESTDIR)`$(GAUCHE_CONFIG) --$(INSTALL_TYPE)archdir`
+
+all : $(TARGET)
+
+.SUFFIXES: .o .stub
+
+.c.o:
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+.stub.c:
+	$(GOSH) genstub $<
+
+$(MODULE).$(DSOEXT) : $(OBJS)
+	$(CC) $(LDFLAGS) $(MODULE).$(DSOEXT) $(OBJS) @AL_LIBDIR@ $(LIBS) 
+
+$(MODULE)_head.c $(MODULE)_tail.c :
+	$(GAUCHE_CONFIG) --fixup-extension $(MODULE)
+
+install : all
+	if test ! -z "$(HEADERS)"; then \
+	  $(INSTALL) -d $(HEADER_INSTALL_DIR); \
+	  $(INSTALL) -m 444 $(HEADERS) $(HEADER_INSTALL_DIR); \
+	fi
+	if test ! -z "$(ARCHFILES)"; then \
+	  $(INSTALL) -d $(ARCH_INSTALL_DIR); \
+	  $(INSTALL) -m 555 $(ARCHFILES) $(ARCH_INSTALL_DIR); \
+	fi
+
+clean :
+	rm -rf core $(TARGET) $(OBJS) $(GENERATED) *~ test.log so_locations
+
+distclean : clean
+	rm -rf $(CONFIG_GENERATED)
+
+maintainer-clean : clean
+	rm -rf $(CONFIG_GENERATED)
+
