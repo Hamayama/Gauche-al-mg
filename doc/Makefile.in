@@ -48,11 +48,10 @@ info : gauche-al-refe.info.gz gauche-al-refj.info.gz
 
 gauche-al-refe.html : gauche-al-refe.texi
 #	texi2html -number gauche-al-refe.texi
-	$(MAKEINFO) --html --no-split --number-sections gauche-al-refe.texi
+	$(MAKEINFO) --html --no-split gauche-al-refe.texi
 
 gauche-al-refe_toc.html : gauche-al-refe.texi
-#	texi2html -split section -number gauche-al-refe.texi
-	$(MAKEINFO) --html --split=section --number-sections gauche-al-refe.texi
+	texi2html -split section -number gauche-al-refe.texi
 
 gauche-al-refe.dvi : gauche-al-refe.texi
 	texi2dvi gauche-al-refe.texi
@@ -69,11 +68,15 @@ gauche-al-refe.info.gz : gauche-al-refe.texi
 
 gauche-al-refj.html : gauche-al-refj.texi
 #	texi2html -number gauche-al-refj.texi
-	$(MAKEINFO) --html --no-split --number-sections gauche-al-refj.texi
+#	sed 's/^<body lang="en"/<body lang="ja"/' $@ > $@.t && mv $@.t $@
+	$(MAKEINFO) --html --no-split gauche-al-refj.texi
+	sed 's/^<html lang="en"/<html lang="ja"/' $@ > $@.t && mv $@.t $@
 
 gauche-al-refj_toc.html : gauche-al-refj.texi
-#	texi2html -split section -number gauche-al-refj.texi
-	$(MAKEINFO) --html --split=section --number-sections gauche-al-refj.texi
+	texi2html -split section -number gauche-al-refj.texi
+	for f in gauche-al-refj/gauche-al-refj*.html; do \
+	  sed 's/^<body lang="en"/<body lang="ja"/' $$f > $$f.t && mv $$f.t $$f; \
+	done
 
 gauche-al-refj.dvi : gauche-al-refj.texi
 	texi2dvi gauche-al-refj.texi
