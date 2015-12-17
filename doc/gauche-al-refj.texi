@@ -141,6 +141,7 @@ OpenALの拡張機能(alIsExtensionPresentやalGetProcAddressといったもの)
 @section ALデータ型
 
 @deftp {Class} <pcm-data>
+@clindex pcm-data
 PCMデータを表現するクラスです。インスタンスの生成にはalut-load-wav-fileかalut-load-wav-memoryを使用します。
 @end deftp
 
@@ -419,10 +420,12 @@ Doppler velocityを設定します。
 @section ALCデータ型
 
 @deftp {Class} <alc-context>
+@clindex alc-context
 コンテキストを表現するクラスです。OpenALのALCdeviceに相当します。
 @end deftp
 
 @deftp {Class} <alc-device>
+@clindex alc-device
 デバイスを表現するクラスです。OpenALのALCdeviceに相当します。
 @end deftp
 

@@ -48,11 +48,11 @@ info : gauche-al-refe.info.gz gauche-al-refj.info.gz
 
 gauche-al-refe.html : gauche-al-refe.texi
 #	texi2html -number gauche-al-refe.texi
-	makeinfo  --html --no-split gauche-al-refe.texi
+	$(MAKEINFO) --html --no-split --number-sections gauche-al-refe.texi
 
 gauche-al-refe_toc.html : gauche-al-refe.texi
 #	texi2html -split section -number gauche-al-refe.texi
-	makeinfo  --html --split=section gauche-al-refe.texi
+	$(MAKEINFO) --html --split=section --number-sections gauche-al-refe.texi
 
 gauche-al-refe.dvi : gauche-al-refe.texi
 	texi2dvi gauche-al-refe.texi
@@ -69,11 +69,11 @@ gauche-al-refe.info.gz : gauche-al-refe.texi
 
 gauche-al-refj.html : gauche-al-refj.texi
 #	texi2html -number gauche-al-refj.texi
-	makeinfo  --html --no-split gauche-al-refj.texi
+	$(MAKEINFO) --html --no-split --number-sections gauche-al-refj.texi
 
 gauche-al-refj_toc.html : gauche-al-refj.texi
 #	texi2html -split section -number gauche-al-refj.texi
-	makeinfo  --html --split=section gauche-al-refj.texi
+	$(MAKEINFO) --html --split=section --number-sections gauche-al-refj.texi
 
 gauche-al-refj.dvi : gauche-al-refj.texi
 	texi2dvi gauche-al-refj.texi
