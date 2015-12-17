@@ -34,6 +34,8 @@ GAUCHE_PKGARCHDIR = "$(DESTDIR)@GAUCHE_PKGARCHDIR@"
 
 all :
 	cd src; $(MAKE) all
+	cd lib; $(MAKE) all
+	cd doc; $(MAKE) all
 
 check : all
 	@rm -f test.log
@@ -67,5 +69,5 @@ maintainer-clean : clean
 	cd src; $(MAKE) maintainer-clean
 	cd lib; $(MAKE) maintainer-clean
 	cd doc; $(MAKE) maintainer-clean
-	rm -rf $(CONFIG_GENERATED) configure VERSION
+	rm -rf $(CONFIG_GENERATED) configure VERSION DIST_EXCLUDE_X
 

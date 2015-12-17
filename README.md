@@ -23,9 +23,12 @@
    ```
    で作成したものをベースにして書き換えた。
 
-2. html 生成の変更  
-   texi2html が MinGW になかったので、makeinfo --html に変更。
-   - doc/Makefile.in
+2. ドキュメントファイル修正等
+   - texi2html が MinGW になかったので、makeinfo --html に変更
+     - doc/Makefile.in
+   - ドキュメントファイルのインデックス追加
+     - doc/gauche-al-refe.texi
+     - doc/gauche-al-refj.texi
 
 3. 重複行の削除
    - lib/al.scm
@@ -100,7 +103,7 @@
      make
      make install
    ```
-   (注意) LDFLAGSの指定をしないと、Gaucheの終了時に  
+   (注意) 上記の LDFLAGS の指定をしないと、Gaucheの終了時に  
    「This application has requested the Runtime to terminate it in an unusual way.  
     Please contact the application's support team for more information.」  
    というエラーが発生します。(原因は不明)
@@ -192,6 +195,7 @@
 - 2015-12-17  v1.0-mg0002 ドキュメントファイル修正等
 - 2015-12-17  v1.0-mg0003 DISTを追加し忘れていたので追加
 - 2015-12-17  v1.0-mg0004 doc/Makefile.in 修正
+- 2015-12-17  v1.0-mg0005 Makefile.in 修正
 
 
 (2015-12-17)
