@@ -71,7 +71,7 @@
    また、  
    C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\OpenAL32.lib を、  
    C:\MinGW\lib に libopenal32.dll.a とリネームしてコピーします。  
-   (注意) リネームしないと、(7)のコンパイルで libalut-0.dll の生成に失敗します。
+   (注意) リネームしないと、7. の freealut のコンパイルで libalut-0.dll の生成に失敗します。
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -198,4 +198,4 @@
 - 2015-12-17  v1.0-mg0005 Makefile.in 修正
 
 
-(2015-12-17)
+(2015-12-18)
