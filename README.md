@@ -42,6 +42,10 @@
    - src/alc-lib.stub
    - src/alut-lib.stub
 
+6. Makefile修正  
+   コンパイル時に CFLAGS の内容を反映するようにした。
+   - src/Makefile.in
+
 
 ## インストール方法
 - MinGW環境でのインストール手順を、以下に示します。
@@ -196,6 +200,7 @@
 - 2015-12-17  v1.0-mg0003 DISTを追加し忘れていたので追加
 - 2015-12-17  v1.0-mg0004 doc/Makefile.in 修正
 - 2015-12-17  v1.0-mg0005 Makefile.in 修正
+- 2015-12-20  v1.0-mg0005 src/Makefile.in 修正
 
 
-(2015-12-19)
+(2015-12-20)
