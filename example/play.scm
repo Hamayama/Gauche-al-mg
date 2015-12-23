@@ -24,5 +24,7 @@
 (do ()
     ((eq? (al-get-source src AL_SOURCE_STATE) AL_STOPPED))
   (sys-sleep 1))
+
+(sys-sleep 1) ; to avoid noise
 (alut-exit)
 

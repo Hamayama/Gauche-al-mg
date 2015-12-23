@@ -161,9 +161,11 @@
 
 
 ## その他 問題点等
-1. 音声ファイルの再生終了時にノイズが出ます。  
-   以下のページの方法で回避できるかもしれない(未確認)。  
-   http://gamedev.stackexchange.com/questions/71571/how-do-i-prevent-clicking-at-the-end-of-each-sound-play-in-openal
+1. 音声ファイルの再生終了時にノイズが出る。  
+   以下のページの方法で回避できるかもしれない。  
+   http://gamedev.stackexchange.com/questions/71571/how-do-i-prevent-clicking-at-the-end-of-each-sound-play-in-openal  
+   → 今回は、関係なかった。  
+   → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
 
 
 ## その他 ノウハウ等
@@ -201,6 +203,7 @@
 - 2015-12-17  v1.0-mg0004 doc/Makefile.in 修正
 - 2015-12-17  v1.0-mg0005 Makefile.in 修正
 - 2015-12-20  v1.0-mg0005 src/Makefile.in 修正
+- 2015-12-24  v1.0-mg0006 サンプルに再生終了時のノイズ対策を追加。また、MML音楽演奏サンプル追加
 
 
-(2015-12-20)
+(2015-12-24)
