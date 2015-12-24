@@ -44,11 +44,11 @@ uninstall :
 	$(INSTALL) -U $(GAUCHE_PKGLIBDIR) $(SCMFILES)
 
 clean :
-	rm -rf core *~ test.log 
+	rm -rf core *~
 
 distclean : clean
 	rm -rf $(CONFIG_GENERATED)
 
 maintainer-clean : clean
-	rm -rf $(CONFIG_GENERATED) 
+	rm -rf $(CONFIG_GENERATED)
 

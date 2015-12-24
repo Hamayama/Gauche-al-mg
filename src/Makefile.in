@@ -35,8 +35,7 @@ ARCHFILES = al.$(SOEXT)
 HEADERS   =
 
 TARGET    = $(ARCHFILES)
-GENERATED = al-lib.c alc-lib.c alut-lib.c \
-            $(MODULE)_head.c $(MODULE)_tail.c
+GENERATED = $(MODULE)_head.c $(MODULE)_tail.c
 CONFIG_GENERATED = Makefile
 
 GAUCHE_PKGINCDIR  = "$(DESTDIR)@GAUCHE_PKGINCDIR@"
@@ -71,7 +70,7 @@ uninstall :
 
 clean :
 	$(GAUCHE_PACKAGE) compile --clean al $(al_SRCS)
-	rm -rf core $(TARGET) $(GENERATED) *~ test.log so_locations
+	rm -rf core $(TARGET) $(GENERATED) *~ so_locations
 
 distclean : clean
 	rm -rf $(CONFIG_GENERATED)
