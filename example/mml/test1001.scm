@@ -22,10 +22,13 @@
 
 ;; MML文字列を読み込んでWAVデータに変換
 (print "mml->wav")
-(set! pcm-raw (mml->pcm
-  "!c0 @500 o4 >cc gg aa g&r ff  ee   de32d32c32d16.e16 c2 \
-   !c1 @500 o3 c>c ec fc ec  d<b >c<a fg                c2 "
-  ))
+(set! pcm-raw (mml->pcm (string-append
+  "!c0 @500 o4 "
+  "  d8b8a8g8d2 | d8b8a8g8e2      | e8>c8<b8a8f+2       | >d8d8c8<a8b2  "
+  "  d8b8a8g8d2 | d8b8a8g8e2      | e8>c8<b8a8>d8d8d8d8 | e8d8c8<a8g>d< "
+  "  b8b8bb8b8b | b8>d8<g8.a16b2> | c8c8c8c8c8<b8b8b8   | b8a8a8g8a>d<  "
+  "  b8b8bb8b8b | b8>d8<g8.a16b2> | c8c8c8c8c8<b8b8b8   | >d8d8c8<a8g2  "
+  )))
 (set! wav-data (make-u8vector (+ (* (s16vector-length pcm-raw) 2) (* 11 4))))
 (let1 out (open-output-uvector wav-data)
   (unwind-protect
