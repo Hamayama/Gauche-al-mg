@@ -17,7 +17,7 @@
 (define src #f) ; Gauche-alのソース情報
 
 ;; 初期化
-(set! mml-sample-rate 22050)
+(set! mml-sample-rate 44100)
 (alut-init '())
 
 ;; MML文字列を読み込んでWAVデータに変換
