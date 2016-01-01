@@ -46,16 +46,19 @@
    コンパイル時に CFLAGS の内容を反映するようにした。
    - src/Makefile.in
 
-7. MSYS2/MinGW-w64(64bit)環境でのビルドに暫定対応(実験中)
-   - Makefile.in
-   - config.guess
-   - config.sub
-   - install-sh
-   - doc/gauche-al-refj.texi
-   - doc/Makefile.in
+7. MSYS2/MinGW-w64(64bit)環境でのビルドに暫定対応(実験中)  
+   - automake v1.15 の使用
+     - config.guess
+     - config.sub
+     - install-sh
+   - libalut-0.dll のコピー処理追加
+     - Makefile.in
+   - 日本語マニュアルの文字コード変更 (EUC → UTF-8) とヘッダ情報の追加
+     - doc/gauche-al-refj.texi
+     - doc/Makefile.in
 
 ## インストール方法
-- MinGW環境でのインストール手順を、以下に示します。
+- MinGW (32bit) 環境でのインストール手順を、以下に示します。
 
 1. Gaucheのインストール  
    事前に Gauche がインストールされている必要があります。  
@@ -63,8 +66,8 @@
    http://practical-scheme.net/gauche/download-j.html  
    (すでにインストール済みであれば本手順は不要です)
 
-2. MinGWのインストール  
-   事前に MinGW がインストールされている必要があります。  
+2. MinGW (32bit) のインストール  
+   事前に MinGW (32bit) がインストールされている必要があります。  
    以下のページを参考に、インストールを実施ください。  
    https://gist.github.com/Hamayama/362f2eb14ae26d971ca4  
    (すでにインストール済みであれば本手順は不要です)
@@ -145,7 +148,7 @@
    ```
    Gaucheのライブラリフォルダに生成したファイルがコピーされます。  
    (注意) 環境によっては make install を実行すると、  
-   「*** SYSTEM-ERROR: mkstemp failed」というエラーが発生します。  
+   「*** ERROR: mkstemp failed」というエラーが発生します。  
    このエラーは c:\Program Files (x86) のフォルダに 書き込み権限がないとき等に発生します。  
    その場合は、コマンドプロンプトを開くときに、  
    コマンドプロンプトのアイコンを右クリックして、「管理者として実行」を選択してください。  
@@ -173,6 +176,9 @@
    http://gamedev.stackexchange.com/questions/71571/how-do-i-prevent-clicking-at-the-end-of-each-sound-play-in-openal  
    → 今回は、関係なかった。  
    → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
+
+2. freealut の deprecated (非推奨) のAPIを使用しているため、  
+   Gauche-al のコンパイル時に warning が出ます。
 
 
 ## その他 ノウハウ等
@@ -205,7 +211,7 @@
   - オリジナルと同様とします
 
 ## 履歴
-- 2015-12-17  v1.0-mg0001 MinGW対応
+- 2015-12-17  v1.0-mg0001 MinGW (32bit) 対応
 - 2015-12-17  v1.0-mg0002 ドキュメントファイル修正等
 - 2015-12-17  v1.0-mg0003 DISTを追加し忘れていたので追加
 - 2015-12-17  v1.0-mg0004 doc/Makefile.in 修正
