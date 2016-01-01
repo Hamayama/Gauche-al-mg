@@ -46,6 +46,13 @@
    コンパイル時に CFLAGS の内容を反映するようにした。
    - src/Makefile.in
 
+7. MSYS2/MinGW-w64(64bit)環境でのビルドに暫定対応(実験中)
+   - Makefile.in
+   - config.guess
+   - config.sub
+   - install-sh
+   - doc/gauche-al-refj.texi
+   - doc/Makefile.in
 
 ## インストール方法
 - MinGW環境でのインストール手順を、以下に示します。
@@ -190,6 +197,7 @@
   - Windows 8.1 (64bit)
 - 環境
   - MinGW (32bit) v4.8.1
+  - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
 - 言語
   - Gauche v0.9.4
   - Gauche v0.9.5_pre1
@@ -205,6 +213,7 @@
 - 2015-12-20  v1.0-mg0005 src/Makefile.in 修正
 - 2015-12-24  v1.0-mg0006 サンプルに再生終了時のノイズ対策を追加。また、MML音楽演奏サンプル追加
 - 2015-12-24  v1.0-mg0007 lib/Makefile.in と src/Makefile.in を修正
+- 2016-1-1    v1.0-mg0008 変更点 7. 対応
 
 
-(2015-12-24)
+(2016-1-1)

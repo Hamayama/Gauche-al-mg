@@ -1,3 +1,5 @@
+@documentlanguage ja
+@documentencoding UTF-8
 \input texinfo  @c -*-texinfo-*-
 @comment %**start of header
 @setfilename gauche-al-refj.info
@@ -29,42 +31,42 @@ Copyright @copyright{} 2005 KOGURO, Naoki(naoki@@koguro.net)
 
 @end titlepage
 
-@node Top, �Ϥ����,  (dir),  (dir)
+@node Top, はじめに,  (dir),  (dir)
 
 @ifnottex
-�ܥɥ�����Ȥ�Gauche-al (Gacuhe��OpenAL�Х���ǥ���)�Υ�ե���󥹥ޥ˥奢��Ǥ���
+本ドキュメントはGauche-al (Gacuhe用OpenALバインディング)のリファレンスマニュアルです。
 @end ifnottex
 
 @c ======================================================================
 @menu
-* �Ϥ����::
-* Gauche-al�ΥХ��������::
-* AL API��ե����::
-* ALC API��ե����::
-* ALUT API��ե����::
-* ����::
+* はじめに::
+* Gauche-alのバインド方針::
+* AL APIリファレンス::
+* ALC APIリファレンス::
+* ALUT APIリファレンス::
+* 索引::
 @end menu
 
-@node �Ϥ����,  Gauche-al�ΥХ��������,  Top,  Top
-@chapter �Ϥ����
+@node はじめに,  Gauche-alのバインド方針,  Top,  Top
+@chapter はじめに
 
-Gauche-al�Ȥ�3D�����ǥ���API�Ǥ���OpenAL API 1.0��Gauche�ѳ�ĥ�ѥå������Ǥ���
+Gauche-alとは3DオーディオAPIであるOpenAL API 1.0のGauche用拡張パッケージです。
 
 @c ======================================================================
-@node Gauche-al�ΥХ��������, AL API��ե����, �Ϥ����, Top
-@chapter Gauche-al�ΥХ��������
+@node Gauche-alのバインド方針, AL APIリファレンス, はじめに, Top
+@chapter Gauche-alのバインド方針
 
 @menu
-* �ǡ������ˤĤ���::
-* �ؿ��ˤĤ���::
-* ̤���ݡ��Ȥε�ǽ::
+* データ型について::
+* 関数について::
+* 未サポートの機能::
 @end menu
 
 @c ----------------------------------------------------------------------
-@node �ǡ������ˤĤ���, �ؿ��ˤĤ���, Gauche-al�ΥХ��������, Gauche-al�ΥХ��������
-@section �ǡ������ˤĤ���
+@node データ型について, 関数について, Gauche-alのバインド方針, Gauche-alのバインド方針
+@section データ型について
 
-OpenAL�Υץ�ߥƥ��֥ǡ�����(ALboolean, ALint�ʤ�)�ϰʲ��Τ褦��Gauche�Υǡ������˥ޥåԥ󥰤��Ƥ��ޤ���
+OpenALのプリミティブデータ型(ALboolean, ALintなど)は以下のようにGaucheのデータ型にマッピングしています。
 @table @code
 @item ALboolean
 <boolean>
@@ -74,7 +76,7 @@ OpenAL�Υץ�ߥƥ��֥ǡ�����(ALboolean, ALint�ʤ�)�ϰʲ��Τ褦��Gauche�Υǡ�����
 <real>
 @end table
 
-�ץ�ߥƥ��֥ǡ�����������ϰʲ��Τ褦�˥�˥ե�����٥����˥ޥåԥ󥰤��Ƥ��ޤ���
+プリミティブデータ型の配列は以下のようにユニフォームベクタにマッピングしています。
 @table @code
 @item ALbyte[]
 @code{<s8vector>}
@@ -94,276 +96,276 @@ OpenAL�Υץ�ߥƥ��֥ǡ�����(ALboolean, ALint�ʤ�)�ϰʲ��Τ褦��Gauche�Υǡ�����
 @code{<f64vector>}
 @end table
 
-OpenAL�Ǥ�PCM�ǡ����򰷤��Ȥ��˥ǡ������Ρ��ե����ޥåȡ������������ȿ��Ȥ��ä�������̡����äƤ��ޤ�����Gauche-al�ǤϤ�����ޤȤ��@code{<pcm-data>}���饹�Ǽ�갷���ޤ���
+OpenALではPCMデータを扱うときにデータ本体、フォーマット、サイズ、周波数といった情報を別々扱っていますが、Gauche-alではこれらをまとめて@code{<pcm-data>}クラスで取り扱います。
 
 @c ----------------------------------------------------------------------
-@node �ؿ��ˤĤ���, ̤���ݡ��Ȥε�ǽ, �ǡ������ˤĤ���, Gauche-al�ΥХ��������
-@section �ؿ��ˤĤ���
+@node 関数について, 未サポートの機能, データ型について, Gauche-alのバインド方針
+@section 関数について
 
-����Ū��Gauche�Ǥδؿ�̾��OpenAL�δؿ�̾�򤹤٤ƾ�ʸ���ˤ������ñ��֤�"-"�ǤĤʤ��Ǥ��ޤ����������������ƥ��Ȥ���ؿ�(<boolean>���֤äƤ�����)�ˤĤ��Ƥϴؿ�̾��������"?"���ղä��Ƥ��ޤ���
+基本的にGaucheでの関数名はOpenALの関数名をすべて小文字にした上で単語間を"-"でつないでいます。さらに妥当性をテストする関数(<boolean>が返ってくるもの)については関数名の末尾に"?"を付加しています。
 @example
 alGenBuffer -> al-gen-buffer
 alIsBuffer -> al-is-buffer?
 @end example
 
-°�����δؿ��ˤĤ��ơ�OpenAL�Ǥϥǡ��������Ȥ˴ؿ���ʬ����Ƥ��ޤ�����Gauche¦�δؿ��Ϥ�����1�ĤˤޤȤ�Ƥ��ޤ�����������OpenAL�ξ����䤤��碌�δؿ��ˤĤ��Ƥ�Gauche¦�δؿ���ǡ��������Ȥ�ʬ����Ƥ��ޤ���
+属性操作の関数について、OpenALではデータ型ごとに関数が分かれていますが、Gauche側の関数はそれらを1つにまとめています。ただし、OpenALの状態問い合わせの関数についてはGauche側の関数もデータ型ごとに分かれています。
 @example
 alSourcef, alSourcefv, alSourcei, ... -> al-source
 alGetInteger, alGetFloat -> al-get-integer, al-get-float
 @end example
 
 @c ----------------------------------------------------------------------
-@node ̤���ݡ��Ȥε�ǽ, , �ؿ��ˤĤ���, Gauche-al�ΥХ��������
-@section ̤���ݡ��Ȥε�ǽ
+@node 未サポートの機能, , 関数について, Gauche-alのバインド方針
+@section 未サポートの機能
 
-������Gauche-al�Ǥϰʲ��ε�ǽ�ϥ��ݡ��Ȥ��Ƥ��ޤ���
+現状のGauche-alでは以下の機能はサポートしていません。
 @itemize @bullet
 @item
-OpenAL�γ�ĥ��ǽ(alIsExtensionPresent��alGetProcAddress�Ȥ��ä����)
+OpenALの拡張機能(alIsExtensionPresentやalGetProcAddressといったもの)
 @end itemize
 
 
 @c ======================================================================
-@node AL API��ե����, ALC API��ե����,  Gauche-al�ΥХ��������,  Top
-@chapter AL API��ե����
+@node AL APIリファレンス, ALC APIリファレンス,  Gauche-alのバインド方針,  Top
+@chapter AL APIリファレンス
 
 @menu
-* AL�ǡ�����::
-* �Хåե��˴�Ϣ�����ؿ�::
-* �������˴�Ϣ�����ؿ�::
-* �ꥹ�ʤ˴�Ϣ�����ؿ�::
-* OpenAL�ξ��֤˴�Ϣ�����ؿ�::
-* ����¾::
+* ALデータ型::
+* バッファに関連した関数::
+* ソースに関連した関数::
+* リスナに関連した関数::
+* OpenALの状態に関連した関数::
+* その他::
 @end menu
 
 @c ----------------------------------------------------------------------
-@node AL�ǡ�����,  �Хåե��˴�Ϣ�����ؿ�,  AL API��ե����,  AL API��ե����
-@section AL�ǡ�����
+@node ALデータ型,  バッファに関連した関数,  AL APIリファレンス,  AL APIリファレンス
+@section ALデータ型
 
 @deftp {Class} <pcm-data>
 @clindex pcm-data
-PCM�ǡ�����ɽ�����륯�饹�Ǥ������󥹥��󥹤������ˤ�alut-load-wav-file��alut-load-wav-memory����Ѥ��ޤ���
+PCMデータを表現するクラスです。インスタンスの生成にはalut-load-wav-fileかalut-load-wav-memoryを使用します。
 @end deftp
 
 @defivar <pcm-data> freq
-PCM�ǡ����Υ���ץ�󥰼��ȿ��򼨤��ޤ���
+PCMデータのサンプリング周波数を示します。
 @end defivar
 
 @defivar <pcm-data> size
-PCM�ǡ����Υ������ʥХ��ȿ��ˤ򼨤��ޤ���
+PCMデータのサイズ（バイト数）を示します。
 @end defivar
 
 @defivar <pcm-data> data
-PCM�ǡ��������Ƥ򼨤��ޤ����ǡ������Ƥ�<u8vector>�����֤���ޤ���
+PCMデータの内容を示します。データ内容は<u8vector>型で返されます。
 @end defivar
 
 
 @c ----------------------------------------------------------------------
-@node �Хåե��˴�Ϣ�����ؿ�, �������˴�Ϣ�����ؿ�, AL�ǡ�����, AL API��ե����
-@section �Хåե��˴�Ϣ�����ؿ�
+@node バッファに関連した関数, ソースに関連した関数, ALデータ型, AL APIリファレンス
+@section バッファに関連した関数
 
 @defun al-gen-buffer
-1�ĤΥХåե����������ޤ���
+1個のバッファを生成します。
 @end defun
 
 @defun al-gen-buffers n
-@var{n}�ĤΥХåե��������������������Хåե���u32vector�˳�Ǽ�����֤��ޤ����Хåե���32bit�������ͤ�ɽ������ޤ���
+@var{n}個のバッファを生成し、生成したバッファをu32vectorに格納して返します。バッファは32bitの整数値で表現されます。
 @end defun
 
 @defun al-delete-buffer buffer
-@var{buffer}�ǻ��ꤵ�줿�Хåե���������ޤ���
+@var{buffer}で指定されたバッファを解放します。
 @end defun
 
 @defun al-delete-buffers buffers
-@var{buffers}�ǻ��ꤵ�줿�Хåե��򤹤٤Ʋ������ޤ���@var{buffers}��u32vector�Ǥ���ɬ�פ�����ޤ���
+@var{buffers}で指定されたバッファをすべて解放します。@var{buffers}はu32vectorである必要があります。
 @end defun
 
 @defun al-is-buffer? buffer
-@var{buffer}�ǻ��ꤵ�줿�����ͤ��Хåե��Ǥ��뤫�ɤ�����Ƚ�ꤷ�ޤ����Хåե��ξ���#t���֤��������Ǥʤ��Ȥ���#f���֤��ޤ���
+@var{buffer}で指定された整数値がバッファであるかどうかを判定します。バッファの場合は#tを返し、そうでないときは#fを返します。
 @end defun
 
 @defun al-buffer-data buffer pcm-data
-@var{buffer}�ǻ��ꤵ�줿�Хåե���@var{pcm-data}�Ǽ������PCM�ǡ��������ꤷ�ޤ���
+@var{buffer}で指定されたバッファに@var{pcm-data}で示されるPCMデータを設定します。
 @end defun
 
 @defun al-get-buffer buffer pname
-@var{buffer}�ǻ��ꤵ�줿�Хåե���°���ͤ��֤��ޤ���°��@var{pname}�ϰʲ��Τ�Τ������ǽ�Ǥ���
+@var{buffer}で指定されたバッファの属性値を返します。属性@var{pname}は以下のものが指定可能です。
 @table @code
 @item AL_FREQUENCY
-�Хåե�������PCM�ǡ����μ��ȿ�(Hz)���������֤��ޤ���
+バッファが持つPCMデータの周波数(Hz)を整数で返します。
 @item AL_BITS
-�Хåե�������PCM�ǡ����Υӥåȿ���(bit depth)�������ͤ��֤��ޤ���
+バッファが持つPCMデータのビット深度(bit depth)を整数値で返します。
 @item AL_CHANNELS
-�Хåե�������PCM�ǡ����Υ����ͥ���������ͤ��֤��ޤ���
+バッファが持つPCMデータのチャンネル数を整数値で返します。
 @item AL_SIZE
-�Хåե�������PCM�ǡ����Υ�����(�Х��ȿ�)�������ͤ��֤��ޤ���
+バッファが持つPCMデータのサイズ(バイト数)を整数値で返します。
 @item AL_DATA
-�Хåե�������PCM�ǡ���������������Ƥ������ɥ쥹���֤��ޤ���
+バッファが持つPCMデータが元々おかれていたアドレスを返します。
 @end table
 @end defun
 
 @c ----------------------------------------------------------------------
-@node �������˴�Ϣ�����ؿ�, �ꥹ�ʤ˴�Ϣ�����ؿ�, �Хåե��˴�Ϣ�����ؿ�, AL API��ե����
-@section �������˴�Ϣ�����ؿ�
+@node ソースに関連した関数, リスナに関連した関数, バッファに関連した関数, AL APIリファレンス
+@section ソースに関連した関数
 
 @defun al-gen-source
-1�ĤΥ��������������ޤ���
+1個のソースを生成します。
 @end defun
 
 @defun al-gen-sources n
-@var{n}�ĤΥ�������������������������������u32vector�˳�Ǽ�����֤��ޤ�����������32bit�������ͤ�ɽ������ޤ���
+@var{n}個のソースを生成し、生成したソースをu32vectorに格納して返します。ソースは32bitの整数値で表現されます。
 @end defun
 
 @defun al-delete-source source
-@var{source}�ǻ��ꤵ�줿���������������ޤ���
+@var{source}で指定されたソースをを解放します。
 @end defun
 
 @defun al-delete-sources sources
-@var{sources}�ǻ��ꤵ�줿�������򤹤٤Ʋ������ޤ���@var{sources}��u32vector�Ǥ���ɬ�פ�����ޤ���
+@var{sources}で指定されたソースをすべて解放します。@var{sources}はu32vectorである必要があります。
 @end defun
 
 @defun al-is-source? source
-@var{source}�ǻ��ꤵ�줿�����ͤ��������Ǥ��뤫�ɤ�����Ƚ�ꤷ�ޤ����������ξ���#t���֤��������Ǥʤ��Ȥ���#f���֤��ޤ���
+@var{source}で指定された整数値がソースであるかどうかを判定します。ソースの場合は#tを返し、そうでないときは#fを返します。
 @end defun
 
 @defun al-source source pname value
-@var{source}�ǻ��ꤵ�줿��������°���ͤ����ꤷ�ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+@var{source}で指定されたソースの属性値を設定します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item AL_PITCH
-@var{value}�ˤ�0�����礭���¿�����ꤷ�Ƥ���������
+@var{value}には0よりも大きい実数を指定してください。
 @item AL_GAIN
-@var{value}�ˤ�0�����礭���¿�����ꤷ�Ƥ���������
+@var{value}には0よりも大きい実数を指定してください。
 @item AL_MAX_DISTANCE
-@var{value}�ˤ�0�ʾ�μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上の実数を指定してください。
 @item AL_ROLLOFF_FACTOR
-@var{value}�ˤ�0�ʾ�μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上の実数を指定してください。
 @item AL_REFERENCE_DISTANCE
-@var{value}�ˤ�0�ʾ�μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上の実数を指定してください。
 @item AL_MIN_GAIN
-@var{value}�ˤ�0�ʾ�1�ʲ��μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上1以下の実数を指定してください。
 @item AL_MAX_GAIN
-@var{value}�ˤ�0�ʾ�1�ʲ��μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上1以下の実数を指定してください。
 @item AL_CONE_OUTER_GAIN
-@var{value}�ˤ�0�ʾ�1�ʲ��μ¿�����ꤷ�Ƥ���������
+@var{value}には0以上1以下の実数を指定してください。
 @item AL_CONE_INNER_ANGLE
-@var{value}�ˤϼ¿�����ꤷ�Ƥ���������
+@var{value}には実数を指定してください。
 @item AL_CONE_OUTER_ANGLE
-@var{value}�ˤϼ¿�����ꤷ�Ƥ���������
+@var{value}には実数を指定してください。
 @item AL_POSITION
-@var{value}�ˤ�Ĺ��3��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ3のs32vectorを指定してください。
 @item AL_VELOCITY
-@var{value}�ˤ�Ĺ��3��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ3のs32vectorを指定してください。
 @item AL_DIRECTION
-@var{value}�ˤ�Ĺ��3��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ3のs32vectorを指定してください。
 @item AL_SOURCE_RELATIVE
-@var{value}�ˤ�boolean����ꤷ�Ƥ���������
+@var{value}にはbooleanを指定してください。
 @item AL_LOOPING
-@var{value}�ˤ�boolean����ꤷ�Ƥ���������
+@var{value}にはbooleanを指定してください。
 @item AL_BUFFER
-@var{value}�ˤϥХåե���ؤ���������ꤷ�Ƥ���������
+@var{value}にはバッファを指す整数を指定してください。
 @end table 
 @end defun
 
 @defun al-get-source source pname
-@var{source}�ǻ��ꤵ�줿��������°���ͤ�������ޤ���°��@var{pname}�ˤ�@code{al-source}�ˤ���°���˲ä��ưʲ��Τ�Τ�����ǽ�Ǥ���
+@var{source}で指定されたソースの属性値を取得します。属性@var{pname}には@code{al-source}にある属性に加えて以下のものも指定可能です。
 @table @code
 @item AL_SOURCE_STATE
-�������θ��ߤξ��֤�������ޤ������֤�@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND}��4�Ĥ�Ȥ�ޤ���
+ソースの現在の状態を取得します。状態は@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND}の4つをとります。
 @item AL_BUFFERS_QUEUED
-�������˥��塼���󥰤���Ƥ���Хåե��θĿ��������ͤ��֤��ޤ���
+ソースにキューイングされているバッファの個数を整数値で返します。
 @item AL_BUFFERS_PROCESSED
-�������˥��塼���󥰤���Ƥ���Хåե�����ǽ������줿��ΤθĿ��������ͤ��֤��ޤ���
+ソースにキューイングされているバッファの中で処理されたものの個数を整数値で返します。
 @end table
 @end defun
 
 @defun al-source-play source
-@var{source}�ǻ��ꤵ�줿��������������ޤ���@var{source}��u32vector����ꤹ�뤳�Ȥǡ�Ʊ����ʣ���Υ�������������뤳�Ȥ��Ǥ��ޤ���
+@var{source}で指定されたソースを再生します。@var{source}にu32vectorを指定することで、同時に複数のソースを再生することができます。
 @end defun
 
 @defun al-source-pause source
-@var{source}�ǻ��ꤵ�줿�������κ����������Ǥ��ޤ���@var{source}��u32vector����ꤹ�뤳�Ȥǡ�Ʊ����ʣ���Υ����������Ǥ�Ԥ����Ȥ��Ǥ��ޤ���
+@var{source}で指定されたソースの再生を一時中断します。@var{source}にu32vectorを指定することで、同時に複数のソースの中断を行うことができます。
 @end defun
 
 @defun al-source-stop source
-@var{source}�ǻ��ꤵ�줿�������κ�������ߤ��������ξ��֤�@code{AL_STOPPED}�����ܤ����ޤ���@var{source}��u32vector����ꤹ�뤳�Ȥǡ�Ʊ����ʣ���Υ���������ߤ�Ԥ����Ȥ��Ǥ��ޤ���
+@var{source}で指定されたソースの再生を停止しソースの状態を@code{AL_STOPPED}に遷移させます。@var{source}にu32vectorを指定することで、同時に複数のソースの停止を行うことができます。
 @end defun
 
 @defun al-source-rewind source
-@var{source}�ǻ��ꤵ�줿�������κ�������ߤ��������ξ��֤�@code{AL_INITIAL}�����ܤ����ޤ���@var{source}��u32vector����ꤹ�뤳�Ȥǡ�Ʊ����ʣ���Υ���������ߤ�Ԥ����Ȥ��Ǥ��ޤ���
+@var{source}で指定されたソースの再生を停止しソースの状態を@code{AL_INITIAL}に遷移させます。@var{source}にu32vectorを指定することで、同時に複数のソースの停止を行うことができます。
 @end defun
 
 @defun al-source-queue-buffers source buffers
-@var{source}�ǻ��ꤵ�줿�������˥Хåե��򥭥塼���󥰤��ޤ���@var{buffers}�ˤ�u32vector����ꤷ�Ƥ���������
+@var{source}で指定されたソースにバッファをキューイングします。@var{buffers}にはu32vectorを指定してください。
 @end defun
 
 @defun al-source-unqueue-buffers source buffers
-@var{source}�ǻ��ꤵ�줿���������饭�塼���󥰤��줿�Хåե��������ޤ���@var{buffers}�ˤ�u32vector����ꤷ�Ƥ���������
+@var{source}で指定されたソースからキューイングされたバッファを削除します。@var{buffers}にはu32vectorを指定してください。
 @end defun
 
 @c ----------------------------------------------------------------------
-@node �ꥹ�ʤ˴�Ϣ�����ؿ�, OpenAL�ξ��֤˴�Ϣ�����ؿ�, �������˴�Ϣ�����ؿ�, AL API��ե����
-@section �ꥹ�ʤ˴�Ϣ�����ؿ�
+@node リスナに関連した関数, OpenALの状態に関連した関数, ソースに関連した関数, AL APIリファレンス
+@section リスナに関連した関数
 
 @defun al-listener pname value
-�ꥹ�ʤ�°���ͤ����ꤷ�ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+リスナの属性値を設定します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item AL_GAIN
-@var{value}�ˤ�0�����礭���¿�����ꤷ�Ƥ���������
+@var{value}には0よりも大きい実数を指定してください。
 @item AL_POSITION
-@var{value}�ˤ�Ĺ��3��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ3のs32vectorを指定してください。
 @item AL_VELOCITY
-@var{value}�ˤ�Ĺ��3��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ3のs32vectorを指定してください。
 @item AL_ORIENTATION
-@var{value}�ˤ�Ĺ��6��s32vector����ꤷ�Ƥ���������
+@var{value}には長さ6のs32vectorを指定してください。
 @end table 
 @end defun
 
 @defun al-get-listener pname
-�ꥹ�ʤ�°���ͤ�������ޤ���°��@var{pname}�ˤ�@code{al-listener}�ˤ���°���������ǽ�Ǥ���
+リスナの属性値を取得します。属性@var{pname}には@code{al-listener}にある属性が指定可能です。
 @end defun
 
 @c ----------------------------------------------------------------------
-@node OpenAL�ξ��֤˴�Ϣ�����ؿ�, ����¾, �ꥹ�ʤ˴�Ϣ�����ؿ�, AL API��ե����
-@section OpenAL�ξ��֤˴�Ϣ�����ؿ�
+@node OpenALの状態に関連した関数, その他, リスナに関連した関数, AL APIリファレンス
+@section OpenALの状態に関連した関数
 
 @defun al-get-integer pname
-OpenAL����������°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+OpenALの整数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item AL_DISTANCE_MODEL
-���ߤ�distance Model���֤��ޤ����֤�����ͤ�@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}�Τ����줫�Ǥ���
+現在のdistance Modelを返します。返される値は@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}のいずれかです。
 @end table
 @end defun
 
 @defun al-get-integer! vector pname
-OpenAL����������°���ͤ��������@var{vector}�˳�Ǽ���ޤ���°��@var{pname}���׵᤹��@var{vector}�η���Ĺ���ϰʲ����̤�Ǥ���
+OpenALの整数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
 @table @code
 @item AL_DISTANCE_MODEL
-Ĺ��1��s32vector��ɬ�פǤ���
+長さ1のs32vectorが必要です。
 @end table
 @end defun
 
 @defun al-get-float pname
-OpenAL��ñ���ټ¿�����°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+OpenALの単精度実数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item AL_DOPPLER_FACTOR
-���ߤ�Doppler factor���֤��ޤ���
+現在のDoppler factorを返します。
 @item AL_DOPPLER_VELOCITY
-���ߤ�Doppler velocity���֤��ޤ���
+現在のDoppler velocityを返します。
 @end table
 @end defun
 
 @defun al-get-float! vector state
-OpenAL��ñ���ټ¿�����°���ͤ��������@var{vector}�˳�Ǽ���ޤ���°��@var{pname}���׵᤹��@var{vector}�η���Ĺ���ϰʲ����̤�Ǥ���
+OpenALの単精度実数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
 @table @code
 @item AL_DOPPLER_FACTOR
-Ĺ��1��f32vector��ɬ�פǤ���
+長さ1のf32vectorが必要です。
 @item AL_DOPPLER_VELOCITY
-Ĺ��1��f32vector��ɬ�פǤ���
+長さ1のf32vectorが必要です。
 @end table
 @end defun
 
 @defun al-get-string pname
-OpenAL��ʸ���󷿤�°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+OpenALの文字列型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item AL_VENDOR
 @item AL_VERSION
@@ -373,68 +375,68 @@ OpenAL��ʸ���󷿤�°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ
 @end defun
 
 @defun al-distance-model value
-distance model�����ꤷ�ޤ���@var{value}�ˤ�@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}�Τ����줫����ꤷ�Ƥ���������
+distance modelを設定します。@var{value}には@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL_INVERSE_DISTANCE_CLAMPED}のいずれかを指定してください。
 @end defun
 
 @defun al-doppler-factor value
-Doppler factor�����ꤷ�ޤ���
+Doppler factorを設定します。
 @end defun
 
 @defun al-doppler-velocity value
-Doppler velocity�����ꤷ�ޤ���
+Doppler velocityを設定します。
 @end defun
 
 @c ----------------------------------------------------------------------
-@node ����¾, , OpenAL�ξ��֤˴�Ϣ�����ؿ�, AL API��ե����
-@section ����¾
+@node その他, , OpenALの状態に関連した関数, AL APIリファレンス
+@section その他
 
 @defun al-get-error
-@code{al-*}�δؿ��¹Ի���ȯ���������顼���֤������顼�ξ��֤�@code{AL_NO_ERROR}�ξ��֤ˤ��ޤ������顼�ˤϰʲ��Τ�Τ�����ޤ���
+@code{al-*}の関数実行時に発生したエラーを返し、エラーの状態を@code{AL_NO_ERROR}の状態にします。エラーには以下のものがあります。
 @table @code
 @item AL_NO_ERROR
-����ȯ�����Ƥ��륨�顼���ʤ����Ȥ򼨤��ޤ���
+現在発生しているエラーがないことを示します。
 @item AL_INVALID_NAME
-�����Ȥ���̵���ʥХåե��⤷���ϥ����������ꤵ�줿���Ȥ򼨤��ޤ���
+引数として無効なバッファもしくはソースが指定されたことを示します。
 @item AL_INVALID_ENUM
-������°�������ꤵ�줿���Ȥ򼨤��ޤ���
+不正な属性が指定されたことを示します。
 @item AL_INVALID_VALUE
-������°���ͤ����ꤵ�줿���Ȥ򼨤��ޤ���
+不正な属性値が指定されたことを示します。
 @item AL_INVALID_OPERATION
-���������׵ᤵ�줿���Ȥ򼨤��ޤ���
+不正な操作が要求されたことを示します。
 @item AL_OUT_OF_MEMORY
-����γ�����Ƥ��Ԥ��ʤ��ä����Ȥ򼨤��ޤ���
+メモリの割り当てが行えなかったことを示します。
 @end table
 @end defun
 
 @c ======================================================================
-@node ALC API��ե����,  ALUT API��ե����,  AL API��ե����,  Top
-@chapter ALC API��ե����
+@node ALC APIリファレンス,  ALUT APIリファレンス,  AL APIリファレンス,  Top
+@chapter ALC APIリファレンス
 
 @menu
-* ALC�ǡ�����::
-* ALC�ؿ�::
+* ALCデータ型::
+* ALC関数::
 @end menu
 
 @c ----------------------------------------------------------------------
-@node ALC�ǡ�����, ALC�ؿ�, ALC API��ե����, ALC API��ե����
-@section ALC�ǡ�����
+@node ALCデータ型, ALC関数, ALC APIリファレンス, ALC APIリファレンス
+@section ALCデータ型
 
 @deftp {Class} <alc-context>
 @clindex alc-context
-����ƥ����Ȥ�ɽ�����륯�饹�Ǥ���OpenAL��ALCdevice���������ޤ���
+コンテキストを表現するクラスです。OpenALのALCdeviceに相当します。
 @end deftp
 
 @deftp {Class} <alc-device>
 @clindex alc-device
-�ǥХ�����ɽ�����륯�饹�Ǥ���OpenAL��ALCdevice���������ޤ���
+デバイスを表現するクラスです。OpenALのALCdeviceに相当します。
 @end deftp
 
 @c ----------------------------------------------------------------------
-@node ALC�ؿ�, , ALC�ǡ�����, ALC API��ե����
-@section ALC�ؿ�
+@node ALC関数, , ALCデータ型, ALC APIリファレンス
+@section ALC関数
 
 @defun alc-create-context device attrlist
-����ƥ����Ȥ��������ޤ���@var{attrlist}��°����°�����ͤ���ߤ��¤���ꥹ�ȤǤ��ꡢ°���Ȥ��ưʲ��Τ�Τ������ǽ�Ǥ���
+コンテキストを生成します。@var{attrlist}は属性と属性の値が交互に並んだリストであり、属性として以下のものが指定可能です。
 @table @code
 @item ALC_FREQUENCY
 @item ALC_REFRESH
@@ -443,53 +445,53 @@ Doppler velocity�����ꤷ�ޤ���
 @end defun
 
 @defun alc-make-context-current context
-@var{context}�ǻ��ꤵ�줿����ƥ����Ȥ򥫥��ȥ���ƥ����Ȥ����ꤷ�ޤ���
+@var{context}で指定されたコンテキストをカレントコンテキストに設定します。
 @end defun
 
 @defun alc-process-context context
-@var{context}�ǻ��ꤵ�줿����ƥ����Ȥν����򳫻Ϥ��ޤ���
+@var{context}で指定されたコンテキストの処理を開始します。
 @end defun
 
 @defun alc-suspend-context context
-@var{context}�ǻ��ꤵ�줿����ƥ����Ȥν����������Ǥ��ޤ���
+@var{context}で指定されたコンテキストの処理を一時中断します。
 @end defun
 
 @defun alc-destroy-context context
-@var{context}�ǻ��ꤵ�줿����ƥ����Ȥ��˴����ޤ���
+@var{context}で指定されたコンテキストを破棄します。
 @end defun
 
 @defun alc-get-error device
-@code{alc-*}�δؿ��¹Ի���ȯ���������顼���֤������顼�ξ��֤�@code{ALC_NO_ERROR}�ξ��֤ˤ��ޤ������顼�ˤϰʲ��Τ�Τ�����ޤ���
+@code{alc-*}の関数実行時に発生したエラーを返し、エラーの状態を@code{ALC_NO_ERROR}の状態にします。エラーには以下のものがあります。
 @table @code
 @item ALC_NO_ERROR
-����ȯ�����Ƥ��륨�顼���ʤ����Ȥ򼨤��ޤ���
+現在発生しているエラーがないことを示します。
 @item ALC_INVALID_DEVICE
-̵���ʥǥХ��������ꤵ�줿���Ȥ򼨤��ޤ���
+無効なデバイスが指定されたことを示します。
 @item ALC_INVALID_CONTEXT
-�����Ȥ���̵���ʥ���ƥ����Ȥ����ꤵ�줿���Ȥ򼨤��ޤ���
+引数として無効なコンテキストが指定されたことを示します。
 @item ALC_INVALID_ENUM
-������°�������ꤵ�줿���Ȥ򼨤��ޤ���
+不正な属性が指定されたことを示します。
 @item ALC_INVALID_VALUE
-������°���ͤ����ꤵ�줿���Ȥ򼨤��ޤ���
+不正な属性値が指定されたことを示します。
 @item ALC_OUT_OF_MEMORY
-����γ�����Ƥ��Ԥ��ʤ��ä����Ȥ򼨤��ޤ���
+メモリの割り当てが行えなかったことを示します。
 @end table
 @end defun
 
 @defun alc-get-current-context
-�����ȥ���ƥ����Ȥ��֤��ޤ���
+カレントコンテキストを返します。
 @end defun
 
 @defun alc-open-device devicename
-@var{devicename}�ǻ��ꤵ�줿̾���ΥǥХ����򥪡��ץ󤷤ޤ���
+@var{devicename}で指定された名前のデバイスをオープンします。
 @end defun
 
 @defun alc-close-device device
-@var{device}�ǻ��ꤵ�줿�ǥХ����򥯥��������ޤ���
+@var{device}で指定されたデバイスをクローズします。
 @end defun
 
 @defun alc-get-string device pname
-@var{device}�ǻ��ꤵ�줿�ǥХ���������ʸ���󷿤�°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+@var{device}で指定されたデバイスが持つ文字列型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item ALC_DEFAULT_DEVICE_SPECIFIER
 @item ALC_DEVICE_SPECIFIER
@@ -498,7 +500,7 @@ Doppler velocity�����ꤷ�ޤ���
 @end defun
 
 @defun alc-get-integer device pname
-@var{device}�ǻ��ꤵ�줿�ǥХ�����������������°���ͤ�������ޤ���°��@var{pname}�ˤϰʲ��Τ�Τ������ǽ�Ǥ���
+@var{device}で指定されたデバイスが持つ整数型の属性値を取得します。属性@var{pname}には以下のものが指定可能です。
 @table @code
 @item ALC_MAJOR_VERSION
 @item ALC_MINOR_VERSION
@@ -508,75 +510,75 @@ Doppler velocity�����ꤷ�ޤ���
 @end defun
 
 @defun alc-get-integer! vector device pname
-@var{device}�ǻ��ꤵ�줿�ǥХ�����������������°���ͤ��������@var{vector}�˳�Ǽ���ޤ���°��@var{pname}���׵᤹��@var{vector}�η���Ĺ���ϰʲ����̤�Ǥ���
+@var{device}で指定されたデバイスが持つ整数型の属性値を取得し、@var{vector}に格納します。属性@var{pname}が要求する@var{vector}の型と長さは以下の通りです。
 @table @code
 @item ALC_MAJOR_VERSION
-Ĺ��1��s32vector��ɬ�פǤ���
+長さ1のs32vectorが必要です。
 @item ALC_MINOR_VERSION
-Ĺ��1��s32vector��ɬ�פǤ���
+長さ1のs32vectorが必要です。
 @item ALC_ATTRIBUTES_SIZE
-Ĺ��1��s32vector��ɬ�פǤ���
+長さ1のs32vectorが必要です。
 @item ALC_ALL_ATTRIBUTES
-Ĺ����@code{ALC_ATTRIBUTES_SIZE}��s32vector��ɬ�פǤ���
+長さが@code{ALC_ATTRIBUTES_SIZE}のs32vectorが必要です。
 @end table
 @end defun
 
 @c ======================================================================
-@node ALUT API��ե����,  ����,  ALC API��ե����,  Top
-@chapter ALUT API��ե����
+@node ALUT APIリファレンス,  索引,  ALC APIリファレンス,  Top
+@chapter ALUT APIリファレンス
 
 @menu
-* ALUT�ؿ�::
+* ALUT関数::
 @end menu
 
 @c ----------------------------------------------------------------------
-@node ALUT�ؿ�, , ALUT API��ե����, ALUT API��ե����
-@section ALUT�ؿ�
+@node ALUT関数, , ALUT APIリファレンス, ALUT APIリファレンス
+@section ALUT関数
 
 @defun alut-init args
-OpenAL���������ޤ���@var{args}�ˤ�ʸ����Υꥹ�Ȥ���ꤷ�Ƥ���������
+OpenALを初期化します。@var{args}には文字列のリストを指定してください。
 @end defun
 
 @defun alut-exit
-OpenAL��λ���ޤ���
+OpenALを終了します。
 @end defun
 
 @defun alut-load-wav-file filename
-@var{filename}�ǻ��ꤵ�줿WAV�ե�������ɤ߹��ߡ�PCM�ǡ�����������ޤ���
+@var{filename}で指定されたWAVファイルを読み込み、PCMデータを作成します。
 @end defun
 
 @defun alut-load-wav-memory wav-data
-������Ÿ������Ƥ���WAV�ե����뤫��PCM�ǡ�����������ޤ���@var{wav-data}��u8vector����Ѥ��Ƥ���������
+メモリ上に展開されているWAVファイルからPCMデータを作成します。@var{wav-data}はu8vectorを使用してください。
 @end defun
 
 @defun alut-unload-wav pcm-data
-PCM�ǡ�����������ޤ���
+PCMデータを解放します。
 @end defun
 
 @c ======================================================================
-@node ����,   ,  ALUT API��ե����,  Top
-@appendix ����
-@c NODE ����
+@node 索引,   ,  ALUT APIリファレンス,  Top
+@appendix 索引
+@c NODE 索引
 
 @menu
-* ��³������::
-* ���饹����::
-* �ѿ�����::
+* 手続き索引::
+* クラス索引::
+* 変数索引::
 @end menu
 
-@node ��³������, ���饹����, ����, ����
-@appendixsec ��³������
+@node 手続き索引, クラス索引, 索引, 索引
+@appendixsec 手続き索引
 @printindex fn
 
-@node ���饹����, �ѿ�����, ��³������, ����
-@appendixsec ���饹����
+@node クラス索引, 変数索引, 手続き索引, 索引
+@appendixsec クラス索引
 
 For readability, the surrounding @code{<} and @code{>} are stripped off.
 
 @printindex cl
 
-@node �ѿ�����,   , ���饹����, ����
-@appendixsec �ѿ�����
+@node 変数索引,   , クラス索引, 索引
+@appendixsec 変数索引
 @printindex vr
 
 
