@@ -1,8 +1,8 @@
-@documentlanguage ja
-@documentencoding UTF-8
 \input texinfo  @c -*-texinfo-*-
 @comment %**start of header
 @setfilename gauche-al-refj.info
+@documentlanguage ja
+@documentencoding UTF-8
 @settitle Gauche-al : OpenAL binding for Gauche
 @dircategory The Algorithmic Language Scheme
 @direntry

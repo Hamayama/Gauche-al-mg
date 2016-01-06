@@ -202,7 +202,7 @@
 - OS
   - Windows 8.1 (64bit)
 - 環境
-  - MinGW (32bit) v4.8.1
+  - MinGW (32bit) (gcc v4.8.1)
   - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
 - 言語
   - Gauche v0.9.4
@@ -220,6 +220,7 @@
 - 2015-12-24  v1.0-mg0006 サンプルに再生終了時のノイズ対策を追加。また、MML音楽演奏サンプル追加
 - 2015-12-24  v1.0-mg0007 lib/Makefile.in と src/Makefile.in を修正
 - 2016-1-1    v1.0-mg0008 変更点 7. 対応
+- 2016-1-6    v1.0-mg0009 ドキュメントファイル修正
 
 
-(2016-1-1)
+(2016-1-6)
