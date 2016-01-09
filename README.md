@@ -46,7 +46,7 @@
    コンパイル時に CFLAGS の内容を反映するようにした。
    - src/Makefile.in
 
-7. MSYS2/MinGW-w64(64bit)環境でのビルドに暫定対応(実験中)  
+7. MSYS2/MinGW-w64(64bit/32bit)環境でのビルドに暫定対応(実験中)  
    - automake v1.15 の使用
      - config.guess
      - config.sub
@@ -204,6 +204,7 @@
 - 環境
   - MinGW (32bit) (gcc v4.8.1)
   - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
+  - MSYS2/MinGW-w64 (32bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
 - 言語
   - Gauche v0.9.4
   - Gauche v0.9.5_pre1
@@ -221,6 +222,7 @@
 - 2015-12-24  v1.0-mg0007 lib/Makefile.in と src/Makefile.in を修正
 - 2016-1-1    v1.0-mg0008 変更点 7. 対応
 - 2016-1-6    v1.0-mg0009 ドキュメントファイル修正
+- 2016-1-9    v1.0-mg0010 MSYS2/MinGW-w64(32bit)環境に暫定対応
 
 
-(2016-1-6)
+(2016-1-9)
