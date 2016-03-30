@@ -57,6 +57,17 @@
      - doc/gauche-al-refj.texi
      - doc/Makefile.in
 
+8. ドキュメント修正
+   - AL_STOPPEND → AL_STOPPED
+   - ALCdevice → ALCcontext
+
+9. サンプルの演奏終了チェック処理修正
+   - eq? → eqv?
+
+10. al.scm の修正
+   - make-u8vector → make-u32vector
+
+
 ## インストール方法
 - MinGW (32bit) 環境でのインストール手順を、以下に示します。
 
@@ -223,6 +234,7 @@
 - 2016-1-1    v1.0-mg0008 変更点 7. 対応
 - 2016-1-6    v1.0-mg0009 ドキュメントファイル修正
 - 2016-1-9    v1.0-mg0010 MSYS2/MinGW-w64(32bit)環境に暫定対応
+- 2016-3-31   v1.0-mg0011 変更点 8. - 10. 対応
 
 
-(2016-1-9)
+(2016-3-31)

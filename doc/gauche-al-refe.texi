@@ -224,7 +224,7 @@ This function generates a source.
 @defun al-get-source source pname
 @table @code
 @item AL_SOURCE_STATE
-The state of the source (@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND})
+The state of the source (@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPED})
 @item AL_BUFFERS_QUEUED
 @item AL_BUFFERS_PROCESSED
 @end table
@@ -347,10 +347,12 @@ The current distance model (@code{AL_NONE}, @code{AL_INVERSE_DISTANCE}, @code{AL
 
 @deftp {Class} <alc-context>
 @clindex alc-context
+This class corresponds to OpenAL's ALCcontext class.
 @end deftp
 
 @deftp {Class} <alc-device>
 @clindex alc-device
+This class corresponds to OpenAL's ALCdevice class.
 @end deftp
 
 @c ----------------------------------------------------------------------

@@ -45,14 +45,14 @@
     (ref vec 0)))
 
 (define (al-delete-buffer buf)
-  (al-delete-buffers (make-u8vector 1 buf)))
+  (al-delete-buffers (make-u32vector 1 buf)))
 
 (define (al-gen-source)
   (and-let* ((vec (al-gen-sources 1)))
     (ref vec 0)))
 
 (define (al-delete-source src)
-  (al-delete-sources (make-u8vector 1 src)))
+  (al-delete-sources (make-u32vector 1 src)))
 
 (provide "al")
 

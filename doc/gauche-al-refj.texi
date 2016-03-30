@@ -270,7 +270,7 @@ PCMデータの内容を示します。データ内容は<u8vector>型で返さ�
 @var{source}で指定されたソースの属性値を取得します。属性@var{pname}には@code{al-source}にある属性に加えて以下のものも指定可能です。
 @table @code
 @item AL_SOURCE_STATE
-ソースの現在の状態を取得します。状態は@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPEND}の4つをとります。
+ソースの現在の状態を取得します。状態は@code{AL_INITIAL}, @code{AL_PLAYING}, @code{AL_PAUSED}, @code{AL_STOPPED}の4つをとります。
 @item AL_BUFFERS_QUEUED
 ソースにキューイングされているバッファの個数を整数値で返します。
 @item AL_BUFFERS_PROCESSED
@@ -423,7 +423,7 @@ Doppler velocityを設定します。
 
 @deftp {Class} <alc-context>
 @clindex alc-context
-コンテキストを表現するクラスです。OpenALのALCdeviceに相当します。
+コンテキストを表現するクラスです。OpenALのALCcontextに相当します。
 @end deftp
 
 @deftp {Class} <alc-device>

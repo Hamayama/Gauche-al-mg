@@ -1,7 +1,7 @@
 ;; -*- coding: utf-8 -*-
 ;;
 ;; MML演奏テスト
-;; 2015-12-24
+;; 2016-3-31
 ;;
 (add-load-path "." :relative)
 (use al)
@@ -29,11 +29,11 @@
   "  b8b8bb8b8b | b8>d8<g8.a16b2> | c8c8c8c8c8<b8b8b8   | b8a8a8g8a>d<  "
   "  b8b8bb8b8b | b8>d8<g8.a16b2> | c8c8c8c8c8<b8b8b8   | >d8d8c8<a8g2  "
   )))
-(set! wav-data (make-u8vector (+ (* (s16vector-length pcm-raw) 2) (* 11 4))))
+(set! wav-data (make-u8vector (get-wav-size pcm-raw)))
 (let1 out (open-output-uvector wav-data)
   (unwind-protect
-   (write-wav pcm-raw out)
-   (close-output-port out)))
+      (write-wav pcm-raw out)
+    (close-output-port out)))
 
 ;; Gauche-alでWAVデータを読み込んで再生
 (print "play")
@@ -43,7 +43,7 @@
 (set! src (al-gen-source))
 (al-source src AL_BUFFER buf)
 (al-source-play src)
-(while (not (eq? (al-get-source src AL_SOURCE_STATE) AL_STOPPED))
+(while (not (eqv? (al-get-source src AL_SOURCE_STATE) AL_STOPPED))
   (sys-nanosleep (* 100 1000000)) ; 100msec
   )
 (print "finished.")
