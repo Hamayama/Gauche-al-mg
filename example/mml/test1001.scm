@@ -43,9 +43,8 @@
 (set! src (al-gen-source))
 (al-source src AL_BUFFER buf)
 (al-source-play src)
-(while (not (eqv? (al-get-source src AL_SOURCE_STATE) AL_STOPPED))
-  (sys-nanosleep (* 100 1000000)) ; 100msec
-  )
+(until (= (al-get-source src AL_SOURCE_STATE) AL_STOPPED)
+  (sys-nanosleep (* 100 1000000))) ; 100msec
 (print "finished.")
 
 ;; 終了
