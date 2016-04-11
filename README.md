@@ -79,6 +79,7 @@
      
         コンパイルとインストール
           c:\msys64\mingw64_shell.bat を起動して以下を実行
+            cd /c/work/freealut
             ./autogen.sh
             ./configure --prefix=/mingw64
             make
@@ -89,6 +90,7 @@
      (4)Gauche-alのインストール
         コンパイルとインストール
           c:\msys64\mingw64_shell.bat を「管理者として」起動して以下を実行
+            cd /c/work/Gauche-al
             ./DIST gen
             ./configure
             make
@@ -279,4 +281,4 @@
 - 2016-3-31   v1.0-mg0011 変更点 8. - 10. 対応
 
 
-(2016-4-2)
+(2016-4-11)
