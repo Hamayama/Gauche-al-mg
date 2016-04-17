@@ -32,7 +32,9 @@
 - OS
   - Windows 8.1 (64bit)
 - 環境
-  - MinGW (32bit) v4.8.1
+  - MinGW (32bit) (gcc v4.8.1)
+  - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
+  - MSYS2/MinGW-w64 (32bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
 - 言語
   - Gauche v0.9.4
   - Gauche v0.9.5_pre1
@@ -45,6 +47,7 @@
 - 2016-3-31   v1.04 mmlproc.scmをv1.15に更新(get-wav-size手続きを追加)  
   test1001.scmの演奏終了チェック処理修正(eq? → eqv?)
 - 2016-3-31   v1.05 test1001.scmの演奏終了チェック処理見直し
+- 2016-4-17   v1.06 mmlproc.scmをv1.16に更新
 
 
-(2016-3-31)
+(2016-4-17)

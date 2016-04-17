@@ -1,7 +1,7 @@
 ;; -*- coding: utf-8 -*-
 ;;
 ;; MML演奏テスト
-;; 2016-3-31
+;; 2016-4-17
 ;;
 (add-load-path "." :relative)
 (use al)
