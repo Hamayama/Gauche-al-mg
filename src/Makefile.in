@@ -18,8 +18,8 @@ INSTALL        = "@GAUCHE_INSTALL@" -C
 
 CFLAGS   = @CFLAGS@
 CPPFLAGS = @AL_INCDIR@ @CPPFLAGS@
-LDFLAGS  = @AL_LIBDIR@ @LDFLAGS@ 
-LIBS     = @AL_LIBS@ @LIBS@ 
+LDFLAGS  = @AL_LIBDIR@ @LDFLAGS@
+LIBS     = @AL_LIBS@ @LIBS@
 
 # Other parameters
 SOEXT  = @SOEXT@
@@ -49,12 +49,9 @@ al_SRCS = gauche-al.c al-lib.stub \
 all : $(TARGET)
 
 al.$(SOEXT): $(al_SRCS)
-	$(GAUCHE_PACKAGE) compile  \
-	  --local=$(LOCAL_PATHS)   \
-	  --cppflags="$(CPPFLAGS)" \
-	  --cflags="$(CFLAGS)"     \
-	  --ldflags="$(LDFLAGS)"   \
-	  --libs="$(LIBS)"         \
+	$(GAUCHE_PACKAGE) compile  --local=$(LOCAL_PATHS) \
+	  --cppflags="$(CPPFLAGS)" --cflags="$(CFLAGS)"   \
+	  --ldflags="$(LDFLAGS)"   --libs="$(LIBS)"       \
 	  --verbose al $(al_SRCS)
 
 $(MODULE)_head.c $(MODULE)_tail.c :
