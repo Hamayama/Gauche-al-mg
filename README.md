@@ -64,32 +64,32 @@
         https://gist.github.com/Hamayama/6666e5d2c8d5167d22f7
      
      (2)OpenALのインストール
-        OpenAL11CoreSDK.exe を実行
+        OpenAL11CoreSDK.exe を実行。
           C:\Program Files (x86)\OpenAL 1.1 SDK
           Yes, launch the OpenAL redist and finish.
      
         C:\Program Files (x86)\OpenAL 1.1 SDK\include の内容を、
-          C:\msys64\mingw64\include\AL にコピー
+          C:\msys64\mingw64\include\AL にコピー。
         C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64\OpenAL32.lib を、
-          C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピー
+          C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピー。
      
      (3)freealutのインストール
         ソースの修正
           なし
      
         コンパイルとインストール
-          c:\msys64\mingw64_shell.bat を起動して以下を実行
+          c:\msys64\mingw64_shell.bat を起動して以下を実行。
             cd /c/work/freealut
             ./autogen.sh
             ./configure --prefix=/mingw64
             make
             make install
      
-        libalut-0.dll ができた
+        libalut-0.dll ができた。
      
      (4)Gauche-alのインストール
         コンパイルとインストール
-          c:\msys64\mingw64_shell.bat を「管理者として」起動して以下を実行
+          c:\msys64\mingw64_shell.bat を「管理者として」起動して以下を実行。
             cd /c/work/Gauche-al
             ./DIST gen
             ./configure
