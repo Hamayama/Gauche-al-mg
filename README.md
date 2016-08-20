@@ -136,7 +136,17 @@
    また、  
    C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\OpenAL32.lib を、  
    C:\MinGW\lib に libopenal32.dll.a とリネームしてコピーします。  
-   (注意) リネームしないと、7. の freealut のコンパイルで libalut-0.dll の生成に失敗します。
+   
+   (注意) ここでリネームをしないと、  
+   手順 7. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
+   失敗のときはコンパイル時に以下のメッセージが出ます。  
+   「*** Warning: linker path does not have real file for library -lopenal32 ...」  
+   
+   (注意) MinGWのバージョンが古い場合、  
+   OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
+   手順 7. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
+   このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
+   C:\MinGW\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -189,6 +199,13 @@
      ./configure
      make
    ```
+   (注意) MinGWのバージョンが古い場合、コンパイルでエラーになることがあります。  
+   このときは、make clean で一度生成ファイルをクリアしてから、  
+   以下のようにオプションを追加して実行してみてください。
+   ```
+     ./configure CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"
+     make
+   ```
 
 10. Gauche-alのインストール  
    コマンドプロンプトを開いて以下を実行します。
@@ -218,7 +235,10 @@
 
 
 ##使い方
-- example フォルダに 実行可能なサンプルがあります。
+- example フォルダに 実行可能なサンプルがあります。  
+  (注意) 古いPC (Windows XP SP3) では、音楽が鳴ったり鳴らなかったりする場合がありました。  
+  このとき、オーディオの詳細プロパティで、「ハードウェア アクセラレータ」の設定を、  
+  「最大」から「標準」に変更したところ、改善したことがありました。
 
 - また、以下のページで、alaudplay.scm というモジュールを使って、  
   いくつかのサンプルで効果音を出しています。  
@@ -256,6 +276,7 @@
 ## 環境等
 - OS
   - Windows 8.1 (64bit)
+  - Windows XP Home SP3
 - 環境
   - MinGW (32bit) (gcc v4.8.1)
   - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
@@ -281,4 +302,4 @@
 - 2016-3-31   v1.0-mg0011 変更点 8. - 10. 対応
 
 
-(2016-4-11)
+(2016-8-20)
