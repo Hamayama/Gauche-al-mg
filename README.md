@@ -102,16 +102,16 @@
    C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーします。  
    (32bitの場合には、C:\msys64\mingw32\lib にコピーします)  
    
-   (注意) ここでリネームをしないと、  
-   手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
-   失敗のときはコンパイル時に以下のメッセージが表示されます。  
-   「*** Warning: linker path does not have real file for library -lopenal32 ...」  
+   - (注意) ここでリネームをしないと、  
+     手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
+     失敗のときはコンパイル時に以下のメッセージが表示されます。  
+     「*** Warning: linker path does not have real file for library -lopenal32 ...」  
    
-   (注意) MinGW のバージョンが古い場合、  
-   OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
-   手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
-   このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
-   C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
+   - (注意) MinGW のバージョンが古い場合、  
+     OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
+     手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
+     このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
+     C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -142,25 +142,25 @@
      make install
    ```
    
-   (注意) MinGW のバージョンが古くて、Gauche の終了時に  
-   「This application has requested the Runtime to terminate it in an unusual way.  
-    Please contact the application's support team for more information.」  
-   というエラーが発生する場合には、  
-   make clean で一度生成ファイルをクリアしてから、  
-   ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
-   
-   (注意) MinGW のバージョンが古くて、alutUtil.c のコンパイルでエラーが発生する場合には、  
-   src/alutUtil.c をテキストエディタで開いて、1行目の
-   ```
+   - (注意) MinGW のバージョンが古くて、alutUtil.c のコンパイルでエラーが発生する場合には、  
+     src/alutUtil.c をテキストエディタで開いて、1行目の
+     ```
      #include "alutInternal.h"
-   ```
-   の下に以下の行を追加してください。
-   ```
+     ```
+     の下に以下の行を追加してみてください。
+     ```
      #if defined(__MINGW32__)
      #undef HAVE_NANOSLEEP
      #undef HAVE_USLEEP
      #endif
-   ```
+     ```
+   
+   - (注意) MinGW のバージョンが古くて、Gauche の終了時に  
+     「This application has requested the Runtime to terminate it in an unusual way.  
+      Please contact the application's support team for more information.」  
+     というエラーが発生する場合には、  
+     make clean で一度生成ファイルをクリアしてから、  
+     ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
 
 7. Gauche-al のソースの展開  
    本サイト( https://github.com/Hamayama/Gauche-al-mg )のソースを、  
@@ -182,11 +182,11 @@
      make
    ```
    
-   (注意) MinGWのバージョンが古くて、コンパイルエラーが発生する場合には、  
-   make clean で一度生成ファイルをクリアしてから、  
-   ./configure のオプションに   
-   CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
-   を追加してみてください。
+   - (注意) MinGWのバージョンが古くて、コンパイルエラーが発生する場合には、  
+     make clean で一度生成ファイルをクリアしてから、  
+     ./configure のオプションに   
+     CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
+     を追加してみてください。
 
 9. Gauche-al のインストール  
    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
@@ -200,12 +200,12 @@
    ```
    Gaucheのライブラリフォルダに生成したファイルがコピーされます。  
    
-   (注意) 環境によっては make install を実行すると、  
-   「*** ERROR: mkstemp failed」というエラーが発生します。  
-   このエラーは c:\Program Files (x86) のフォルダに 書き込み権限がないとき等に発生します。  
-   その場合には、プログラムメニューからの開発環境の起動時に右クリックして、  
-   「管理者として実行」を選択してください。  
-   そして再度上記のコマンドを実行してください。
+   - (注意) 環境によっては make install を実行すると、  
+     「*** ERROR: mkstemp failed」というエラーが発生します。  
+     このエラーは c:\Program Files (x86) のフォルダに 書き込み権限がないとき等に発生します。  
+     その場合には、プログラムメニューからの開発環境の起動時に右クリックして、  
+     「管理者として実行」を選択してください。  
+     そして再度上記のコマンドを実行してください。
 
 10. Gauche-al のテスト  
    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
