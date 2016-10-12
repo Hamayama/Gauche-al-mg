@@ -1,7 +1,7 @@
 # Gauche-al-mg
 
 ## 概要
-- Gauche-al を MinGW (32bit) 上で動くように改造したものです。  
+- Gauche-al を MinGW 上で動くように改造したものです。  
   Gauche-al は、Gauche から OpenAL を使用するための拡張ライブラリです。
 
 - オリジナルの情報は、以下にあります。  
@@ -37,16 +37,16 @@
    - src/gauche-al.h
    - src/gauche-al.c
 
-5. CiSEのバージョンアップに対応
+5. CiSE のバージョンアップに対応
    - src/al-lib.stub
    - src/alc-lib.stub
    - src/alut-lib.stub
 
-6. Makefile修正  
+6. Makefile 修正  
    コンパイル時に CFLAGS の内容を反映するようにした。
    - src/Makefile.in
 
-7. MSYS2/MinGW-w64(64bit/32bit)環境でのビルドに暫定対応(実験中)  
+7. MSYS2/MinGW-w64 (64bit/32bit) 環境でのビルドに対応  
    - automake v1.15 の使用
      - config.guess
      - config.sub
@@ -56,46 +56,6 @@
    - 日本語マニュアルの文字コード変更 (EUC → UTF-8) とヘッダ情報の追加
      - doc/gauche-al-refj.texi
      - doc/Makefile.in
-   - ビルド方法のメモ(実験中)
-     ```
-     ＜MSYS2/MinGW-w64(64bit)環境でのビルド方法(実験中)＞
-     (1)Gauche 本体のインストール
-        Gauche本体も、MSYS2/MinGW-w64(64bit)環境でコンパイルされている必要がある。
-        https://gist.github.com/Hamayama/6666e5d2c8d5167d22f7
-     
-     (2)OpenALのインストール
-        OpenAL11CoreSDK.exe を実行。
-          C:\Program Files (x86)\OpenAL 1.1 SDK
-          Yes, launch the OpenAL redist and finish.
-     
-        C:\Program Files (x86)\OpenAL 1.1 SDK\include の内容を、
-          C:\msys64\mingw64\include\AL にコピー。
-        C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64\OpenAL32.lib を、
-          C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピー。
-     
-     (3)freealutのインストール
-        ソースの修正
-          なし
-     
-        コンパイルとインストール
-          c:\msys64\mingw64_shell.bat を起動して以下を実行。
-            cd /c/work/freealut
-            ./autogen.sh
-            ./configure --prefix=/mingw64
-            make
-            make install
-     
-        libalut-0.dll ができた。
-     
-     (4)Gauche-alのインストール
-        コンパイルとインストール
-          c:\msys64\mingw64_shell.bat を「管理者として」起動して以下を実行。
-            cd /c/work/Gauche-al
-            ./DIST gen
-            ./configure
-            make
-            make install
-     ```
 
 8. ドキュメント修正
    - AL_STOPPEND → AL_STOPPED
@@ -109,44 +69,49 @@
 
 
 ## インストール方法
-- MinGW (32bit) 環境でのインストール手順を、以下に示します。
+- MSYS2/MinGW-w64 (64bit/32bit) 環境でのインストール手順を、以下に示します。
 
-1. Gaucheのインストール  
+1. Gauche のインストール  
    事前に Gauche がインストールされている必要があります。  
    以下のページに Windows用バイナリインストーラ があるので、インストールを実施ください。  
    http://practical-scheme.net/gauche/download-j.html  
    (すでにインストール済みであれば本手順は不要です)
 
-2. MinGW (32bit) のインストール  
-   事前に MinGW (32bit) がインストールされている必要があります。  
-   以下のページを参考に、インストールを実施ください。  
-   https://gist.github.com/Hamayama/362f2eb14ae26d971ca4  
-   (すでにインストール済みであれば本手順は不要です)
+2. MSYS2/MinGW-w64 (64bit/32bit) のインストール  
+   事前に MSYS2/MinGW-w64 (64bit/32bit) がインストールされている必要があります。  
+   以下のページを参考に、開発環境のインストールを実施ください。  
+   https://gist.github.com/Hamayama/eb4b4824ada3ac71beee0c9bb5fa546d  
+   (すでにインストール済みであれば本手順は不要です)  
+   
+   (注意) 32bitと64bitの成果物の混在には注意してください。  
+   (例えば、32bit版の Gauche から、64bitの拡張ライブラリを呼び出すと、エラーになります)
 
-3. OpenALのインストール  
+3. OpenAL のインストール  
    https://www.openal.org/downloads/  
    から OpenAL 1.1 Core SDK (zip) をダウンロードして展開し、  
    中の OpenAL11CoreSDK.exe を実行します。  
    デフォルトのフォルダにインストールしてください。  
    「Yes, launch the OpenAL redist and finish.」を選択して終了してください。
 
-4. OpenALのファイルのコピー  
+4. OpenAL のファイルのコピー  
    C:\Program Files (x86)\OpenAL 1.1 SDK\include の中のファイル一式を、  
-   C:\MinGW\include\AL というフォルダを作成してそこにコピーします。  
+   C:\msys64\mingw64\include\AL というフォルダを作成してそこにコピーします。  
+   (32bitの場合には、C:\msys64\mingw32\include\AL にコピーします)  
    また、  
    C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\OpenAL32.lib を、  
-   C:\MinGW\lib に libopenal32.dll.a とリネームしてコピーします。  
+   C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーします。  
+   (32bitの場合には、C:\msys64\mingw32\lib にコピーします)  
    
    (注意) ここでリネームをしないと、  
-   手順 7. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
-   失敗のときはコンパイル時に以下のメッセージが出ます。  
+   手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
+   失敗のときはコンパイル時に以下のメッセージが表示されます。  
    「*** Warning: linker path does not have real file for library -lopenal32 ...」  
    
-   (注意) MinGWのバージョンが古い場合、  
+   (注意) MinGW のバージョンが古い場合、  
    OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
-   手順 7. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
+   手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
    このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
-   C:\MinGW\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
+   C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -155,7 +120,36 @@
    c:\work\freealut の下にファイルとフォルダ一式が配置されるように展開してください。  
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
-6. freealut のソースの修正  
+6. freealut のコンパイルとインストール  
+   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   ( c:\work にソースを展開した場合)
+   ```
+     cd /c/work/freealut
+     ./autogen.sh
+     ./configure --prefix=/mingw64
+     make
+     make install
+   ```
+   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   ( c:\work にソースを展開した場合)
+   ```
+     cd /c/work/freealut
+     ./autogen.sh
+     ./configure --prefix=/mingw32
+     make
+     make install
+   ```
+   
+   (注意) MinGW のバージョンが古くて、Gauche の終了時に  
+   「This application has requested the Runtime to terminate it in an unusual way.  
+    Please contact the application's support team for more information.」  
+   というエラーが発生する場合には、  
+   make clean で一度生成ファイルをクリアしてから、  
+   ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
+   
+   (注意) MinGW のバージョンが古くて、alutUtil.c のコンパイルでエラーが発生する場合には、  
    src/alutUtil.c をテキストエディタで開いて、1行目の
    ```
      #include "alutInternal.h"
@@ -168,64 +162,58 @@
      #endif
    ```
 
-7. freealut のコンパイルとインストール  
-   コマンドプロンプトを開いて以下を実行します。
-   ```
-     bash
-     cd /c/work/freealut
-     ./autogen.sh
-     ./configure --prefix=/mingw LDFLAGS="-static-libgcc"
-     make
-     make install
-   ```
-   (注意) 上記の LDFLAGS の指定をしないと、Gaucheの終了時に  
-   「This application has requested the Runtime to terminate it in an unusual way.  
-    Please contact the application's support team for more information.」  
-   というエラーが発生します。(原因は不明)
-
-8. Gauche-alのソースの展開  
+7. Gauche-al のソースの展開  
    本サイト( https://github.com/Hamayama/Gauche-al-mg )のソースを、  
    (Download Zip ボタン等で)ダウンロードして、作業用のフォルダに展開してください。  
    例えば、作業用のフォルダを c:\work とすると、  
    c:\work\Gauche-al の下にファイルとフォルダ一式が配置されるように展開してください。  
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
-9. Gauche-alのコンパイル  
-   コマンドプロンプトを開いて以下を実行します。
+8. Gauche-al のコンパイル  
+   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   ( c:\work にソースを展開した場合)
    ```
-     bash
      cd /c/work/Gauche-al
      ./DIST gen
      ./configure
      make
    ```
-   (注意) MinGWのバージョンが古い場合、コンパイルでエラーになることがあります。  
-   このときは、make clean で一度生成ファイルをクリアしてから、  
-   以下のようにオプションを追加して実行してみてください。
-   ```
-     ./configure CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"
-     make
-   ```
+   
+   (注意) MinGWのバージョンが古くて、コンパイルエラーが発生する場合には、  
+   make clean で一度生成ファイルをクリアしてから、  
+   ./configure のオプションに   
+   CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
+   を追加してみてください。
 
-10. Gauche-alのインストール  
-   コマンドプロンプトを開いて以下を実行します。
+9. Gauche-al のインストール  
+   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   ( c:\work にソースを展開した場合)
    ```
-     bash
      cd /c/work/Gauche-al
      make install
    ```
    Gaucheのライブラリフォルダに生成したファイルがコピーされます。  
+   
    (注意) 環境によっては make install を実行すると、  
    「*** ERROR: mkstemp failed」というエラーが発生します。  
    このエラーは c:\Program Files (x86) のフォルダに 書き込み権限がないとき等に発生します。  
-   その場合は、コマンドプロンプトを開くときに、  
-   コマンドプロンプトのアイコンを右クリックして、「管理者として実行」を選択してください。  
+   その場合には、プログラムメニューからの開発環境の起動時に右クリックして、  
+   「管理者として実行」を選択してください。  
    そして再度上記のコマンドを実行してください。
 
-11. Gauche-alのテスト  
-   コマンドプロンプトを開いて以下を実行します。
+10. Gauche-al のテスト  
+   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
+   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   ( c:\work にソースを展開した場合)
    ```
-     bash
      cd /c/work/Gauche-al
      make check
    ```
@@ -238,7 +226,7 @@
 - example フォルダに 実行可能なサンプルがあります。  
   (注意) 古いPC (Windows XP SP3) では、音楽が鳴ったり鳴らなかったりする場合がありました。  
   このとき、オーディオの詳細プロパティで、「ハードウェア アクセラレータ」の設定を、  
-  「最大」から「標準」に変更したところ、改善したことがありました。
+  「最大」から「標準」に変更したところ、改善したケースがありました。
 
 - また、以下のページで、alaudplay.scm というモジュールを使って、  
   いくつかのサンプルで効果音を出しています。  
@@ -279,11 +267,11 @@
   - Windows XP Home SP3
 - 環境
   - MinGW (32bit) (gcc v4.8.1)
-  - MSYS2/MinGW-w64 (64bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
-  - MSYS2/MinGW-w64 (32bit) (gcc version 5.3.0 (Rev1, Built by MSYS2 project)) (実験中)
+  - MSYS2/MinGW-w64 (64bit) (gcc version 6.2.0 (Rev2, Built by MSYS2 project))
+  - MSYS2/MinGW-w64 (32bit) (gcc version 6.2.0 (Rev2, Built by MSYS2 project))
 - 言語
   - Gauche v0.9.4
-  - Gauche v0.9.5_pre1
+  - Gauche v0.9.5
 - ライセンス
   - オリジナルと同様とします
 
@@ -300,6 +288,7 @@
 - 2016-1-6    v1.0-mg0009 ドキュメントファイル修正
 - 2016-1-9    v1.0-mg0010 MSYS2/MinGW-w64(32bit)環境に暫定対応
 - 2016-3-31   v1.0-mg0011 変更点 8. - 10. 対応
+- 2016-10-12  v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
 
 
-(2016-8-20)
+(2016-10-12)
