@@ -82,9 +82,6 @@
    以下のページを参考に、開発環境のインストールを実施ください。  
    https://gist.github.com/Hamayama/eb4b4824ada3ac71beee0c9bb5fa546d  
    (すでにインストール済みであれば本手順は不要です)  
-   
-   (注意) 32bitと64bitの成果物の混在には注意してください。  
-   (例えば、32bit版の Gauche から、64bitの拡張ライブラリを呼び出すと、エラーになります)
 
 3. OpenAL のインストール  
    https://www.openal.org/downloads/  
@@ -117,7 +114,7 @@
    https://github.com/vancegroup/freealut  
    から Download Zip ボタン等でソースをダウンロードして、作業用のフォルダに展開してください。  
    例えば、作業用のフォルダを c:\work とすると、  
-   c:\work\freealut の下にファイルとフォルダ一式が配置されるように展開してください。  
+   c:\work\freealut の下にファイル一式が配置されるように展開してください。  
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
 6. freealut のコンパイルとインストール  
@@ -159,14 +156,14 @@
      「This application has requested the Runtime to terminate it in an unusual way.  
       Please contact the application's support team for more information.」  
      というエラーが発生する場合には、  
-     make clean で一度生成ファイルをクリアしてから、  
+     make clean で一度生成ファイルをクリアしてから、上記手順の  
      ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
 
 7. Gauche-al のソースの展開  
    本サイト( https://github.com/Hamayama/Gauche-al-mg )のソースを、  
    (Download Zip ボタン等で)ダウンロードして、作業用のフォルダに展開してください。  
    例えば、作業用のフォルダを c:\work とすると、  
-   c:\work\Gauche-al の下にファイルとフォルダ一式が配置されるように展開してください。  
+   c:\work\Gauche-al の下にファイル一式が配置されるように展開してください。  
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
 8. Gauche-al のコンパイル  
@@ -182,8 +179,8 @@
      make
    ```
    
-   - (注意) MinGWのバージョンが古くて、コンパイルエラーが発生する場合には、  
-     make clean で一度生成ファイルをクリアしてから、  
+   - (注意) MinGW のバージョンが古くて、C99モードではないというエラーが発生する場合には、  
+     make clean で一度生成ファイルをクリアしてから、上記手順の  
      ./configure のオプションに   
      CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
      を追加してみてください。
@@ -237,6 +234,7 @@
 1. 音声ファイルの再生終了時にノイズが出る。  
    以下のページの方法で回避できるかもしれない。  
    http://gamedev.stackexchange.com/questions/71571/how-do-i-prevent-clicking-at-the-end-of-each-sound-play-in-openal  
+   (ヘッダーにあるデータ長の分だけデータを読み込むようにする)  
    → 今回は、関係なかった。  
    → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
 
@@ -266,12 +264,12 @@
   - Windows 8.1 (64bit)
   - Windows XP Home SP3
 - 環境
-  - MinGW (32bit) (gcc v4.8.1)
   - MSYS2/MinGW-w64 (64bit) (gcc version 6.2.0 (Rev2, Built by MSYS2 project))
   - MSYS2/MinGW-w64 (32bit) (gcc version 6.2.0 (Rev2, Built by MSYS2 project))
+  - MinGW (32bit) (gcc v4.8.1)
 - 言語
-  - Gauche v0.9.4
   - Gauche v0.9.5
+  - Gauche v0.9.4
 - ライセンス
   - オリジナルと同様とします
 
@@ -291,4 +289,4 @@
 - 2016-10-12  v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
 
 
-(2016-10-12)
+(2016-10-13)
