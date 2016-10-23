@@ -93,13 +93,13 @@
 4. OpenAL のファイルのコピー  
    C:\Program Files (x86)\OpenAL 1.1 SDK\include の中のファイル一式を、  
    C:\msys64\mingw64\include\AL というフォルダを作成してそこにコピーします。  
-   (32bitの場合には、C:\msys64\mingw32\include\AL にコピーします)  
+   (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
    また、  
    C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\OpenAL32.lib を、  
    C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーします。  
-   (32bitの場合には、C:\msys64\mingw32\lib にコピーします)  
+   (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
    
-   - (注意) ここでリネームをしないと、  
+   - (注意) ここで上記のリネームをしないと、  
      手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
      失敗のときはコンパイル時に以下のメッセージが表示されます。  
      「*** Warning: linker path does not have real file for library -lopenal32 ...」  
@@ -108,7 +108,8 @@
      OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
      手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
      このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
-     C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。
+     C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。  
+     (32bit環境の場合には、64 の部分を 32 に読み替えてください)
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -289,4 +290,4 @@
 - 2016-10-12 v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
 
 
-(2016-10-14)
+(2016-10-23)
