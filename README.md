@@ -140,6 +140,8 @@
      make install
    ```
    
+   - (注意) ./autogen.sh では warning が複数出ます。
+   
    - (注意) MinGW のバージョンが古くて、alutUtil.c のコンパイルでエラーが発生する場合には、  
      src/alutUtil.c をテキストエディタで開いて、1行目の
      ```
@@ -180,9 +182,14 @@
      make
    ```
    
+   - (注意) freealut の deprecated (非推奨) のAPIを使用しているため、  
+     コンパイル時に warning が出ます。
+   
    - (注意) MinGW のバージョンが古くて、C99モードではないというエラーが発生する場合には、  
      make clean で一度生成ファイルをクリアしてから、上記手順の  
      ./configure のオプションに   
+     CFLAGS="-g -O2 -std=gnu99"  
+     または、  
      CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
      を追加してみてください。
 
@@ -239,9 +246,6 @@
    → 今回は、関係なかった。  
    → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
 
-2. freealut の deprecated (非推奨) のAPIを使用しているため、  
-   Gauche-al のコンパイル時に warning が出ます。
-
 
 ## その他 ノウハウ等
 1. freealut の静的リンクについて  
@@ -290,4 +294,4 @@
 - 2016-10-12 v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
 
 
-(2016-10-23)
+(2016-12-6)
