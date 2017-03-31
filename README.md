@@ -65,7 +65,7 @@
    - eq? → eqv?
 
 10. al.scm の修正
-   - make-u8vector → make-u32vector
+    - make-u8vector → make-u32vector
 
 
 ## インストール方法
@@ -95,7 +95,7 @@
    C:\msys64\mingw64\include\AL というフォルダを作成してそこにコピーします。  
    (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
    また、  
-   C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\OpenAL32.lib を、  
+   C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64\OpenAL32.lib を、  
    C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーします。  
    (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
    
@@ -213,21 +213,21 @@
      そして再度上記のコマンドを実行してください。
 
 10. Gauche-al のテスト  
-   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
-   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
-   ( c:\work にソースを展開した場合)
-   ```
-     cd /c/work/Gauche-al
-     make check
-   ```
-   テスト結果は test.log に記録されます。
+    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
+    プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+    ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
+    プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+    ( c:\work にソースを展開した場合)
+    ```
+      cd /c/work/Gauche-al
+      make check
+    ```
+    テスト結果は test.log に記録されます。
 
 - 以上です。
 
 
-##使い方
+## 使い方
 - example フォルダに 実行可能なサンプルがあります。  
   (注意) 古いPC (Windows XP SP3) では、音楽が鳴ったり鳴らなかったりする場合がありました。  
   このとき、オーディオの詳細プロパティで、「ハードウェア アクセラレータ」の設定を、  
@@ -294,4 +294,4 @@
 - 2016-10-12 v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
 
 
-(2016-12-6)
+(2017-4-1)
