@@ -120,7 +120,7 @@
 
 6. freealut のコンパイルとインストール  
    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/freealut
@@ -130,7 +130,7 @@
      make install
    ```
    ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/freealut
@@ -163,17 +163,17 @@
      ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
 
 7. Gauche-al のソースの展開  
-   本サイト( https://github.com/Hamayama/Gauche-al-mg )のソースを、  
-   (Download Zip ボタン等で)ダウンロードして、作業用のフォルダに展開してください。  
+   本サイト ( https://github.com/Hamayama/Gauche-al-mg ) のソースを、  
+   (Download Zip ボタン等で) ダウンロードして、作業用のフォルダに展開してください。  
    例えば、作業用のフォルダを c:\work とすると、  
    c:\work\Gauche-al の下にファイル一式が配置されるように展開してください。  
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
 8. Gauche-al のコンパイル  
    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
    ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/Gauche-al
@@ -195,9 +195,9 @@
 
 9. Gauche-al のインストール  
    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
    ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/Gauche-al
@@ -214,9 +214,9 @@
 
 10. Gauche-al のテスト  
     ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-    プログラムメニューから MSYS2 の MinGW-w64 Win64 Shell を起動して、以下のコマンドを実行してください。  
+    プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
     ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-    プログラムメニューから MSYS2 の MinGW-w64 Win32 Shell を起動して、以下のコマンドを実行してください。  
+    プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
     ( c:\work にソースを展開した場合)
     ```
       cd /c/work/Gauche-al
@@ -269,10 +269,11 @@
   - Windows 8.1 (64bit)
   - Windows XP Home SP3
 - 環境
-  - MSYS2/MinGW-w64 (64bit) (gcc version 6.3.0 (Rev2, Built by MSYS2 project))
-  - MSYS2/MinGW-w64 (32bit) (gcc version 6.3.0 (Rev2, Built by MSYS2 project))
-  - MinGW (32bit) (gcc v4.8.1)
+  - MSYS2/MinGW-w64 (64bit) (gcc version 7.3.0 (Rev2, Built by MSYS2 project))
+  - MSYS2/MinGW-w64 (32bit) (gcc version 7.3.0 (Rev2, Built by MSYS2 project))
+  - MinGW (32bit) (gcc v6.3.0 (MinGW.org GCC-6.3.0-1))
 - 言語
+  - Gauche v0.9.6
   - Gauche v0.9.5
   - Gauche v0.9.4
 - ライセンス
@@ -291,10 +292,11 @@
 - 2016-1-6   v1.0-mg0009 ドキュメントファイル修正
 - 2016-1-9   v1.0-mg0010 MSYS2/MinGW-w64(32bit)環境に暫定対応
 - 2016-3-31  v1.0-mg0011 変更点 8. - 10. 対応
-- 2016-10-12 v1.0-mg0012 README修正のみ(Gauche v0.9.5 対応)
+- 2016-10-12 v1.0-mg0012 README修正のみ(Gauche v0.9.5 で動作確認)
 - 2017-5-17  v1.0-mg0013 configure.ac 修正
 - 2017-5-26  v1.0-mg0014 コメント修正のみ
 - 2017-6-3   v1.0-mg0015 configure.ac 修正
+- 2018-7-8   v1.0-mg0015 README修正のみ(Gauche v0.9.6 で動作確認)
 
 
-(2017-6-3)
+(2018-7-8)
