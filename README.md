@@ -206,6 +206,7 @@
    Gaucheのライブラリフォルダに生成したファイルがコピーされます。  
    
    - (注意) 環境によっては、make install を実行すると  
+     「gauche-install: no write permission of ...」もしくは  
      「*** ERROR: mkstemp failed」というエラーが発生します。  
      このエラーは、インストール先のフォルダに書き込み権限がないとき等に発生します。  
      その場合には、プログラムメニューからの開発環境の起動時に右クリックして、  
@@ -269,9 +270,11 @@
   - Windows 8.1 (64bit)
   - Windows XP Home SP3
 - 環境
-  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.3.0 (Rev2, Built by MSYS2 project))
+  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 9.2.0 (Rev2, Built by MSYS2 project))
   - MinGW (32bit) (gcc version 6.3.0 (MinGW.org GCC-6.3.0-1))
 - 言語
+  - Gauche v0.9.9
+  - Gauche v0.9.8
   - Gauche v0.9.7
   - Gauche v0.9.6
   - Gauche v0.9.5
@@ -298,6 +301,7 @@
 - 2017-6-3   v1.0-mg0015 configure.ac 修正
 - 2018-7-9   v1.0-mg0015 README修正のみ(Gauche v0.9.6 で動作確認)
 - 2018-12-29 v1.0-mg0016 Gauche v0.9.7 対応 (src/Makefile.in を修正)
+- 2019-12-29 v1.0-mg0016 README修正のみ(Gauche v0.9.9 で動作確認)
 
 
-(2018-12-29)
+(2019-12-29)
