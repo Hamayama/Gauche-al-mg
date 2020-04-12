@@ -287,6 +287,11 @@
    make
    make check
    sudo make install
+
+   # サンプルの実行
+   cd example
+   gosh play.scm
+   gosh mml/test1001.scm
    ```
 
 ## 環境等
