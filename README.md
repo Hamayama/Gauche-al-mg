@@ -269,18 +269,24 @@
    動作させたときのメモです(2020-4-12)。
    ```
    # Gauche のインストール
-   #  (注意：get-gauche.sh 内の make -j を make にしないと、固まった)
+   #  ( get-gauche.sh 内の make -j を make に置換しないと、固まった)
    sudo apt install automake
    sudo apt install libtool
    curl -f -o get-gauche.sh https://raw.githubusercontent.com/shirok/get-gauche/master/get-gauche.sh
+   sed -i -e 's/make -j/make/' get-gauche.sh
    chmod +x get-gauche.sh
    ./get-gauche.sh
 
    # Gauche-al のインストール
+   #  ( https://github.com/Hamayama/Gauche-al-mg からソースを取得 )
    sudo apt install libopenal-dev
    sudo apt install libalut-dev
    sudo apt install texinfo
-   # あとは、Gauche-al のコンパイル、インストール、テストを実行
+   ./DIST gen
+   ./configure
+   make
+   make check
+   sudo make install
    ```
 
 ## 環境等
