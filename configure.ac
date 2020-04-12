@@ -108,7 +108,7 @@ AC_CHECK_HEADERS(AL/al.h, [
 		AL_LIBS='-lalut -lopenal32'
 		;;
 	*)
-		AL_LIBS='-lopenal'
+		AL_LIBS='-lalut -lopenal'
 		;;
 	esac
 ], ,)
