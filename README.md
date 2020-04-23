@@ -264,12 +264,12 @@
    に変更する必要があります。  
    こうしないと、`undefined reference to '_imp__xxx'` のようなエラーが発生します。
 
-2. Linux 上での利用について(実験中)  
+2. Linux 上での利用について (参考)  
    以下は、Windows の VirtualBox 内の Linux Mint 19.3 (Cinnamon) 上で  
    動作させたときのメモです(2020-4-12)。
    ```
    # Gauche のインストール
-   #  ( get-gauche.sh 内の make -j を make に置換しないと、固まった)
+   #  ( get-gauche.sh 内の make -j を make に置換しないと、(多分PCが非力なため) 固まった )
    sudo apt install automake
    sudo apt install libtool
    curl -f -o get-gauche.sh https://raw.githubusercontent.com/shirok/get-gauche/master/get-gauche.sh
@@ -334,4 +334,4 @@
 - 2020-4-12  v1.0-mg0017 configure.ac修正(Linux上で動作確認(実験中))
 
 
-(2020-4-12)
+(2020-4-23)
