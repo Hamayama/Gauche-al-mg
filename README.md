@@ -278,7 +278,7 @@
    ./get-gauche.sh
 
    # Gauche-al のインストール
-   #  ( https://github.com/Hamayama/Gauche-al-mg からソースを取得 )
+   #  ( 本サイト ( https://github.com/Hamayama/Gauche-al-mg ) のソースを取得してインストール )
    sudo apt install libopenal-dev
    sudo apt install libalut-dev
    sudo apt install texinfo
@@ -331,7 +331,7 @@
 - 2018-7-9   v1.0-mg0015 README修正のみ(Gauche v0.9.6 で動作確認)
 - 2018-12-29 v1.0-mg0016 Gauche v0.9.7 対応 (src/Makefile.in を修正)
 - 2019-12-29 v1.0-mg0016 README修正のみ(Gauche v0.9.9 で動作確認)
-- 2020-4-12  v1.0-mg0017 configure.ac修正(Linux上で動作確認(実験中))
+- 2020-4-12  v1.0-mg0017 configure.ac修正(Linux上で動作確認(参考用))
 
 
-(2020-4-23)
+(2020-4-25)
