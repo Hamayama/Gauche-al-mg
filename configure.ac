@@ -94,7 +94,7 @@ LDFLAGS="$LDFLAGS $AL_LIBDIR"
 
 AC_CHECK_HEADERS(OpenAL/al.h, [
 	case $target in
-	powerpc-apple-darwin*)
+	*-apple-darwin*)
 		AC_DEFINE(MacOSX, 1)
 		AL_LIBS='-framework OpenAL'
 		;;
