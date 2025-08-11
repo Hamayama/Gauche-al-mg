@@ -18,6 +18,7 @@
   (use math.mt-random)
   (use srfi-13)         ; string-downcase用
   (use binary.pack)
+  (use gauche.version)
   (export
     test-mmlproc
     mml-dll-loaded?
@@ -27,6 +28,13 @@
     write-wav
     get-wav-size))
 (select-module mmlproc)
+
+;; Gauche 0.9.13_pre1 で、実数限定の %sin, %cos, %expt 等がなくなった件の対応
+;; (SRFI-94 (real-sin, real-cos, real-expt 等) ができたため)
+(define-macro (use-compat-real-elementary-functions)
+  (when (version>=? (gauche-version) "0.9.13_pre1")
+    `(use compat.real-elementary-functions)))
+(use-compat-real-elementary-functions)
 
 ;; DLLのロード
 (define dll-loaded

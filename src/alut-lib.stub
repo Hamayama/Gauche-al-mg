@@ -69,13 +69,20 @@
   "ALenum format;
   void *data;
   ALsizei size;
-  ALsizei freq;
+  /* ALsizei freq; */
+  ALfloat freq;
   ALboolean loop = AL_FALSE;
+
+  /* don't use deprecated function */
+#if 0
 #if MacOSX
   alutLoadWAVFile((ALbyte*)fname, &format, &data, &size, &freq);
 #else
   alutLoadWAVFile((ALbyte*)fname, &format, &data, &size, &freq, &loop);
 #endif
+#endif
+  data = alutLoadMemoryFromFile(fname, &format, &size, &freq);
+
   SCM_RETURN(Scm_MakePCMData(format, data, size, freq, loop));
   ")
 
@@ -84,13 +91,21 @@
   ALenum format;
   void *data;
   ALsizei size;
-  ALsizei freq;
-  ALboolean loop;
+  /* ALsizei freq; */
+  ALfloat freq;
+  ALboolean loop = AL_FALSE;
+  ALsizei length = (ALsizei)SCM_U8VECTOR_SIZE(vec);
+
+  /* don't use deprecated function */
+#if 0
 #if MacOSX
   alutLoadWAVMemory(memory, &format, &data, &size, &freq);
 #else
   alutLoadWAVMemory(memory, &format, &data, &size, &freq, &loop);
 #endif
+#endif
+  data = alutLoadMemoryFromFileImage(memory, length, &format, &size, &freq);
+
   SCM_RETURN(Scm_MakePCMData(format, data, size, freq, loop));
   ")
 

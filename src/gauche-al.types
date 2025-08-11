@@ -31,31 +31,40 @@
 ;;
 ;; $Id$
 
-(define-type <const-char*> "const char *" #f 
+;(define-type <const-char*> "const char *" #f 
+(declare-stub-type <const-char*> "const char *" #f 
   "SCM_STRINGP" "CONST_CHAR_PTR")
 
-(define-type <uvector> "ScmUVector*" "uniform vector"
+;(define-type <uvector> "ScmUVector*" "uniform vector"
+(declare-stub-type <uvector> "ScmUVector*" "uniform vector"
   "SCM_UVECTORP" "SCM_UVECTOR")
 
-(define-type <u8vector> "ScmU8Vector*" "u8vector"
+;(define-type <u8vector> "ScmU8Vector*" "u8vector"
+(declare-stub-type <u8vector> "ScmU8Vector*" "u8vector"
   "SCM_U8VECTORP" "SCM_U8VECTOR")
 
-(define-type <s32vector> "ScmS32Vector*" "s32vector"
+;(define-type <s32vector> "ScmS32Vector*" "s32vector"
+(declare-stub-type <s32vector> "ScmS32Vector*" "s32vector"
   "SCM_S32VECTORP" "SCM_S32VECTOR")
 
-(define-type <u32vector> "ScmU32Vector*" "u32vector"
+;(define-type <u32vector> "ScmU32Vector*" "u32vector"
+(declare-stub-type <u32vector> "ScmU32Vector*" "u32vector"
   "SCM_U32VECTORP" "SCM_U32VECTOR")
 
-(define-type <f32vector> "ScmF32Vector*" "f32vector"
+;(define-type <f32vector> "ScmF32Vector*" "f32vector"
+(declare-stub-type <f32vector> "ScmF32Vector*" "f32vector"
   "SCM_F32VECTORP" "SCM_F32VECTOR")
 
-(define-type <pcm-data> "ScmPCMData*" #f
+;(define-type <pcm-data> "ScmPCMData*" #f
+(declare-stub-type <pcm-data> "ScmPCMData*" #f
   "SCM_PCM_DATA_P" "SCM_PCM_DATA")
 
-(define-type <alc-context> "ALCcontext*" #f
+;(define-type <alc-context> "ALCcontext*" #f
+(declare-stub-type <alc-context> "ALCcontext*" #f
   "SCM_ALC_CONTEXT_P" "SCM_ALC_CONTEXT_DATA")
 
-(define-type <alc-device> "ALCdevice*" #f
+;(define-type <alc-device> "ALCdevice*" #f
+(declare-stub-type <alc-device> "ALCdevice*" #f
   "SCM_ALC_DEVICE_P" "SCM_ALC_DEVICE_DATA")
 
 ;; Local variables:

@@ -50,7 +50,7 @@ dnl /mingw64/etc/config.site sets prefix=/mingw64.
 case "$target" in
   *-mingw*)
     case "$prefix" in
-      /mingw64 | /mingw32)
+      /ucrt64 | /mingw64 | /mingw32)
         prefix=`"$GAUCHE_CONFIG" --prefix`;;
     esac;;
 esac
@@ -114,6 +114,19 @@ AC_CHECK_HEADERS(AL/al.h, [
 ], ,)
 AC_SUBST(AL_LIBS)
 
+dnl for MSYS2/MinGW-w64
+MINGWDIR=""
+case $target in
+	*-mingw*)
+		case "$MSYSTEM" in
+			UCRT64)  MINGWDIR="/ucrt64/bin";;
+			MINGW64) MINGWDIR="/mingw64/bin";;
+			MINGW32) MINGWDIR="/mingw32/bin";;
+			*)       MINGWDIR="/mingw/bin";;
+		esac;;
+	*)               MINGWDIR="";;
+esac
+AC_SUBST(MINGWDIR)
 
 dnl Creating gpd (gauche package description) file
 GAUCHE_PACKAGE_CONFIGURE_ARGS="`echo ""$ac_configure_args"" | sed 's/[\\""\`\$]/\\\&/g'`"

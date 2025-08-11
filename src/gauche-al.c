@@ -38,7 +38,9 @@ void Scm_finalize_PCMData(ScmObj obj, void *data)
 {
     ScmPCMData *z = SCM_PCM_DATA(obj);
     if (z->data) {
-        alutUnloadWAV(z->format, z->data, z->size, z->freq);
+        /* don't use deprecated function */
+        /* alutUnloadWAV(z->format, z->data, z->size, z->freq); */
+        free(z->data);
         z->data = NULL;
         z->size = 0;
     }

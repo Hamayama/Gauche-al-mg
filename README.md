@@ -67,6 +67,11 @@
 10. al.scm の修正
     - make-u8vector → make-u32vector
 
+11. MSYS2 の UCRT64 対応 (2025年8月)
+    - 非推奨 (deprecated) の関数を置き換え
+    - example/mml/mmlproc.scm のエラーを修正
+    - インストール方法は未修正
+
 
 ## インストール方法
 - MSYS2/MinGW-w64 (64bit/32bit) 環境でのインストール手順を、以下に示します。
@@ -83,33 +88,22 @@
    https://gist.github.com/Hamayama/eb4b4824ada3ac71beee0c9bb5fa546d  
    (すでにインストール済みであれば本手順は不要です)  
 
-3. OpenAL のインストール  
-   https://www.openal.org/downloads/  
-   から OpenAL 1.1 Core SDK (zip) をダウンロードして展開し、  
-   中の OpenAL11CoreSDK.exe を実行します。  
-   デフォルトのフォルダにインストールしてください。  
-   「Yes, launch the OpenAL redist and finish.」を選択して終了してください。
+3. OpenAL Soft のインストール  
+   https://github.com/kcat/openal-soft/releases  
+   から、  
+   openal-soft-X.XX.X-bin.zip  
+   をダウンロードして展開します。  
+   中の bin/Win64 フォルダ内の soft_oal.dll を OpenAL32.dll にリネームして、  
+   C:\msys64\mingw64\bin フォルダにコピーします。  
+   (32bit環境の場合には、64 の部分を 32 に読み替えてください)
 
-4. OpenAL のファイルのコピー  
-   C:\Program Files (x86)\OpenAL 1.1 SDK\include の中のファイル一式を、  
-   C:\msys64\mingw64\include\AL というフォルダを作成してそこにコピーします。  
+4. OpenAL Soft のファイルのコピー  
+   3. で展開した中の include フォルダ内の AL フォルダを、  
+   C:\msys64\mingw64\include フォルダにコピーします。  
    (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
-   また、  
-   C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64\OpenAL32.lib を、  
-   C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーします。  
-   (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
-   
-   - (注意) ここで上記のリネームをしないと、  
-     手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗します。  
-     失敗のときはコンパイル時に以下のメッセージが表示されます。  
-     「*** Warning: linker path does not have real file for library -lopenal32 ...」  
-   
-   - (注意) MinGW のバージョンが古い場合、  
-     OpenAL32.lib を libopenal32.dll.a にリネームしてコピーしても、  
-     手順 6. の freealut のコンパイルで libalut-0.dll の生成に失敗することがあります。  
-     このときは、c:\windows\system32 等にインストールされている OpenAL32.dll の方を、  
-     C:\msys64\mingw64\lib に libopenal32.dll.a とリネームしてコピーしてみてください。  
-     (32bit環境の場合には、64 の部分を 32 に読み替えてください)
+   また、libs\Win64 フォルダ内の libOpenAL32.dll.a を、  
+   C:\msys64\mingw64\lib フォルダにコピーします。  
+   (32bit環境の場合には、64 の部分を 32 に読み替えてください)
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -181,9 +175,6 @@
      ./configure
      make
    ```
-   
-   - (注意) freealut の deprecated (非推奨) のAPIを使用しているため、  
-     コンパイル時に warning が出ます。
    
    - (注意) MinGW のバージョンが古くて、C99モードではないというエラーが発生する場合には、  
      make clean で一度生成ファイルをクリアしてから、上記手順の  
@@ -296,12 +287,15 @@
 
 ## 環境等
 - OS
+  - Windows 11 24H2 (64bit)
   - Windows 8.1 (64bit)
   - Windows XP Home SP3
 - 環境
+  - MSYS2/MinGW-w64 UCRT64 (64bit) (gcc version 15.1.0 (Rev8, Built by MSYS2 project))
   - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 9.2.0 (Rev2, Built by MSYS2 project))
   - MinGW (32bit) (gcc version 6.3.0 (MinGW.org GCC-6.3.0-1))
 - 言語
+  - Gauche v0.9.15
   - Gauche v0.9.9
   - Gauche v0.9.8
   - Gauche v0.9.7
@@ -333,6 +327,6 @@
 - 2019-12-29 v1.0-mg0016 README修正のみ(Gauche v0.9.9 で動作確認)
 - 2020-4-12  v1.0-mg0017 configure.ac修正(Linux上で動作確認(参考用))
 - 2020-5-30  v1.0-mg0018 configure.ac修正(Mac対応(動作未確認))
+- 2025-8-11  v1.0-mg0019 MSYS2 の UCRT64 対応(インストール方法は未修正)
 
-
-(2020-5-30)
+(2025-8-11)
