@@ -63,7 +63,7 @@
 - 2018-7-9   v1.10 mmlproc.scmをv1.18に更新
 - 2018-12-29 v1.10 README修正のみ(Gauche v0.9.7 で動作確認)
 - 2019-12-29 v1.10 README修正のみ(Gauche v0.9.9 で動作確認)
-- 2025-8-12  v1.11 mmlproc.scmをv1.19に更新
+- 2025-8-12  v1.11 mmlproc.scmをv1.19に更新  
   test1002.scm を追加
 
 
