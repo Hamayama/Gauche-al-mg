@@ -67,14 +67,13 @@
 10. al.scm の修正
     - make-u8vector → make-u32vector
 
-11. MSYS2 の UCRT64 対応 (2025年8月)
+11. MSYS2/MinGW-w64 UCRT64 (64bit) 環境でのビルドに対応 (2025年8月)
     - 非推奨 (deprecated) の関数を置き換え
     - example/mml/mmlproc.scm のエラーを修正
-    - インストール方法は未修正
 
 
 ## インストール方法
-- MSYS2/MinGW-w64 (64bit/32bit) 環境でのインストール手順を、以下に示します。
+- MSYS2/MinGW-w64 UCRT64 (64bit) 環境でのインストール手順を、以下に示します。
 
 1. Gauche のインストール  
    事前に Gauche がインストールされている必要があります。  
@@ -82,10 +81,10 @@
    http://practical-scheme.net/gauche/download-j.html  
    (すでにインストール済みであれば本手順は不要です)
 
-2. MSYS2/MinGW-w64 (64bit/32bit) のインストール  
-   事前に MSYS2/MinGW-w64 (64bit/32bit) がインストールされている必要があります。  
+2. MSYS2/MinGW-w64 UCRT64 (64bit) のインストール  
+   事前に MSYS2/MinGW-w64 UCRT64 (64bit) がインストールされている必要があります。  
    以下のページを参考に、開発環境のインストールを実施ください。  
-   https://gist.github.com/Hamayama/eb4b4824ada3ac71beee0c9bb5fa546d  
+   https://gist.github.com/Hamayama/7810d2a1a59a872a2fbc271345151f77  
    (すでにインストール済みであれば本手順は不要です)  
 
 3. OpenAL Soft のインストール  
@@ -94,16 +93,13 @@
    openal-soft-X.XX.X-bin.zip  
    をダウンロードして展開します。  
    中の bin/Win64 フォルダ内の soft_oal.dll を OpenAL32.dll にリネームして、  
-   C:\msys64\mingw64\bin フォルダにコピーします。  
-   (32bit環境の場合には、64 の部分を 32 に読み替えてください)
+   C:\msys64\ucrt64\bin フォルダにコピーします。
 
 4. OpenAL Soft のファイルのコピー  
    3. で展開した中の include フォルダ内の AL フォルダを、  
-   C:\msys64\mingw64\include フォルダにコピーします。  
-   (32bit環境の場合には、64 の部分を 32 に読み替えてください)  
+   C:\msys64\ucrt64\include フォルダにコピーします。  
    また、libs\Win64 フォルダ内の libOpenAL32.dll.a を、  
-   C:\msys64\mingw64\lib フォルダにコピーします。  
-   (32bit環境の場合には、64 の部分を 32 に読み替えてください)
+   C:\msys64\ucrt64\lib フォルダにコピーします。
 
 5. freealut のダウンロード  
    https://github.com/vancegroup/freealut  
@@ -113,48 +109,18 @@
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
 6. freealut のコンパイルとインストール  
-   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
+   プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/freealut
      ./autogen.sh
-     ./configure --prefix=/mingw64
-     make
-     make install
-   ```
-   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
-   ( c:\work にソースを展開した場合)
-   ```
-     cd /c/work/freealut
-     ./autogen.sh
-     ./configure --prefix=/mingw32
+     ./configure --prefix=/ucrt64
      make
      make install
    ```
    
    - (注意) ./autogen.sh では warning が複数出ます。
-   
-   - (注意) MinGW のバージョンが古くて、alutUtil.c のコンパイルでエラーが発生する場合には、  
-     src/alutUtil.c をテキストエディタで開いて、1行目の
-     ```
-     #include "alutInternal.h"
-     ```
-     の下に以下の行を追加してみてください。
-     ```
-     #if defined(__MINGW32__)
-     #undef HAVE_NANOSLEEP
-     #undef HAVE_USLEEP
-     #endif
-     ```
-   
-   - (注意) MinGW のバージョンが古くて、Gauche の終了時に  
-     「This application has requested the Runtime to terminate it in an unusual way.  
-      Please contact the application's support team for more information.」  
-     というエラーが発生する場合には、  
-     make clean で一度生成ファイルをクリアしてから、上記手順の  
-     ./configure のオプションに LDFLAGS="-static-libgcc" を追加してみてください。  
 
 7. Gauche-al のソースの展開  
    本サイト ( https://github.com/Hamayama/Gauche-al-mg ) のソースを、  
@@ -164,10 +130,8 @@
    (注意) 作業用フォルダのパスには、空白を入れないようにしてください。
 
 8. Gauche-al のコンパイル  
-   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
-   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
+   プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/Gauche-al
@@ -175,20 +139,10 @@
      ./configure
      make
    ```
-   
-   - (注意) MinGW のバージョンが古くて、C99モードではないというエラーが発生する場合には、  
-     make clean で一度生成ファイルをクリアしてから、上記手順の  
-     ./configure のオプションに   
-     CFLAGS="-g -O2 -std=gnu99"  
-     または、  
-     CPPFLAGS="-D_STAT_DEFINED -D_WSTAT_DEFINED" CFLAGS="-g -O2 -std=gnu99"  
-     を追加してみてください。
 
 9. Gauche-al のインストール  
-   ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
-   ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-   プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
+   プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
    ( c:\work にソースを展開した場合)
    ```
      cd /c/work/Gauche-al
@@ -205,10 +159,8 @@
      そして再度上記のコマンドを実行してください。
 
 10. Gauche-al のテスト  
-    ＜MSYS2/MinGW-w64 (64bit) 環境の場合＞  
-    プログラムメニューから MSYS2 の MinGW 64bit Shell を起動して、以下のコマンドを実行してください。  
-    ＜MSYS2/MinGW-w64 (32bit) 環境の場合＞  
-    プログラムメニューから MSYS2 の MinGW 32bit Shell を起動して、以下のコマンドを実行してください。  
+   ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
+   プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
     ( c:\work にソースを展開した場合)
     ```
       cd /c/work/Gauche-al
@@ -220,10 +172,7 @@
 
 
 ## 使い方
-- example フォルダに 実行可能なサンプルがあります。  
-  (注意) 古いPC (Windows XP SP3) では、音楽が鳴ったり鳴らなかったりする場合がありました。  
-  このとき、オーディオの詳細プロパティで、「ハードウェア アクセラレータ」の設定を、  
-  「最大」から「標準」に変更したところ、改善したケースがありました。
+- example フォルダに 実行可能なサンプルがあります。
 
 - また、以下のページで、alaudplay.scm というモジュールを使って、  
   いくつかのサンプルで効果音を出しています。  
@@ -232,30 +181,22 @@
 
 ## その他 問題点等
 1. 音声ファイルの再生終了時にノイズが出る。  
-   以下のページの方法で回避できるかもしれない。  
-   http://gamedev.stackexchange.com/questions/71571/how-do-i-prevent-clicking-at-the-end-of-each-sound-play-in-openal  
-   (ヘッダーにあるデータ長の分だけデータを読み込むようにする)  
-   → 今回は、関係なかった。  
    → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
 
 
 ## その他 ノウハウ等
-1. freealut の静的リンクについて  
-   今回は行いませんが、freealut を静的にリンクしたい場合には、  
-   include/AL/alut.h の23行目の  
-   ```
-     #define ALUT_API __declspec(dllimport)
-   ```
-   
-   を、  
-   ```
-     #define ALUT_API extern
-   ```
-   
-   に変更する必要があります。  
-   こうしないと、`undefined reference to '_imp__xxx'` のようなエラーが発生します。
+1. OpenAL については、  
+   MSYS2 のパッケージに mingw-w64-ucrt-x86_64-openal (1.24.3-2) がありますが、  
+   dll が、libstdc++-6.dll と libgcc_s_seh-1.dll に依存しています。  
+   このため、現状は使用していません(2025-8-12)。
 
-2. Linux 上での利用について (参考)  
+2. freealut については、  
+   MSYS2 のパッケージに mingw-w64-ucrt-x86_64-freealut (1.1.0-3) がありますが、  
+   2006 年の古いソースがビルドされています。  
+   (このソースでは、alutLoadWAVMemory() は、バグのため動作しません)  
+   このため、現状は使用していません(2025-8-12)。
+
+3. Linux 上での利用について (参考)  
    以下は、Windows の VirtualBox 内の Linux Mint 19.3 (Cinnamon) 上で  
    動作させたときのメモです(2020-4-12)。
    ```
@@ -285,6 +226,7 @@
    gosh mml/test1001.scm
    ```
 
+
 ## 環境等
 - OS
   - Windows 11 24H2 (64bit)
@@ -304,6 +246,7 @@
   - Gauche v0.9.4
 - ライセンス
   - オリジナルと同様とします
+
 
 ## 履歴
 - 2015-12-17 v1.0-mg0001 MinGW (32bit) 対応
@@ -327,6 +270,7 @@
 - 2019-12-29 v1.0-mg0016 README修正のみ(Gauche v0.9.9 で動作確認)
 - 2020-4-12  v1.0-mg0017 configure.ac修正(Linux上で動作確認(参考用))
 - 2020-5-30  v1.0-mg0018 configure.ac修正(Mac対応(動作未確認))
-- 2025-8-11  v1.0-mg0019 MSYS2 の UCRT64 対応(インストール方法は未修正)
+- 2025-8-12  v1.0-mg0019 MSYS2/MinGW-w64 UCRT64 (64bit) 環境に対応
 
-(2025-8-11)
+
+(2025-8-12)
