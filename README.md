@@ -159,21 +159,21 @@
      そして再度上記のコマンドを実行してください。
 
 10. Gauche-al のテスト  
-   ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
-   プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
+    ＜MSYS2/MinGW-w64 UCRT64 (64bit) 環境＞  
+    プログラムメニューから MSYS2 の UCRT64 Shell を起動して、以下のコマンドを実行してください。  
     ( c:\work にソースを展開した場合)
     ```
       cd /c/work/Gauche-al
       make check
     ```
     テスト結果は test.log に記録されます。
-
-   - (注意) テストで、  
-     「*** ERROR: failed to link ./src/al.dll dynamically: error code 127」  
-     というエラーが出る場合、  
-     C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
-     C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
-     (現状のファイルのバックアップをとってから、上書きコピーする等)
+    
+    - (注意) テストで、  
+      「*** ERROR: failed to link ./src/al.dll dynamically: error code 127」  
+      というエラーが出る場合、  
+      C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
+      C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+      (現状のファイルのバックアップをとってから、上書きコピーする等)
 
 - 以上です。
 
@@ -192,12 +192,12 @@
 
 2. example フォルダのサンプル実行時に、  
    「gosh.exe - エントリ ポイントが見つかりません  
-    プロシージャ エントリ ポイント nanosleep64 がダイナミック リンク ライブラリ  
-    C:\Program Files\Gauche\bin\libalut-0.dll から見つかりませんでした。」  
-    というエラーメッセージが出る場合、  
-    C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
-    C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
-    (現状のファイルのバックアップをとってから、上書きコピーする等)
+   プロシージャ エントリ ポイント nanosleep64 がダイナミック リンク ライブラリ  
+   C:\Program Files\Gauche\bin\libalut-0.dll から見つかりませんでした。」  
+   というエラーのメッセージボックスが出る場合、  
+   C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
+   C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+   (現状のファイルのバックアップをとってから、上書きコピーする等)
 
 
 ## その他 ノウハウ等
