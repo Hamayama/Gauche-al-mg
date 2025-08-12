@@ -194,7 +194,7 @@
    「gosh.exe - エントリ ポイントが見つかりません  
    プロシージャ エントリ ポイント nanosleep64 がダイナミック リンク ライブラリ  
    C:\Program Files\Gauche\bin\libalut-0.dll から見つかりませんでした。」  
-   というエラーのメッセージボックスが出る場合、  
+   というエラー (メッセージボックス) が出る場合、  
    C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
    C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
    (現状のファイルのバックアップをとってから、上書きコピーする等)
