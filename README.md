@@ -185,7 +185,7 @@
 
 
 ## その他 ノウハウ等
-1. OpenAL については、  
+1. OpenAL Soft については、  
    MSYS2 のパッケージに mingw-w64-ucrt-x86_64-openal (1.24.3-2) がありますが、  
    dll が、libstdc++-6.dll と libgcc_s_seh-1.dll に依存しています。  
    このため、現状は使用していません(2025-8-12)。
