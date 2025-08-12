@@ -1,7 +1,7 @@
 ;; -*- coding: utf-8 -*-
 ;;
 ;; mmlproc.scm
-;; 2018-7-7 v1.18
+;; 2025-8-12 v1.19
 ;;
 ;; ＜内容＞
 ;;   Gauche で MML (Music Macro Language) の文字列を解釈して、
