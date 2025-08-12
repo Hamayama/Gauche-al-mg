@@ -168,6 +168,13 @@
     ```
     テスト結果は test.log に記録されます。
 
+   - (注意) テストで、  
+     「*** ERROR: failed to link ./src/al.dll dynamically: error code 127」  
+     というエラーが出る場合、  
+     C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
+     C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+     (現状のファイルのバックアップをとってから、上書きコピーする等)
+
 - 以上です。
 
 
@@ -182,6 +189,15 @@
 ## その他 問題点等
 1. 音声ファイルの再生終了時にノイズが出る。  
    → 音声再生終了後、少し待ってから alut-exit を実行するようにしたら回避できた(2015-12-24)。
+
+2. example フォルダのサンプル実行時に、  
+   「gosh.exe - エントリ ポイントが見つかりません  
+    プロシージャ エントリ ポイント nanosleep64 がダイナミック リンク ライブラリ  
+    C:\Program Files\Gauche\bin\libalut-0.dll から見つかりませんでした。」  
+    というエラーメッセージが出る場合、  
+    C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
+    C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+    (現状のファイルのバックアップをとってから、上書きコピーする等)
 
 
 ## その他 ノウハウ等
