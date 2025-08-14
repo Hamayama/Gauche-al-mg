@@ -172,7 +172,7 @@
       「*** ERROR: failed to link ./src/al.dll dynamically: error code 127」  
       というエラーが出る場合、  
       C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
-      C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+      C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll に上書きしてみてください。  
       (現状のファイルのバックアップをとってから、上書きコピーする等)
 
 - 以上です。
@@ -196,7 +196,7 @@
    C:\Program Files\Gauche\bin\libalut-0.dll から見つかりませんでした。」  
    というエラー (メッセージボックス) が出る場合、  
    C:\msys64\ucrt64\bin フォルダ内の libwinpthread-1.dll を、  
-   C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll と差し替えてみてください。  
+   C:\Program Files\Gauche\bin フォルダ内の libwinpthread-1.dll に上書きしてみてください。  
    (現状のファイルのバックアップをとってから、上書きコピーする等)
 
 
@@ -289,4 +289,4 @@
 - 2025-8-12  v1.0-mg0019 MSYS2/MinGW-w64 UCRT64 (64bit) 環境に対応
 
 
-(2025-8-12)
+(2025-8-14)
